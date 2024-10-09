@@ -1,0 +1,15 @@
+[project]
+name = "dewan_flir_camera"
+version = "0.1"
+description = "Module to interface Flir Blackfly USB3 cameras with Dewan Lab behavioral experiments"
+authors = [{name="Austin Pauley", email="pauley@psy.fsu.edu"}]
+readme = "README.md"
+requires-python = ">=3.10, <3.12"
+dependencies = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages=['dewan_flir_camera']
