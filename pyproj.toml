@@ -5,7 +5,10 @@ description = "Module to interface Flir Blackfly USB3 cameras with Dewan Lab beh
 authors = [{name="Austin Pauley", email="pauley@psy.fsu.edu"}]
 readme = "README.md"
 requires-python = ">=3.10, <3.12"
-dependencies = []
+dependencies = [
+    "numpy<2.0",
+    "PySpin"
+]
 
 [build-system]
 requires = ["setuptools"]
