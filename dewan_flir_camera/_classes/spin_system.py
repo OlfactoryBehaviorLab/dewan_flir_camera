@@ -1,4 +1,5 @@
 import PySpin
+from _static_funcs import _exit_on_exception
 
 class SpinSystem:
     def __init__(self):
@@ -42,6 +43,7 @@ class SpinSystem:
                 self.__exit__([],[],[])
             else:
                 print(f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)")
-        except PySpin.SpinnakerException as e:
-            print(e)
-            self.__exit__(type(e), str(e), e.__traceback__)
+        except PySpin.SpinnakerException as ex:
+            print(ex)
+            _exit_on_exception(self, ex)
+

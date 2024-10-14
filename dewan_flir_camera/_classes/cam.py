@@ -1,6 +1,5 @@
-import PySpin
 from PySpin import SpinnakerException
-
+from _static_funcs import _exit_on_exception, get_node_info
 
 class Cam:
     def __init__(self, cam_ptr, number):
@@ -27,30 +26,31 @@ class Cam:
         del self.cam_ptr
         self.cam_ptr = []
 
-
-
     def _get_cam_tl_info(self):
         """
         Internal method to get properties from camera transport layer
         """
         try:
-            self.serial = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceSerialNumber)
-            self.vendor = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceVendorName)
-            self.model = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceModelName)
+            self.serial = get_node_info(self.cam_ptr.TLDevice.DeviceSerialNumber)
+            self.vendor = get_node_info(self.cam_ptr.TLDevice.DeviceVendorName)
+            self.model = get_node_info(self.cam_ptr.TLDevice.DeviceModelName)
 
         except SpinnakerException as ex:
             print("Error getting camera information!")
             print(ex)
-            self._exit_on_exception(ex)
+            _exit_on_exception(self, ex)
 
     def _get_stream_tl_info(self):
+        """
+        Internal method to get properties from stream transport layer
+        """
         try:
-            self.stream_ID = Cam.get_node_info(self.cam_ptr.TLStream.StreamID)
-            self.stream_type = Cam.get_node_info(self.cam_ptr.TLStream.StreamType)
+            self.stream_ID = get_node_info(self.cam_ptr.TLStream.StreamID)
+            self.stream_type = get_node_info(self.cam_ptr.TLStream.StreamType)
         except SpinnakerException as ex:
             print("Error getting stream information!")
             print(ex)
-            self._exit_on_exception(ex)
+            _exit_on_exception(self, ex)
 
     def __str__(self):
         return (f'Camera {self.number}:\n'
