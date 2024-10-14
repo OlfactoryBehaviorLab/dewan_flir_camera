@@ -63,13 +63,3 @@ class Cam:
 
     def __repr__(self):
         return f'Class: {self.__class__}'
-
-    @staticmethod
-    def get_node_info(node):
-        if node is not None and PySpin.IsReadable(node):
-            return PySpin.CValuePtr(node).ToString()
-        else:
-            return None
-
-    def _exit_on_exception(self, ex):
-        self.__exit__(type(ex), str(ex), ex.__traceback__())
