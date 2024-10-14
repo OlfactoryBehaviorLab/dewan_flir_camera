@@ -8,6 +8,7 @@ class Cam:
         self.model = []
 
         self._get_cam_info()
+        self._get_cam_tl_info()
 
     def __enter__(self):
         return self
@@ -21,12 +22,19 @@ class Cam:
 
 
 
-    def _get_cam_info(self):
-        if self.cam_ptr.TLDevice.DeviceVendorName.GetAccessMode() == PySpin.RO:
-            self.vendor = self.cam_ptr.TLDevice.DeviceVendorName.ToString()
+    def _get_cam_tl_info(self):
+        """
+        Internal method to get properties from camera transport layer
+        """
+        try:
+            self.serial = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceSerialNumber)
+            self.vendor = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceVendorName)
+            self.model = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceModelName)
 
-        if self.cam_ptr.TLDevice.DeviceModelName.GetAccessMode() == PySpin.RO:
-            self.model = self.cam_ptr.TLDevice.DeviceModelName.GetValue()
+        except PySpin.SpinnakerException as ex:
+            print("Error getting camera information!")
+            print(ex)
+            self.__exit__(type(ex), str(ex), ex.__traceback__())
 
     def __str__(self):
         return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}'    @staticmethod
