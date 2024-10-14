@@ -1,8 +1,10 @@
 import PySpin
-from _static_funcs import _exit_on_exception
+from _generics import SpinnakerObject
 
-class SpinSystem:
+
+class SpinSystem(SpinnakerObject):
     def __init__(self):
+        super().__init__()
         self.system : PySpin.System = []
         self.version = []
         self.interface_list : PySpin.InterfaceList = []
@@ -12,13 +14,9 @@ class SpinSystem:
 
         self._initialize_system()
 
-    def __enter__(self):
-        return self
 
     def __exit__(self, exc_type, exc_val, tb):
-        import traceback
-        if exc_type is not None:
-            traceback.print_exception(exc_type, exc_val, tb)
+        super().__exit__()
 
         self.camera_list.Clear()
         self.interface_list.Clear()
@@ -45,5 +43,5 @@ class SpinSystem:
                 print(f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)")
         except PySpin.SpinnakerException as ex:
             print(ex)
-            _exit_on_exception(self, ex)
+            self._exit_on_exception(self, ex)
 
