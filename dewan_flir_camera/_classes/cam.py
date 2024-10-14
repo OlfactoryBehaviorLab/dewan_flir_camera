@@ -29,4 +29,9 @@ class Cam:
             self.model = self.cam_ptr.TLDevice.DeviceModelName.GetValue()
 
     def __str__(self):
-        return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}'
+        return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}'    @staticmethod
+    def get_node_info(node):
+        if node is not None and PySpin.IsReadable(node):
+            return PySpin.CValuePtr(node).ToString()
+        else:
+            return None
