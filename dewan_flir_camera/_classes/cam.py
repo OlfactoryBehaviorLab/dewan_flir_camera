@@ -53,7 +53,16 @@ class Cam:
             self._exit_on_exception(ex)
 
     def __str__(self):
-        return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}, Serial: {self.serial}'
+        return (f'Camera {self.number}:\n'
+                f'\t -Vendor: {self.vendor}\n'
+                f'\t -Model: {self.model}\n'
+                f'\t -Serial: {self.serial}\n'
+                f'Stream Information:\n'
+                f'\t -Stream ID: {self.stream_ID}\n'
+                f'\t -Stream Type: {self.stream_type}\n\n')
+
+    def __repr__(self):
+        return f'Class: {self.__class__}'
 
     @staticmethod
     def get_node_info(node):
