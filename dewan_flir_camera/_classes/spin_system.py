@@ -1,5 +1,4 @@
 import PySpin
-import sys
 
 class SpinSystem:
     def __init__(self):
@@ -29,7 +28,6 @@ class SpinSystem:
         self.system = []
 
 
-
     def _initialize_system(self):
         try:
             self.system = PySpin.System.GetInstance()
@@ -41,9 +39,9 @@ class SpinSystem:
 
             if self.num_cams == 0 or self.num_interfaces == 0:
                 print("No cameras present! Exiting!")
-                self.__exit__()
+                self.__exit__([],[],[])
             else:
                 print(f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)")
         except PySpin.SpinnakerException as e:
             print(e)
-            self.__exit__()
+            self.__exit__(type(e), str(e), e.__traceback__)
