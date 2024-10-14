@@ -1,6 +1,5 @@
 import PySpin
-from _generics import SpinnakerObject
-
+from ._generics import SpinnakerObject
 
 class SpinSystem(SpinnakerObject):
     def __init__(self):
@@ -16,7 +15,7 @@ class SpinSystem(SpinnakerObject):
 
 
     def __exit__(self, exc_type, exc_val, tb):
-        super().__exit__()
+        super().__exit__(exc_type, exc_val, tb)
 
         self.camera_list.Clear()
         self.interface_list.Clear()

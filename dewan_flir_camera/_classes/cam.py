@@ -1,5 +1,5 @@
 from PySpin import SpinnakerException
-from _generics import SpinnakerObject
+from ._generics import SpinnakerObject
 
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):

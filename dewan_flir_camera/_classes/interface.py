@@ -1,6 +1,6 @@
 import PySpin
 from PySpin import SpinnakerException
-from _generics import SpinnakerObject
+from ._generics import SpinnakerObject
 
 class Interface(SpinnakerObject):
     def __init__(self, interface_ptr):
