@@ -1,4 +1,6 @@
 import PySpin
+from PySpin import SpinnakerException
+
 
 class Cam:
     def __init__(self, cam_ptr, number):
@@ -31,10 +33,10 @@ class Cam:
             self.vendor = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceVendorName)
             self.model = Cam.get_node_info(self.cam_ptr.TLDevice.DeviceModelName)
 
-        except PySpin.SpinnakerException as ex:
+        except SpinnakerException as ex:
             print("Error getting camera information!")
             print(ex)
-            self.__exit__(type(ex), str(ex), ex.__traceback__())
+            self._exit_on_exception(ex)
 
     def __str__(self):
         return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}, Serial: {self.serial}'
