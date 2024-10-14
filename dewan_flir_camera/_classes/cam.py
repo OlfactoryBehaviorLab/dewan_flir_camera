@@ -6,8 +6,8 @@ class Cam:
         self.number = number
         self.vendor = []
         self.model = []
+        self.serial = []
 
-        self._get_cam_info()
         self._get_cam_tl_info()
 
     def __enter__(self):
@@ -37,7 +37,9 @@ class Cam:
             self.__exit__(type(ex), str(ex), ex.__traceback__())
 
     def __str__(self):
-        return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}'    @staticmethod
+        return f'Camera {self.number}, Vendor: {self.vendor}, Module: {self.model}, Serial: {self.serial}'
+
+    @staticmethod
     def get_node_info(node):
         if node is not None and PySpin.IsReadable(node):
             return PySpin.CValuePtr(node).ToString()
