@@ -3,7 +3,6 @@ from ._generics import SpinnakerObject
 
 class SpinSystem(SpinnakerObject):
     def __init__(self):
-        super().__init__()
         self.system : PySpin.System = []
         self.version = []
         self.interface_list : PySpin.InterfaceList = []
@@ -12,6 +11,7 @@ class SpinSystem(SpinnakerObject):
         self.num_cams : int = 0
 
         self._initialize_system()
+        super().__init__(self.system)
 
 
     def __exit__(self, exc_type, exc_val, tb):
