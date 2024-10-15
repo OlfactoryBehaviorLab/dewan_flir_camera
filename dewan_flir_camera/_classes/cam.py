@@ -3,12 +3,12 @@ from ._generics import SpinnakerObject
 
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
-        super().__init__()
-        self.cam_ptr = cam_ptr
+        super().__init__(cam_ptr)
         self.number = number
         self.vendor = []
         self.model = []
         self.serial = []
+        self.speed = []
 
         self.stream_type = []
         self.stream_ID = []
@@ -19,17 +19,18 @@ class Cam(SpinnakerObject):
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
 
-        del self.cam_ptr
-        self.cam_ptr = []
+        del self.ptr
+        self.ptr = []
 
     def _get_cam_tl_info(self):
         """
         Internal method to get properties from camera transport layer
         """
         try:
-            self.serial = self.get_node_info(self.cam_ptr.TLDevice.DeviceSerialNumber)
-            self.vendor = self.get_node_info(self.cam_ptr.TLDevice.DeviceVendorName)
-            self.model = self.get_node_info(self.cam_ptr.TLDevice.DeviceModelName)
+            self.serial = self.get_node_info(self.ptr.TLDevice.DeviceSerialNumber)
+            self.vendor = self.get_node_info(self.ptr.TLDevice.DeviceVendorName)
+            self.model = self.get_node_info(self.ptr.TLDevice.DeviceModelName)
+            self.speed = self.get_node_info(self.ptr.TLDevice.DeviceCurrentSpeed)
 
         except SpinnakerException as ex:
             print("Error getting camera information!")
@@ -41,8 +42,8 @@ class Cam(SpinnakerObject):
         Internal method to get properties from stream transport layer
         """
         try:
-            self.stream_ID = self.get_node_info(self.cam_ptr.TLStream.StreamID)
-            self.stream_type = self.get_node_info(self.cam_ptr.TLStream.StreamType)
+            self.stream_ID = self.get_node_info(self.ptr.TLStream.StreamID)
+            self.stream_type = self.get_node_info(self.ptr.TLStream.StreamType)
         except SpinnakerException as ex:
             print("Error getting stream information!")
             print(ex)
@@ -53,6 +54,7 @@ class Cam(SpinnakerObject):
                 f'\t -Vendor: {self.vendor}\n'
                 f'\t -Model: {self.model}\n'
                 f'\t -Serial: {self.serial}\n'
+                f'\t -Speed: {self.speed}\n'
                 f'Stream Information:\n'
                 f'\t -Stream ID: {self.stream_ID}\n'
                 f'\t -Stream Type: {self.stream_type}\n\n')
