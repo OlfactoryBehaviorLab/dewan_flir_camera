@@ -1,11 +1,9 @@
-import PySpin
 from PySpin import SpinnakerException
 from ._generics import SpinnakerObject
 
 class Interface(SpinnakerObject):
     def __init__(self, interface_ptr, number):
-        super().__init__()
-        self.interface_ptr = interface_ptr
+        super().__init__(interface_ptr)
         self.number = number
         self.interface_name = []
         self.interface_id = []
@@ -21,7 +19,7 @@ class Interface(SpinnakerObject):
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
 
-        del self.interface_ptr
+        del self.ptr
         self.interface_ptr = []
 
     def _get_interface_tl_info(self):
@@ -29,12 +27,12 @@ class Interface(SpinnakerObject):
         Internal method to get interface properties from the transport layer
         """
         try:
-            self.interface_name = self.get_node_info(self.interface_ptr.TLInterface.InterfaceDisplayName)
-            self.interface_id = self.get_node_info(self.interface_ptr.TLInterface.InterfaceID)
-            self.interface_type = self.get_node_info(self.interface_ptr.TLInterface.InterfaceType)
+            self.interface_name = self.get_node_info(self.ptr.TLInterface.InterfaceDisplayName)
+            self.interface_id = self.get_node_info(self.ptr.TLInterface.InterfaceID)
+            self.interface_type = self.get_node_info(self.ptr.TLInterface.InterfaceType)
 
         except SpinnakerException as ex:
-            print("Error getting camera information!")
+            print("Error getting interface information!")
             print(ex)
             self._exit_on_exception(self, ex)
 
@@ -43,12 +41,12 @@ class Interface(SpinnakerObject):
         Internal method to get host bus adapter (HBA) properties from the transport layer
         """
         try:
-            self.host_adapter_name = self.get_node_info(self.interface_ptr.TLInterface.HostAdapterName)
-            self.host_adapter_vendor = self.get_node_info(self.interface_ptr.TLInterface.HostAdapterVendor)
-            self.host_adapter_driver_version = self.get_node_info(self.interface_ptr.TLInterface.HostAdapterDriverVersion)
+            self.host_adapter_name = self.get_node_info(self.ptr.TLInterface.HostAdapterName)
+            self.host_adapter_vendor = self.get_node_info(self.ptr.TLInterface.HostAdapterVendor)
+            self.host_adapter_driver_version = self.get_node_info(self.ptr.TLInterface.HostAdapterDriverVersion)
 
         except SpinnakerException as ex:
-            print("Error getting camera information!")
+            print("Error getting HBA information!")
             print(ex)
             self._exit_on_exception(self, ex)
 
