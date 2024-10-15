@@ -1,8 +1,8 @@
 import PySpin
 
 class SpinnakerObject:
-    def __init__(self):
-        pass
+    def __init__(self, ptr):
+        self.ptr = ptr
 
     def __enter__(self):
         return self
