@@ -5,6 +5,7 @@ class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
         super().__init__(cam_ptr)
         self.number = number
+        self.is_init = False
         self.vendor = []
         self.model = []
         self.serial = []
@@ -16,6 +17,28 @@ class Cam(SpinnakerObject):
         self._get_cam_tl_info()
         self._get_stream_tl_info()
 
+    def init(self):
+        if self.is_init:
+            print(f'Camera {self.number} is already initialized!')
+        else:
+            try:
+                self.ptr.Init()
+                self.is_init = True
+            except SpinnakerException as ex:
+                print(f'Error initializing camera {self.number}!')
+                print(ex)
+
+
+    def deinit(self):
+        if not self.is_init:
+            print(f'Camera {self.number} is not initialized, no need to deinitialize!')
+        else:
+            try:
+                self.ptr.DeInit()
+                self.is_init = False
+            except SpinnakerException as ex:
+                print(f'Error deinitializing camera {self.number}!')
+                print(ex)
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
 
