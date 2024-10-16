@@ -1,6 +1,6 @@
 import PySpin
 from ._generics import SpinnakerObject
-
+from .cam import Cam
 class SpinSystem(SpinnakerObject):
     def __init__(self):
         self.system : PySpin.System = []
@@ -57,8 +57,15 @@ class SpinSystem(SpinnakerObject):
                 print("No cameras present! Exiting!")
                 self.__exit__([],[],[])
             else:
+                self._instantiate_camera_wrappers()
                 print(f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)")
         except PySpin.SpinnakerException as ex:
             print(ex)
             self._exit_on_exception(self, ex)
 
+    def _instantiate_camera_wrappers(self):
+        print("Instantiating Camera Wrappers...")
+        for i, cam in enumerate(self.camera_list):
+            new_cam = Cam(cam, i)
+            self.cameras.append(new_cam)
+        del cam
