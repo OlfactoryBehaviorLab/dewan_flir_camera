@@ -15,7 +15,7 @@ class SpinSystem(SpinnakerObject):
         self.interface_list = []
 
         # List to hold our wrapper classes so they will be cleaned up properly
-        self.cameras = []
+        self.cameras: list[Cam] = []
         self.interfaces = []
 
         self._initialize_system()
