@@ -41,6 +41,11 @@ class Cam(SpinnakerObject):
                 print(ex)
 
 
+    @property
+    def frame_size(self):
+        return self.Width, self.Height
+    
+
     def __getattr__(self, attribute):
         """
         Override getattr to search if the underlying pointer object has the value; done to avoid subclassing the ptr
