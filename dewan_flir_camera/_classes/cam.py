@@ -1,3 +1,4 @@
+import PySpin
 from PySpin import SpinnakerException
 from ._generics import SpinnakerObject
 
@@ -41,6 +42,19 @@ class Cam(SpinnakerObject):
                 print(ex)
 
 
+    def get_images(self, num_images):
+        try:
+            self.AcquisitionMode.SetValue(PySpin.AcquisitionMode_Continuous)
+            self.BeginAcquisition()
+
+            processor = PySpin.ImageProcessor()
+            
+
+
+        except SpinnakerException as se:
+            print(se)
+
+
     def configure_trigger(self):
         try:
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
@@ -51,10 +65,11 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             print(f'An error occurred while configuring camera {self.number}''s trigger')
             print(se)
+
     @property
     def frame_size(self):
         return self.Width, self.Height
-    
+
 
     def __getattr__(self, attribute):
         """
@@ -63,8 +78,8 @@ class Cam(SpinnakerObject):
         """
         try:
             return_ptr = self.ptr.__getattribute__(attribute)  ## See if the camera_ptr class has the attribute
-            return_val = return_ptr.GetValue()
-            return return_val
+            return return_ptr
+
         except AttributeError as ae:
             print(f'The camera does not have a property or attribute named {attribute}')
             print(f'Original Exception: {ae}')
@@ -83,6 +98,7 @@ class Cam(SpinnakerObject):
         del self.ptr
         #self.ptr = []
 
+
     def _get_cam_tl_info(self):
         """
         Internal method to get properties from camera transport layer
@@ -98,6 +114,7 @@ class Cam(SpinnakerObject):
             print(ex)
             self._exit_on_exception(self, ex)
 
+
     def _get_stream_tl_info(self):
         """
         Internal method to get properties from stream transport layer
@@ -110,6 +127,7 @@ class Cam(SpinnakerObject):
             print(ex)
             self._exit_on_exception(self, ex)
 
+
     def __str__(self):
         return (f'Camera {self.number}:\n'
                 f'\t -Vendor: {self.vendor}\n'
@@ -119,6 +137,7 @@ class Cam(SpinnakerObject):
                 f'Stream Information:\n'
                 f'\t -Stream ID: {self.stream_ID}\n'
                 f'\t -Stream Type: {self.stream_type}\n\n')
+
 
     def __repr__(self):
         return f'Class: {self.__class__}'
