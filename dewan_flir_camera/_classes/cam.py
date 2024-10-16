@@ -39,6 +39,27 @@ class Cam(SpinnakerObject):
             except SpinnakerException as ex:
                 print(f'Error deinitializing camera {self.number}!')
                 print(ex)
+
+
+    def __getattr__(self, attribute):
+        """
+        Override getattr to search if the underlying pointer object has the value; done to avoid subclassing the ptr
+        since the underlying functionality is a bit ambiguous
+        """
+        try:
+            return_ptr = self.ptr.__getattribute__(attribute)  ## See if the camera_ptr class has the attribute
+            return_val = return_ptr.GetValue()
+            return return_val
+        except AttributeError as ae:
+            print(f'The camera does not have a property or attribute named {attribute}')
+            print(f'Original Exception: {ae}')
+        except SpinnakerException as se:
+            if 'AccessException' in str(se):
+                print(f'An AccessException occurred when trying to read {attribute}.'
+                      f' It is likely that your camera does not have this property')
+                print(f'Original Exception: {se}')
+            else:
+                raise SpinnakerException(f'Camera must be initialized to read {attribute}')
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
 
