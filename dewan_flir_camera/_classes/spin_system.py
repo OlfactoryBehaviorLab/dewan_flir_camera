@@ -11,6 +11,10 @@ class SpinSystem(SpinnakerObject):
         self.num_cams : int = 0
 
         # Lists to hold the pointers so enumerate and for loops don't complain
+        self.camera_list = []
+        self.interface_list = []
+
+        # List to hold our wrapper classes so they will be cleaned up properly
         self.cameras = []
         self.interfaces = []
 
@@ -21,8 +25,15 @@ class SpinSystem(SpinnakerObject):
     def __exit__(self, exc_type, exc_val, tb):
         super().__exit__(exc_type, exc_val, tb)
 
-        self.cameras = []
-        self.interfaces = []
+        ## Clean up our classes if we leave the scope of this system
+        for camera in self.cameras:
+            camera.__exit__(None, None, None)
+        for interface in self.interfaces:
+            interface.__exit__(None, None, None)
+
+        ## Clear lists that reference the pointers
+        self.camera_list = []
+        self.interface_list = []
 
         self._camera_list.Clear()
         self._interface_list.Clear()
@@ -37,10 +48,10 @@ class SpinSystem(SpinnakerObject):
             self.version = self.system.GetLibraryVersion()
             self._interface_list = self.system.GetInterfaces()
             self.num_interfaces = self._interface_list.GetSize()
-            self.interfaces = list(self._interface_list)
+            self.interface_list = list(self._interface_list)
             self._camera_list = self.system.GetCameras()
             self.num_cams = self._camera_list.GetSize()
-            self.cameras = list(self._camera_list)
+            self.camera_list = list(self._camera_list)
 
             if self.num_cams == 0 or self.num_interfaces == 0:
                 print("No cameras present! Exiting!")
