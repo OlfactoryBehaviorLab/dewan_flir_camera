@@ -41,6 +41,16 @@ class Cam(SpinnakerObject):
                 print(ex)
 
 
+    def configure_trigger(self):
+        try:
+            self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
+            self.TriggerSelector.SetValue(PySpin.TriggerSelector_AcquisitionStart)
+            self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
+            self.TriggerMode.SetValue(PySpin.TriggerMode_On)
+
+        except SpinnakerException as se:
+            print(f'An error occurred while configuring camera {self.number}''s trigger')
+            print(se)
     @property
     def frame_size(self):
         return self.Width, self.Height
