@@ -60,11 +60,13 @@ class Cam(SpinnakerObject):
                 print(f'Original Exception: {se}')
             else:
                 raise SpinnakerException(f'Camera must be initialized to read {attribute}')
+
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
-
+        self.ptr.DeInit()
         del self.ptr
-        self.ptr = []
+        #self.ptr = []
 
     def _get_cam_tl_info(self):
         """
