@@ -15,8 +15,11 @@ class Cam(SpinnakerObject):
         self.stream_type = []
         self.stream_ID = []
 
+        self.event_handler_ptr = None
+
         self._get_cam_tl_info()
         self._get_stream_tl_info()
+
 
     def init(self):
         if self.is_init:
@@ -35,6 +38,7 @@ class Cam(SpinnakerObject):
             print(f'Camera {self.number} is not initialized, no need to deinitialize!')
         else:
             try:
+                self.unregister_event_handler()
                 self.ptr.DeInit()
                 self.is_init = False
             except SpinnakerException as ex:
@@ -42,16 +46,29 @@ class Cam(SpinnakerObject):
                 print(ex)
 
 
-    def get_images(self, num_images):
+    def configure_acquisition_mode(self, mode):
         try:
-            self.AcquisitionMode.SetValue(PySpin.AcquisitionMode_Continuous)
-            self.BeginAcquisition()
-
-            processor = PySpin.ImageProcessor()
-            
-
-
+            self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
+            print("Error configuring acquisition mode!")
+            print(se)
+
+    def register_event_handler(self, event_handler):
+        try:
+            self.RegisterEventHandler(event_handler)
+            self.event_handler_ptr = event_handler
+        except SpinnakerException as se:
+            print('Error registering event handler!')
+            print(se)
+
+
+    def unregister_event_handler(self):
+        try:
+            if self.event_handler_ptr is not None:
+                self.UnregisterEventHandler(self.event_handler_ptr)
+                self.event_handler_ptr = None
+        except SpinnakerException as se:
+            print('Error unregistering event handler!')
             print(se)
 
 
