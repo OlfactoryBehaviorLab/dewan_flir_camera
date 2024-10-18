@@ -15,11 +15,11 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QComboBox, QDoubleSpinBox,
                                QFrame, QGraphicsView, QGridLayout, QGroupBox,
                                QHBoxLayout, QLabel, QLayout, QMenu, QMenuBar, QPushButton, QSizePolicy,
                                QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
-                               QWidget)
+                               QWidget, QMainWindow)
 
 class MainUI(object):
     def __init__(self, main_ui):
-        self.main_ui = main_ui
+        self.main_ui: QMainWindow = main_ui
         self.about_widget = []
 
         self.setupUi(main_ui)
@@ -38,6 +38,7 @@ class MainUI(object):
         main_window.setDocumentMode(False)
         main_window.setTabShape(QTabWidget.TabShape.Rounded)
         self.actionExit = QAction(main_window)
+        self.actionExit.triggered.connect(self.main_ui.close)
         self.actionExit.setObjectName(u"actionExit")
         self.actionOpen = QAction(main_window)
         self.actionOpen.setObjectName(u"actionOpen")
