@@ -18,9 +18,13 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
     QGridLayout, QHBoxLayout, QLabel, QSizePolicy,
     QVBoxLayout, QWidget)
-from dewan_flir_camera.UI import resources_rc
+import resources
 
-class ABOUT(object):
+class About(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
     def setupUi(self, about):
         if not about.objectName():
             about.setObjectName(u"about")
