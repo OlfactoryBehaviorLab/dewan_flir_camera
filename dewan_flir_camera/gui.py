@@ -1,5 +1,5 @@
-from ..UI import FLIR, about
-from PySide6.QtWidgets import QApplication, QMainWindow
+from ._ui import about, FLIR
+from PySide6.QtWidgets import QMainWindow
 
 class ControlWindow(QMainWindow):
     def __init__(self):

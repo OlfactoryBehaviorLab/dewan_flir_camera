@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
     QGridLayout, QHBoxLayout, QLabel, QSizePolicy,
     QVBoxLayout, QWidget)
-from ..UI import resources_rc
+from dewan_flir_camera.UI import resources_rc
 
 class ABOUT(object):
     def setupUi(self, about):
