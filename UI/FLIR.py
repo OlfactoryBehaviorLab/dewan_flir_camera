@@ -23,7 +23,12 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QComboBox, QDoubl
     QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
     QWidget)
 
-class Ui_main_window(object):
+class MainUI(object):
+    def __init__(self, main_ui):
+        self.main_ui = main_ui
+        self.about_widget = []
+        self.setupUi(main_ui)
+
     def setupUi(self, main_window):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
