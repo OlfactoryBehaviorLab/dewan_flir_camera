@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>main_window</class>
+ <widget class="QMainWindow" name="main_window">
+  <property name="windowModality">
+   <enum>Qt::WindowModality::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>720</width>
-    <height>512</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -19,11 +22,17 @@
   <property name="minimumSize">
    <size>
     <width>720</width>
-    <height>512</height>
+    <height>550</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::TabShape::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -45,6 +54,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
+    <item row="0" column="1">
+     <widget class="QGraphicsView" name="viewport">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QFrame" name="left_pane">
       <property name="sizePolicy">
@@ -62,7 +81,7 @@
       <property name="lineWidth">
        <number>1</number>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="left_pane_layout">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -79,7 +98,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QFrame" name="param_disp">
+        <widget class="QWidget" name="param_disp" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -113,15 +132,9 @@
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
          </property>
-         <property name="frameShape">
-          <enum>QFrame::Shape::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Plain</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0">
+         <layout class="QVBoxLayout" name="param_disp_layout" stretch="0,0,0,0,0">
           <property name="leftMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="topMargin">
            <number>2</number>
@@ -140,7 +153,7 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QHBoxLayout" name="current_exposure_disp_layout">
              <property name="topMargin">
               <number>0</number>
              </property>
@@ -161,7 +174,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="current_exp">
+              <widget class="QLabel" name="current_exposure_data">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -184,7 +197,7 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <layout class="QHBoxLayout" name="current_FPS_disp_layout">
              <property name="topMargin">
               <number>0</number>
              </property>
@@ -192,7 +205,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="current_exposure_label_3">
+              <widget class="QLabel" name="current_fps_label">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -205,7 +218,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="current_exp_3">
+              <widget class="QLabel" name="current_fps_data">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -228,7 +241,7 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <layout class="QHBoxLayout" name="max_framerate_disp_layout">
              <property name="leftMargin">
               <number>9</number>
              </property>
@@ -239,7 +252,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="current_exposure_label_2">
+              <widget class="QLabel" name="max_fps_label">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -252,7 +265,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="current_exp_2">
+              <widget class="QLabel" name="max_fps_data">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -268,14 +281,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="max_framerate_widget_2" native="true">
+           <widget class="QWidget" name="s_per_trial_widget" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <layout class="QHBoxLayout" name="s_per_trial_disp_layout">
              <property name="leftMargin">
               <number>9</number>
              </property>
@@ -286,7 +299,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="current_exposure_label_4">
+              <widget class="QLabel" name="s_per_trial_label">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -299,7 +312,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="current_exp_4">
+              <widget class="QLabel" name="s_per_trial_data">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -315,14 +328,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="max_framerate_widget_3" native="true">
+           <widget class="QWidget" name="num_frames_widget" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="num_frames_layout">
              <property name="leftMargin">
               <number>9</number>
              </property>
@@ -333,7 +346,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="current_exposure_label_5">
+              <widget class="QLabel" name="num_frames_label">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -346,7 +359,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="current_exp_5">
+              <widget class="QLabel" name="num_frames_data">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -372,20 +385,77 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QVBoxLayout" name="controls_layout">
           <property name="leftMargin">
            <number>2</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="rightMargin">
            <number>2</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>2</number>
           </property>
-          <item row="0" column="0">
+          <item>
+           <widget class="QGroupBox" name="acquisition_mode">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="title">
+             <string>Acquisition Mode</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <layout class="QVBoxLayout" name="acquisition_mode_layout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
+             <item>
+              <widget class="QComboBox" name="acquisition_mode_data">
+               <item>
+                <property name="text">
+                 <string>Frame Burst</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Continuous</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Single Frame</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <widget class="QGroupBox" name="exposure_control">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -404,30 +474,35 @@
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
+            <layout class="QVBoxLayout" name="exposure_layout">
              <property name="spacing">
-              <number>5</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <property name="topMargin">
               <number>2</number>
              </property>
              <property name="rightMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <property name="bottomMargin">
               <number>2</number>
              </property>
              <item>
-              <widget class="QComboBox" name="comboBox">
+              <widget class="QComboBox" name="exposure_mode">
                <property name="editable">
                 <bool>false</bool>
                </property>
                <property name="currentText">
-                <string>Manual Exposure</string>
+                <string>Automatic Single Shot</string>
                </property>
+               <item>
+                <property name="text">
+                 <string>Automatic Single Shot</string>
+                </property>
+               </item>
                <item>
                 <property name="text">
                  <string>Manual Exposure</string>
@@ -438,15 +513,10 @@
                  <string>Automatic Continuous (Variable FPS)</string>
                 </property>
                </item>
-               <item>
-                <property name="text">
-                 <string>Automatic Single Shot</string>
-                </property>
-               </item>
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_2">
+              <widget class="QSpinBox" name="exposure_value">
                <property name="font">
                 <font>
                  <pointsize>12</pointsize>
@@ -483,14 +553,14 @@
               </widget>
              </item>
              <item>
-              <widget class="QWidget" name="widget" native="true">
+              <widget class="QWidget" name="center_apply_button" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <layout class="QHBoxLayout" name="center_apply_button_layout">
                 <property name="spacing">
                  <number>0</number>
                 </property>
@@ -510,7 +580,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="pushButton_2">
+                 <widget class="QPushButton" name="exposure_apply">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -528,7 +598,7 @@
             </layout>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item>
            <widget class="QGroupBox" name="s_per_trial">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -547,9 +617,9 @@
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout">
+            <layout class="QHBoxLayout" name="secondsper_trial_layout">
              <property name="spacing">
-              <number>0</number>
+              <number>6</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -564,7 +634,7 @@
               <number>2</number>
              </property>
              <item>
-              <widget class="QDoubleSpinBox" name="doubleSpinBox">
+              <widget class="QDoubleSpinBox" name="s_per_trial_val">
                <property name="font">
                 <font>
                  <pointsize>12</pointsize>
@@ -606,20 +676,152 @@
             </layout>
            </widget>
           </item>
+          <item>
+           <widget class="QFrame" name="buttons">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="buttons_layout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="capture_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>CAPTURE</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="start_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::LeftToRight</enum>
+               </property>
+               <property name="text">
+                <string>START</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="stop_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>STOP</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="arm_button">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>ARM</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
       </layout>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QGraphicsView" name="graphicsView">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
      </widget>
     </item>
    </layout>
@@ -641,7 +843,14 @@
    </widget>
    <addaction name="menuFile"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+  </widget>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
