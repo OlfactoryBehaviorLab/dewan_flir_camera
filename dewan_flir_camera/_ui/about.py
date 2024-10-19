@@ -15,10 +15,12 @@ from PySide6.QtWidgets import (QDialog, QDialogButtonBox,
                                QVBoxLayout, QWidget)
 import resources
 
+
 class About(QDialog):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.hide()
 
     def setupUi(self, about):
         if not about.objectName():
