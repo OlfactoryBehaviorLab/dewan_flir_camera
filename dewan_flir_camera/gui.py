@@ -1,7 +1,6 @@
-from _ui.control import ControlWindow
-
-from PySide6.QtWidgets import QApplication
 import sys
+from PySide6.QtWidgets import QApplication
+from _ui.control import ControlWindow
 
 
 def launch_gui():
