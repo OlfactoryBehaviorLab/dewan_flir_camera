@@ -2,11 +2,15 @@ import PySpin
 from PySpin import SpinnakerException
 from time import sleep
 
+import gui
 from dewan_flir_camera.spin_system import SpinSystem
 from dewan_flir_camera.acquisition import ImageHandler
 
 
 def main():
+    
+    window = gui.launch_gui()
+
     with SpinSystem() as system:
         camera = system.cameras[0]
         event_handler = ImageHandler("./images")
