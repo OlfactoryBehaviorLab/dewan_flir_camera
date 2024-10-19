@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QComboBox, QDoubleSpinBox,
                                QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
                                QWidget, QMainWindow)
 
+
 class MainUI(object):
     def __init__(self, main_ui):
         self.main_ui: QMainWindow = main_ui
