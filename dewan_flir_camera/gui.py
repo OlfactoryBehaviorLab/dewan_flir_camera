@@ -83,7 +83,4 @@ def launch_gui():
     window.show()
     app.exec()
 
-
-if __name__ == "__main__":
-    launch_gui()
-
+    return window
