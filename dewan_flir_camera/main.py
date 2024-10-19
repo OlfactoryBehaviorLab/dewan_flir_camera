@@ -2,10 +2,14 @@ import PySpin
 from PySpin import SpinnakerException
 from time import sleep
 
+import gui
 from _classes.spin_system import SpinSystem
 from _classes.acquisition import ImageHandler
 
+
 def main():
+
+    window = gui.launch_gui()
 
     with SpinSystem() as system:
         camera = system.cameras[0]
