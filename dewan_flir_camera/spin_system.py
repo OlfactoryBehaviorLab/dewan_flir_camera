@@ -36,14 +36,20 @@ class SpinSystem(SpinnakerObject):
         self.camera_list = []
         self.interface_list = []
 
-        self._camera_list.Clear()
-        self._interface_list.Clear()
-        self.system.ReleaseInstance()
+        if self._camera_list:
+            self._camera_list.Clear()
+        if self._interface_list:
+            self._interface_list.Clear()
+        if self.system:
+            self.system.ReleaseInstance()
 
         self.system = []
+        super().__exit__(exc_type, exc_val, tb)
+       # return True
 
     def _initialize_system(self):
         try:
+            print('Initializing System!')
             self.system = PySpin.System.GetInstance()
             self.version = self.system.GetLibraryVersion()
             self._interface_list = self.system.GetInterfaces()
@@ -55,7 +61,7 @@ class SpinSystem(SpinnakerObject):
 
             if self.num_cams == 0 or self.num_interfaces == 0:
                 print("No cameras present! Exiting!")
-                self.__exit__([], [], [])
+                self.__exit__(None,None,None)
             else:
                 self._instantiate_camera_wrappers()
                 print(
