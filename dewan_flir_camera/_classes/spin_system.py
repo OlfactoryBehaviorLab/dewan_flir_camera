@@ -21,9 +21,13 @@ class SpinSystem(SpinnakerObject):
         self._initialize_system()
         super().__init__(self.system)
 
+    def __enter__(self):
+        if self.system:
+            return self
+        else:
+            return []
 
     def __exit__(self, exc_type, exc_val, tb):
-        super().__exit__(exc_type, exc_val, tb)
 
         ## Clean up our classes if we leave the scope of this system
         for camera in self.cameras:
