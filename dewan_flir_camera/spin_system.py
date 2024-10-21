@@ -45,7 +45,6 @@ class SpinSystem(SpinnakerObject):
 
         self.system = []
         super().__exit__(exc_type, exc_val, tb)
-       # return True
 
     def _initialize_system(self):
         try:
@@ -68,7 +67,6 @@ class SpinSystem(SpinnakerObject):
                     f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)"
                 )
         except PySpin.SpinnakerException as ex:
-            print(ex)
             self._exit_on_exception(self, ex)
 
     def _instantiate_camera_wrappers(self):
@@ -77,3 +75,21 @@ class SpinSystem(SpinnakerObject):
             new_cam = Cam(cam, i)
             self.cameras.append(new_cam)
         del cam
+
+    def get_cameras(self):
+        try:
+            self._camera_list = self.system.GetCameras()
+            self.num_cams = self._camera_list.GetSize()
+            self.camera_list = list(self._camera_list)
+
+            self._instantiate_camera_wrappers()
+        except PySpin.SpinnakerException as ex:
+            self._exit_on_exception(self, ex)
+
+    def get_interfaces(self):
+        try:
+            self._interface_list = self.system.GetInterfaces()
+            self.num_interfaces = self._interface_list.GetSize()
+            self.interface_list = list(self._interface_list)
+        except PySpin.SpinnakerException as ex:
+            self._exit_on_exception(self, ex)
