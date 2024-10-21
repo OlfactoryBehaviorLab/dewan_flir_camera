@@ -8,30 +8,24 @@ from _classes.acquisition import ImageHandler
 
 
 def main():
-
-    window = gui.launch_gui()
-
+    gui.launch_gui(None)
     with SpinSystem() as system:
+        system.get_interfaces()
+        system.get_cameras()
+
+        if system.num_cams == 0 or system.num_interfaces == 0:
+            print('No suitable cameras or interfaces found! Exiting!')
+            return
+
         camera = system.cameras[0]
         event_handler = ImageHandler('./images')
-
         camera.init()
 
         camera.configure_trigger()
         camera.ExposureAuto.SetValue(PySpin.ExposureAuto_Continuous)
         camera.configure_acquisition_mode(PySpin.AcquisitionMode_Continuous)
-        camera.register_event_handler(event_handler)
-
-        while True:
-            try:
-                print('Waiting for trigger!')
-                camera.BeginAcquisition()
-                event_handler.reset()
-                wait_for_trigger(event_handler)
-                camera.EndAcquisition()
-            except KeyboardInterrupt:
-                camera.EndAcquisition()
-                break
+        # camera.register_event_handler(event_handler)
+        window = gui.launch_gui(camera)
 
         camera.deinit()
         del camera
