@@ -13,7 +13,7 @@ from PySide6.QtGui import (QFont, QPixmap)
 from PySide6.QtWidgets import (QDialog, QDialogButtonBox,
                                QGridLayout, QHBoxLayout, QLabel, QSizePolicy,
                                QVBoxLayout, QWidget)
-import resources
+from . import resources
 
 
 class About(QDialog):
