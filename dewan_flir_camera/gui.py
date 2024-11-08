@@ -29,23 +29,10 @@ class ControlWindow(QMainWindow):
         self.main_ui.s_per_trial_val.valueChanged.connect(self.exposure_apply_callback)
 
         self.update_timer = QTimer(self)
-        self.update_timer.timeout.connect(self.update_ui)
+        self.update_timer.timeout.connect(lambda: threads.update_ui(self))
         self.update_timer.start(100)
 
-    @Slot()
-    def update_ui(self):
-        import numpy as np
-        # get camera data here
-        data = {
-            'exposure_time': np.random.randint(100000),
-            'fps': np.random.randint(300),
-        }
 
-        self.update_exposure_time(data['exposure_time'])
-        self.update_current_fps(data['fps'])
-        max_fps = self._calc_max_fps(data['exposure_time'])
-        self.update_MAX_FPS(max_fps)
-        # TODO: get trial_time_s value and multiply it by FPS to get frames.
 
 
     @staticmethod
