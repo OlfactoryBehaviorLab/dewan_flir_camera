@@ -51,6 +51,9 @@ class SpinSystem(SpinnakerObject):
         self.system = []
         super().__exit__(exc_type, exc_val, tb)
 
+    def __str__(self):
+        return f'Spinnaker System'
+
     def _initialize_system(self):
         try:
             print('Initializing System!')
