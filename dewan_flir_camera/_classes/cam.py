@@ -46,12 +46,25 @@ class Cam(SpinnakerObject):
                 print(ex)
 
 
+    def get_exposure(self) -> float:
+        try:
+            if self.ExposureTime.GetAccessMode() != PySpin.RW:
+                print('Unable to set exposure time. Aborting...')
+                return []
+
+            exposure = self.ExposureTime.GetValue()
+            return exposure
+        except SpinnakerException as se:
+            print('Error reading camera exposure!')
+            return []
+
     def configure_acquisition_mode(self, mode):
         try:
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
             print("Error configuring acquisition mode!")
             print(se)
+
 
     def register_event_handler(self, event_handler):
         try:
