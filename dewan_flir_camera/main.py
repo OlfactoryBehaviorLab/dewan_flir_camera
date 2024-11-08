@@ -2,9 +2,9 @@ import PySpin
 from PySpin import SpinnakerException
 from time import sleep
 
-import gui
-from _classes.spin_system import SpinSystem
-from _classes.acquisition import ImageHandler
+from . import gui
+from ._classes.spin_system import SpinSystem
+from ._classes.acquisition import ImageHandler
 
 
 def main():

@@ -1,7 +1,7 @@
 import sys
 
-import about
-import FLIR
+from ._ui import about, FLIR
+from . import threads
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer, Slot
 
