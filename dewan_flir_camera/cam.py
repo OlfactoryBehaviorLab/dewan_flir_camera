@@ -143,16 +143,16 @@ class Cam(SpinnakerObject):
             self._exit_on_exception(self, ex)
 
     def __str__(self):
-        return (
-            f"Camera {self.number}:\n"
-            f"\t -Vendor: {self.vendor}\n"
-            f"\t -Model: {self.model}\n"
-            f"\t -Serial: {self.serial}\n"
-            f"\t -Speed: {self.speed}\n"
-            f"Stream Information:\n"
-            f"\t -Stream ID: {self.stream_ID}\n"
-            f"\t -Stream Type: {self.stream_type}\n\n"
-        )
+        return f'Camera {self.number}'
+
 
     def __repr__(self):
-        return f"Class: {self.__class__}"
+        return (f'Class: {self.__class__}:\n',
+                f'Camera {self.number}:\n',
+                f'\t -Vendor: {self.vendor}\n'
+                f'\t -Model: {self.model}\n'
+                f'\t -Serial: {self.serial}\n'
+                f'\t -Speed: {self.speed}\n'
+                f'Stream Information:\n'
+                f'\t -Stream ID: {self.stream_ID}\n'
+                f'\t -Stream Type: {self.stream_type}\n\n')
