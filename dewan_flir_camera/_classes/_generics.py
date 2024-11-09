@@ -1,6 +1,6 @@
 import traceback
-
 import PySpin
+
 
 class SpinnakerObject:
     def __init__(self, ptr):

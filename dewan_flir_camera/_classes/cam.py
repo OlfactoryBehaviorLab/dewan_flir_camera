@@ -63,7 +63,7 @@ class Cam(SpinnakerObject):
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
                 raise SpinnakerException('Unable to set exposure time. Aborting...')
 
-            if self.get_exposure_mode() == AUTO_OFF:
+            if self.get_exposure_mode() == AutoExposureMode.OFF:
                 max_exposure_time = self.ExposureTime.GetMax()
                 exposure_time = min(max_exposure_time, new_exposure)
                 self.ExposureTime.SetValue(exposure_time)
@@ -72,13 +72,12 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
 
 
-    def set_exposure_mode(self, exposure_mode) -> None:
+    def set_exposure_mode(self, exposure_mode: AutoExposureMode) -> None:
         try:
+            # if exposure_mode not in AutoExposureMode:
+            #     raise SpinnakerException(f'{exposure_mode} is not a valid exposure mode!')
             if self.ExposureAuto.GetAccessMode() != PySpin.RW:
                 raise SpinnakerException('Unable to set exposure mode. Aborting...')
-
-            if exposure_mode not in [AUTO_OFF, AUTO_CONT, AUTO_CONT]:
-                raise SpinnakerException(f'{exposure_mode} is not a valid exposure mode!')
             else:
                 self.ExposureAuto.SetValue(exposure_mode)
         except SpinnakerException as se:
@@ -97,7 +96,7 @@ class Cam(SpinnakerObject):
     def get_exposure(self) -> float:
         try:
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
-                print('Unable to set exposure time. Aborting...')
+                print('Unable to get exposure time. Aborting...')
                 return 0.0
 
             exposure = self.ExposureTime.GetValue()
@@ -108,20 +107,22 @@ class Cam(SpinnakerObject):
             return 0.0
 
 
-    def get_exposure_mode(self) -> type[AUTO_CONT, AUTO_SINGLE, AUTO_OFF]:
+    def get_exposure_mode(self) -> AutoExposureMode or None:
         try:
-            exposure_mode = self.ExposureAuto.ToString()
-            return exposure_mode
+            exposure_mode = self.ExposureAuto.GetValue()
+            print(exposure_mode)
+            return AutoExposureMode(exposure_mode)
         except SpinnakerException as se:
             err_msg = 'Error reading exposure_mode mode!'
             self.handle_error(se, err_msg, DEBUG)
-            return []
+            return None
 
 
     def get_acquisition_mode(self):
         try:
-            acquisition_mode = self.AcquisitionMode.ToString()
-            return acquisition_mode
+            acquisition_mode = self.AcquisitionMode.GetValue()
+            print(acquisition_mode)
+            return AcquisitionMode(acquisition_mode)
         except SpinnakerException as se:
             err_msg = 'Error reading acquisition mode!'
             self.handle_error(se, err_msg, DEBUG)
@@ -157,6 +158,7 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             err_msg = f'An error occurred while configuring camera {self.number}''s trigger'
             self.handle_error(se, err_msg, DEBUG)
+
 
     @property
     def frame_size(self):
