@@ -1,5 +1,6 @@
 import sys
 
+from options import AcquisitionMode, AutoExposureMode
 from ._ui import about, FLIR
 from . import threads
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -59,10 +60,15 @@ class ControlWindow(QMainWindow):
         self.main_ui.num_frames_data.setText(str(frames))
 
     def acquisition_mode_changed_callback(self):
-        pass
+        index = self.main_ui.acquisition_mode_data.currentIndex()
+        acquisition_mode = AcquisitionMode(index)
+        self.camera.set_acquisition_mode(acquisition_mode)
 
     def exposure_mode_changed_callback(self):
-        pass
+        index = self.main_ui.exposure_mode.currentIndex()
+        exposure_mode = AutoExposureMode(index)
+        self.camera.set_exposure_mode(exposure_mode)
+
 
     def exposure_apply_callback(self):
         pass
