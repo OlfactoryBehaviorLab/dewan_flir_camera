@@ -1,3 +1,5 @@
+import traceback
+
 import PySpin
 
 class SpinnakerObject:
@@ -15,6 +17,18 @@ class SpinnakerObject:
 
     def __repr__(self):
         return f'Class: {self.__class__}'
+
+
+    @staticmethod
+    def handle_error(exception: type[BaseException], error_msg=None, DEBUG=False):
+        if DEBUG:
+            print(traceback.format_exception(exception))
+        else:
+            if error_msg:
+                print(error_msg)
+            else:
+                print(exception)
+
 
     @staticmethod
     def get_node_info(node):
