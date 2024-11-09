@@ -5,10 +5,10 @@ from time import sleep
 from . import gui
 from ._classes.spin_system import SpinSystem
 from ._classes.acquisition import ImageHandler
-
+from ._classes import cam
 
 def main():
-    gui.launch_gui(None)
+    # gui.launch_gui(None)
     with SpinSystem() as system:
         system.get_interfaces()
         system.get_cameras()
@@ -22,10 +22,11 @@ def main():
         camera.init()
 
         camera.configure_trigger()
-        camera.ExposureAuto.SetValue(PySpin.ExposureAuto_Continuous)
-        camera.configure_acquisition_mode(PySpin.AcquisitionMode_Continuous)
+
         # camera.register_event_handler(event_handler)
         window = gui.launch_gui(camera)
+        camera.ExposureAuto.SetValue(PySpin.ExposureAuto_Off)
+
 
         camera.deinit()
         del camera
