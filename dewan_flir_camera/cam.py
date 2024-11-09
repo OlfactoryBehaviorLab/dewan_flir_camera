@@ -37,9 +37,9 @@ class Cam(SpinnakerObject):
             try:
                 self.ptr.Init()
                 self.is_init = True
-            except SpinnakerException as ex:
-                print(f"Error initializing camera {self.number}!")
-                print(ex)
+            except SpinnakerException as se:
+                err_msg = 'Error initializing camera!'
+                self.handle_error(se, err_msg, DEBUG)
 
     def deinit(self):
         if not self.is_init:
@@ -49,9 +49,9 @@ class Cam(SpinnakerObject):
                 self.unregister_event_handler()
                 self.ptr.DeInit()
                 self.is_init = False
-            except SpinnakerException as ex:
-                print(f"Error deinitializing camera {self.number}!")
-                print(ex)
+            except SpinnakerException as se:
+                err_msg = f'Error deinitializing camera {self.number}!'
+                self.handle_error(se, err_msg, DEBUG)
 
 
     def get_exposure(self) -> float:
@@ -63,15 +63,17 @@ class Cam(SpinnakerObject):
             exposure = self.ExposureTime.GetValue()
             return exposure
         except SpinnakerException as se:
-            print('Error reading camera exposure!')
-            return []
+            err_msg = 'Error reading camera exposure!'
+            self.handle_error(se, err_msg, DEBUG)
+            return 0.0
 
     def configure_acquisition_mode(self, mode):
         try:
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
-            print("Error configuring acquisition mode!")
-            print(se)
+            err_msg = 'Error reading exposure_mode mode!'
+            self.handle_error(se, err_msg, DEBUG)
+            return []
 
 
     def register_event_handler(self, event_handler):
@@ -79,8 +81,8 @@ class Cam(SpinnakerObject):
             self.RegisterEventHandler(event_handler)
             self.event_handler_ptr = event_handler
         except SpinnakerException as se:
-            print("Error registering event handler!")
-            print(se)
+            err_msg = 'Error registering event handler!'
+            self.handle_error(se, err_msg, DEBUG)
 
     def unregister_event_handler(self):
         try:
@@ -88,8 +90,8 @@ class Cam(SpinnakerObject):
                 self.UnregisterEventHandler(self.event_handler_ptr)
                 self.event_handler_ptr = None
         except SpinnakerException as se:
-            print("Error unregistering event handler!")
-            print(se)
+            err_msg = 'Error unregistering event handler!'
+            self.handle_error(se, err_msg, DEBUG)
 
     def configure_trigger(self):
         try:
@@ -99,8 +101,8 @@ class Cam(SpinnakerObject):
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
         except SpinnakerException as se:
-            print(f"An error occurred while configuring camera {self.number}s trigger")
-            print(se)
+            err_msg = f'An error occurred while configuring camera {self.number}''s trigger'
+            self.handle_error(se, err_msg, DEBUG)
 
     @property
     def frame_size(self):
@@ -148,10 +150,10 @@ class Cam(SpinnakerObject):
             self.model = self.get_node_info(self.ptr.TLDevice.DeviceModelName)
             self.speed = self.get_node_info(self.ptr.TLDevice.DeviceCurrentSpeed)
 
-        except SpinnakerException as ex:
-            print("Error getting camera information!")
-            print(ex)
-            self._exit_on_exception(self, ex)
+        except SpinnakerException as se:
+            err_msg = 'Error getting camera information!'
+            self.handle_error(se, err_msg, DEBUG)
+            self._exit_on_exception(self, se)
 
     def _get_stream_tl_info(self):
         """
@@ -160,10 +162,10 @@ class Cam(SpinnakerObject):
         try:
             self.stream_ID = self.get_node_info(self.ptr.TLStream.StreamID)
             self.stream_type = self.get_node_info(self.ptr.TLStream.StreamType)
-        except SpinnakerException as ex:
-            print("Error getting stream information!")
-            print(ex)
-            self._exit_on_exception(self, ex)
+        except SpinnakerException as se:
+            err_msg = 'Error getting stream information!'
+            self.handle_error(se, err_msg, DEBUG)
+            self._exit_on_exception(self, se)
 
     def __str__(self):
         return f'Camera {self.number}'
