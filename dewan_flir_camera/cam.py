@@ -2,6 +2,15 @@ import PySpin
 from PySpin import SpinnakerException
 from ._generics import SpinnakerObject
 
+AUTO_SINGLE = PySpin.ExposureAuto_Once
+AUTO_CONT = PySpin.ExposureAuto_Continuous
+AUTO_OFF = PySpin.ExposureAuto_Off
+
+CONTINUOUS = PySpin.AcquisitionMode_Continuous
+SINGLE = PySpin.AcquisitionMode_SingleFrame
+MULTI = PySpin.AcquisitionMode_MultiFrame
+
+DEBUG = True
 
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
