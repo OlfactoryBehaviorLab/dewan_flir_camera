@@ -54,6 +54,15 @@ class Cam(SpinnakerObject):
                 self.handle_error(se, err_msg, DEBUG)
 
 
+    def poll(self):
+        data = {
+            'exposure_time': self.get_exposure(),
+            'fps': 0,
+        }
+
+        return data
+
+
     def set_exposure(self, new_exposure) -> None:
         try:
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
@@ -68,7 +77,7 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
 
 
-    def set_exposure_mode(self, exposure_mode):
+    def set_exposure_mode(self, exposure_mode) -> None:
         try:
             if self.ExposureAuto.GetAccessMode() != PySpin.RW:
                 raise SpinnakerException('Unable to set exposure mode. Aborting...')
@@ -104,7 +113,7 @@ class Cam(SpinnakerObject):
             return 0.0
 
 
-    def get_exposure_mode(self):
+    def get_exposure_mode(self) -> type[AUTO_CONT, AUTO_SINGLE, AUTO_OFF]:
         try:
             exposure_mode = self.ExposureAuto.ToString()
             return exposure_mode
@@ -122,6 +131,7 @@ class Cam(SpinnakerObject):
             err_msg = 'Error reading acquisition mode!'
             self.handle_error(se, err_msg, DEBUG)
             return None
+
 
     def register_event_handler(self, event_handler):
         try:

@@ -36,9 +36,9 @@ class ControlWindow(QMainWindow):
 
 
     @staticmethod
-    def _calc_max_fps(exposure_time_us):
+    def calc_max_fps(exposure_time_us):
         exposure_time_s = exposure_time_us / 100000
-        return round(1 / exposure_time_s)
+        return round(1 / exposure_time_s, 2)
 
     def update_exposure_time(self, time: int):
         self.main_ui.current_exposure_data.setText(str(time))
@@ -86,7 +86,10 @@ class ControlWindow(QMainWindow):
         pass
 
 
-def launch_gui(camera):
+def launch_gui(camera=None):
+    if not camera:
+        raise ValueError('A camera must be passed to the GUI!')
+
     sys.argv += ['-platform', 'windows:darkmode=2']
 
     app = QApplication.instance()
