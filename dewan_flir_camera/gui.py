@@ -38,7 +38,10 @@ class ControlWindow(QMainWindow):
     @staticmethod
     def calc_max_fps(exposure_time_us):
         exposure_time_s = exposure_time_us / 100000
-        return round(1 / exposure_time_s, 2)
+        if exposure_time_s or exposure_time_s > 0:
+            return round(1 / exposure_time_s, 2)
+        else:
+            return -1
 
     def update_exposure_time(self, time: int):
         self.main_ui.current_exposure_data.setText(str(time))
