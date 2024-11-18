@@ -252,6 +252,7 @@ class MainUI(object):
         self.s_per_trial_data.setObjectName(u"s_per_trial_data")
         sizePolicy5.setHeightForWidth(self.s_per_trial_data.sizePolicy().hasHeightForWidth())
         self.s_per_trial_data.setSizePolicy(sizePolicy5)
+        self.s_per_trial_data.setText(str(2))
 
         self.s_per_trial_disp_layout.addWidget(self.s_per_trial_data)
 
@@ -400,10 +401,10 @@ class MainUI(object):
         self.s_per_trial_val.setProperty(u"showGroupSeparator", False)
         self.s_per_trial_val.setSuffix(u"(s)")
         self.s_per_trial_val.setDecimals(2)
-        self.s_per_trial_val.setMinimum(1.000000000000000)
-        self.s_per_trial_val.setMaximum(999999.000000000000000)
+        self.s_per_trial_val.setMinimum(1)
+        self.s_per_trial_val.setMaximum(999999)
         self.s_per_trial_val.setStepType(QAbstractSpinBox.StepType.AdaptiveDecimalStepType)
-        self.s_per_trial_val.setValue(2.000000000000000)
+        self.s_per_trial_val.setValue(2)
 
         self.secondsper_trial_layout.addWidget(self.s_per_trial_val)
 
@@ -535,7 +536,6 @@ class MainUI(object):
         self.max_fps_label.setText(QCoreApplication.translate("main_window", u"Max Framerate (FPS):", None))
         self.max_fps_data.setText(QCoreApplication.translate("main_window", u"0", None))
         self.s_per_trial_label.setText(QCoreApplication.translate("main_window", u"Seconds per Trial:", None))
-        self.s_per_trial_data.setText(QCoreApplication.translate("main_window", u"0", None))
         self.num_frames_label.setText(QCoreApplication.translate("main_window", u"Number of Frames:", None))
         self.num_frames_data.setText(QCoreApplication.translate("main_window", u"0", None))
         self.acquisition_mode.setTitle(QCoreApplication.translate("main_window", u"Acquisition Mode", None))
