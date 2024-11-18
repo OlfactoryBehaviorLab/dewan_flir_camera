@@ -69,6 +69,12 @@ class ControlWindow(QMainWindow):
         exposure_mode = AutoExposureMode(index)
         self.camera.set_exposure_mode(exposure_mode)
 
+        if index != 0:
+            self.main_ui.exposure_apply.setEnabled(False)
+            self.main_ui.exposure_value.setEnabled(False)
+        else:
+            self.main_ui.exposure_apply.setEnabled(True)
+            self.main_ui.exposure_value.setEnabled(True)
 
     def exposure_apply_callback(self):
         pass
