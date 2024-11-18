@@ -1,6 +1,6 @@
 import sys
 
-from options import AcquisitionMode, AutoExposureMode
+from ._classes.options import AcquisitionMode, AutoExposureMode
 from ._ui import about, FLIR
 from . import threads
 from PySide6.QtWidgets import QApplication, QMainWindow
