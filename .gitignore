@@ -1,2 +1,4 @@
 /.idea
 __pycache__/
+
+/dewan_flir_camera.egg-info/
