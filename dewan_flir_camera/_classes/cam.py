@@ -1,3 +1,5 @@
+import traceback
+
 import PySpin
 from PySpin import SpinnakerException
 from ._generics import SpinnakerObject
@@ -47,6 +49,17 @@ class Cam(SpinnakerObject):
                 err_msg = f'Error deinitializing camera {self.number}!'
                 self.handle_error(se, err_msg, DEBUG)
 
+    def capture_single_frame(self):
+        try:
+            current_acquisition_mode = self.get_acquisition_mode()
+            if current_acquisition_mode != AcquisitionMode.SINGLE:
+                self.set_acquisition_mode(AcquisitionMode.SINGLE)
+
+
+        except SpinnakerException as se:
+            print(traceback.format_exception(se))
+
+
     def poll(self):
         data = {
             'exposure_time': self.get_exposure(),
@@ -55,7 +68,7 @@ class Cam(SpinnakerObject):
 
         return data
 
-    def set_exposure(self, new_exposure) -> int:
+    def set_exposure(self, new_exposure: AutoExposureMode) -> int:
         try:
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
                 raise SpinnakerException('Unable to set exposure time. Aborting...')
@@ -85,7 +98,7 @@ class Cam(SpinnakerObject):
             err_msg = 'Error setting the exposure!'
             self.handle_error(se, err_msg, DEBUG)
 
-    def set_acquisition_mode(self, mode) -> None:
+    def set_acquisition_mode(self, mode: AcquisitionMode) -> None:
         try:
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
@@ -116,10 +129,9 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             return None
 
-    def get_acquisition_mode(self):
+    def get_acquisition_mode(self) -> AcquisitionMode:
         try:
             acquisition_mode = self.AcquisitionMode.GetValue()
-            print(acquisition_mode)
             return AcquisitionMode(acquisition_mode)
         except SpinnakerException as se:
             err_msg = 'Error reading acquisition mode!'
