@@ -118,4 +118,5 @@ def launch_gui(camera=None):
 
     window = ControlWindow(camera)
     window.show()
-    app.exec()
+    _ = app.exec()
+
