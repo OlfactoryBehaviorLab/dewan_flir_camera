@@ -27,12 +27,11 @@ class ControlWindow(QMainWindow):
         self.main_ui.acquisition_mode_data.currentTextChanged.connect(self.acquisition_mode_changed_callback)
         self.main_ui.exposure_mode.currentTextChanged.connect(self.exposure_mode_changed_callback)
         self.main_ui.exposure_apply.clicked.connect(self.exposure_apply_callback)
-        self.main_ui.s_per_trial_val.valueChanged.connect(self.exposure_apply_callback)
+        self.main_ui.s_per_trial_val.valueChanged.connect(self.trial_time_s_changed_callback)
 
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(lambda: threads.update_ui(self))
-        self.update_timer.start(100)
-
+        self.update_timer.start(100)  # Poll rate in ms
 
 
 
