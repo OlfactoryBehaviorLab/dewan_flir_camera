@@ -288,6 +288,7 @@ class MainUI(object):
         self.exposure_mode.addItem("")
         self.exposure_mode.setObjectName(u"exposure_mode")
         self.exposure_mode.setEditable(False)
+        self.exposure_mode.setCurrentIndex(2)  # Set to Auto(Continuous)
 
         self.exposure_layout.addWidget(self.exposure_mode)
 
@@ -305,6 +306,7 @@ class MainUI(object):
         self.exposure_value.setMaximum(99999999)
         self.exposure_value.setStepType(QAbstractSpinBox.StepType.AdaptiveDecimalStepType)
         self.exposure_value.setDisplayIntegerBase(10)
+        self.exposure_value.setEnabled(False)
 
         self.exposure_layout.addWidget(self.exposure_value)
 
@@ -324,6 +326,7 @@ class MainUI(object):
         sizePolicy8.setVerticalStretch(0)
         sizePolicy8.setHeightForWidth(self.exposure_apply.sizePolicy().hasHeightForWidth())
         self.exposure_apply.setSizePolicy(sizePolicy8)
+        self.exposure_apply.setEnabled(False)
 
         self.center_apply_button_layout.addWidget(self.exposure_apply)
 
@@ -501,7 +504,6 @@ class MainUI(object):
         self.exposure_mode.setItemText(1, QCoreApplication.translate("main_window", u"Automatic Single Shot", None))
         self.exposure_mode.setItemText(2, QCoreApplication.translate("main_window", u"Automatic Continuous (Variable FPS)", None))
 
-        self.exposure_mode.setCurrentText(QCoreApplication.translate("main_window", u"Automatic Single Shot", None))
         self.exposure_value.setSuffix(QCoreApplication.translate("main_window", u"(\u03bcS)", None))
         self.exposure_apply.setText(QCoreApplication.translate("main_window", u"Apply", None))
         self.s_per_trial.setTitle(QCoreApplication.translate("main_window", u"Seconds per Trial", None))
