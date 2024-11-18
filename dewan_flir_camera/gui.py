@@ -77,7 +77,11 @@ class ControlWindow(QMainWindow):
             self.main_ui.exposure_value.setEnabled(True)
 
     def exposure_apply_callback(self):
-        pass
+        new_value = self.main_ui.exposure_value.value()
+        new_value = int(new_value)
+        new_time = self.camera.set_exposure(new_value)  # Just incase the camera bounds the user's input
+        self.main_ui.exposure_value.setValue(new_time)
+
 
     def start_button_callback(self):
         pass
