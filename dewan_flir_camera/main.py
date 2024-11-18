@@ -24,10 +24,9 @@ def main():
         camera.configure_trigger()
 
         # camera.register_event_handler(event_handler)
-        window = gui.launch_gui(camera)
         camera.ExposureAuto.SetValue(PySpin.ExposureAuto_Off)
 
-
+        window = gui.launch_gui(camera)
         camera.deinit()
         del camera
 
