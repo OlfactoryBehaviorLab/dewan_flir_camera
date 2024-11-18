@@ -5,7 +5,7 @@ from time import sleep
 from . import gui
 from ._classes.spin_system import SpinSystem
 from ._classes.acquisition import ImageHandler
-from ._classes import cam
+from ._classes.options import AutoExposureMode
 
 def main():
     # gui.launch_gui(None)
@@ -24,7 +24,7 @@ def main():
         camera.configure_trigger()
 
         # camera.register_event_handler(event_handler)
-        camera.ExposureAuto.SetValue(PySpin.ExposureAuto_Off)
+        camera.ExposureAuto.SetValue(AutoExposureMode.CONTINUOUS)
 
         window = gui.launch_gui(camera)
         camera.deinit()
