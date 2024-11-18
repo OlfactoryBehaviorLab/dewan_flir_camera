@@ -155,11 +155,25 @@ class Cam(SpinnakerObject):
             err_msg = 'Error unregistering event handler!'
             self.handle_error(se, err_msg, DEBUG)
 
-    def configure_trigger(self):
+    def configure_hardware_trigger(self):
         try:
+            print('Configuring triggers...')
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
-            self.TriggerSelector.SetValue(PySpin.TriggerSelector_AcquisitionStart)
+            self.TriggerSelector.SetValue(PySpin.TriggerSelector_FrameStart)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
+            self.TriggerActivation.SetValue(PySpin.TriggerActivation_LevelHigh)
+            self.TriggerMode.SetValue(PySpin.TriggerMode_On)
+
+        except SpinnakerException as se:
+            err_msg = f'An error occurred while configuring camera {self.number}''s trigger'
+            self.handle_error(se, err_msg, DEBUG)
+
+    def configure_software_trigger(self):
+        try:
+            print('Configuring triggers...')
+            self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
+            self.TriggerSelector.SetValue(PySpin.TriggerSelector_FrameStart)
+            self.TriggerSource.SetValue(PySpin.TriggerSource_Software)
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
         except SpinnakerException as se:
