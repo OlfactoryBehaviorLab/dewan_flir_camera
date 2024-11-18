@@ -51,10 +51,18 @@ class Cam(SpinnakerObject):
 
     def capture_single_frame(self):
         try:
-            current_acquisition_mode = self.get_acquisition_mode()
-            if current_acquisition_mode != AcquisitionMode.SINGLE:
+            print("Get Single Frame")
+            current_acquisition_mode = self.get_acquisition_mode()  # Get Current mode
+            if current_acquisition_mode != AcquisitionMode.SINGLE:  # If not single, temporarily set it to single
                 self.set_acquisition_mode(AcquisitionMode.SINGLE)
+            self.configure_software_trigger()
 
+            self.BeginAcquisition()
+            self.TriggerSoftware.Execute()
+            time.sleep(2)
+            self.EndAcquisition()
+
+            self.set_acquisition_mode(current_acquisition_mode)  # Reset to initial mode
 
         except SpinnakerException as se:
             print(traceback.format_exception(se))
