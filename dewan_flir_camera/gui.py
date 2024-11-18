@@ -39,7 +39,7 @@ class ControlWindow(QMainWindow):
     @staticmethod
     def calc_max_fps(exposure_time_us):
         exposure_time_s = exposure_time_us / 100000
-        if exposure_time_s or exposure_time_s > 0:
+        if exposure_time_s and exposure_time_s > 0:
             return round(1 / exposure_time_s, 2)
         else:
             return -1
