@@ -44,6 +44,13 @@ class ControlWindow(QMainWindow):
         else:
             return -1
 
+    @staticmethod
+    def s_to_frames(seconds, FPS):
+        return round(seconds * FPS)
+
+    def get_trial_time_s(self):
+        return round(float(self.main_ui.s_per_trial_val.value()) , 2)
+
     def update_exposure_time(self, time: int):
         self.main_ui.current_exposure_data.setText(str(time))
 
@@ -53,10 +60,10 @@ class ControlWindow(QMainWindow):
     def update_current_fps(self, fps: int):
         self.main_ui.current_fps_data.setText(str(fps))
 
-    def update_trial_time_s(self, trial_time: int):
+    def update_trial_time_s(self, trial_time: float):
         self.main_ui.s_per_trial_data.setText(str(trial_time))
 
-    def update_trial_time_frames(self, frames):
+    def update_trial_time_frames(self, frames: int):
         self.main_ui.num_frames_data.setText(str(frames))
 
     def acquisition_mode_changed_callback(self):
@@ -82,6 +89,9 @@ class ControlWindow(QMainWindow):
         new_time = self.camera.set_exposure(new_value)  # Just incase the camera bounds the user's input
         self.main_ui.exposure_value.setValue(new_time)
 
+    def trial_time_s_changed_callback(self):
+        trial_time_s = self.get_trial_time_s()
+        self.update_trial_time_s(trial_time_s)
 
     def start_button_callback(self):
         pass
