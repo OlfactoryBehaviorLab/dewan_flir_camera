@@ -93,7 +93,8 @@ class Cam(SpinnakerObject):
 
     def get_exposure(self) -> float:
         try:
-            if self.ExposureTime.GetAccessMode() != PySpin.RW:
+            access_mode = self.ExposureTime.GetAccessMode()
+            if access_mode != PySpin.RO and access_mode != PySpin.RW:
                 print('Unable to get exposure time. Aborting...')
                 return 0.0
 
