@@ -19,6 +19,18 @@ from . import resources
 class About(QDialog):
     def __init__(self):
         super().__init__()
+        self.main_layout = None
+        self.close = None
+        self.container = None
+        self.content_layout = None
+        self.top_row = None
+        self.top_row_layout = None
+        self.image = None
+        self.name = None
+        self.credits = None
+        self.version = None
+        self.github_link = None
+        self.website_link = None
         self.setupUi(self)
         self.hide()
 

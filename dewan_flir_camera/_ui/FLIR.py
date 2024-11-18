@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'FLIR.ui'
-##
-## Created by: Qt User Interface Compiler version 6.8.0
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
+# Form generated from reading UI file 'FLIR.ui'
+#
+# Created by: Qt User Interface Compiler version 6.8.0
+#
+# WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
@@ -20,6 +20,66 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QComboBox, QDoubleSpinBox,
 
 class MainUI(object):
     def __init__(self, main_ui):
+        self.param_disp_layout = None
+        self.current_exposure_widget = None
+        self.current_exposure_disp_layout = None
+        self.current_exposure_label = None
+        self.current_exposure_data = None
+        self.current_framerate_widget = None
+        self.current_FPS_disp_layout = None
+        self.current_fps_label = None
+        self.current_fps_data = None
+        self.max_framerate_widget = None
+        self.max_framerate_disp_layout = None
+        self.max_fps_label = None
+        self.max_fps_data = None
+        self.s_per_trial_widget = None
+        self.s_per_trial_disp_layout = None
+        self.s_per_trial_label = None
+        self.s_per_trial_data = None
+        self.num_frames_widget = None
+        self.num_frames_layout = None
+        self.num_frames_label = None
+        self.num_frames_data = None
+        self.controls = None
+        self.controls_layout = None
+        self.acquisition_mode = None
+        self.acquisition_mode_layout = None
+        self.acquisition_mode_data = None
+        self.exposure_control = None
+        self.exposure_layout = None
+        self.exposure_mode = None
+        self.exposure_value = None
+        self.center_apply_button = None
+        self.center_apply_button_layout = None
+        self.exposure_apply = None
+        self.s_per_trial = None
+        self.secondsper_trial_layout = None
+        self.s_per_trial_val = None
+        self.buttons = None
+        self.buttons_layout = None
+        self.start_button = None
+        self.arm_button = None
+        self.stop_button = None
+        self.capture_button = None
+        self.menubar = None
+        self.menuFile = None
+        self.menuCamera_Info = None
+        self.menuHelp = None
+        self.statusbar = None
+        self.viewport = None
+        self.param_disp = None
+        self.left_pane_layout = None
+        self.left_pane = None
+        self.main_layout = None
+
+        self.main_container = None
+        self.actionOpen = None
+        self.actionExit = None
+        self.actionSave = None
+        self.actionSave_As = None
+        self.actionAbout = None
+
         self.main_ui: QMainWindow = main_ui
         self.about_widget = []
 
@@ -88,18 +148,10 @@ class MainUI(object):
         self.param_disp.setSizePolicy(sizePolicy2)
         self.param_disp.setMinimumSize(QSize(0, 120))
         self.param_disp.setMaximumSize(QSize(228, 110))
-#if QT_CONFIG(statustip)
         self.param_disp.setStatusTip(u"")
-#endif // QT_CONFIG(statustip)
-#if QT_CONFIG(whatsthis)
         self.param_disp.setWhatsThis(u"")
-#endif // QT_CONFIG(whatsthis)
-#if QT_CONFIG(accessibility)
         self.param_disp.setAccessibleName(u"")
-#endif // QT_CONFIG(accessibility)
-#if QT_CONFIG(accessibility)
         self.param_disp.setAccessibleDescription(u"")
-#endif // QT_CONFIG(accessibility)
         self.param_disp.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.param_disp_layout = QVBoxLayout(self.param_disp)
         self.param_disp_layout.setObjectName(u"param_disp_layout")
@@ -134,7 +186,6 @@ class MainUI(object):
 
         self.current_exposure_disp_layout.addWidget(self.current_exposure_data)
 
-
         self.param_disp_layout.addWidget(self.current_exposure_widget)
 
         self.current_framerate_widget = QWidget(self.param_disp)
@@ -157,7 +208,6 @@ class MainUI(object):
         self.current_fps_data.setSizePolicy(sizePolicy5)
 
         self.current_FPS_disp_layout.addWidget(self.current_fps_data)
-
 
         self.param_disp_layout.addWidget(self.current_framerate_widget)
 
@@ -182,7 +232,6 @@ class MainUI(object):
 
         self.max_framerate_disp_layout.addWidget(self.max_fps_data)
 
-
         self.param_disp_layout.addWidget(self.max_framerate_widget)
 
         self.s_per_trial_widget = QWidget(self.param_disp)
@@ -205,7 +254,6 @@ class MainUI(object):
         self.s_per_trial_data.setSizePolicy(sizePolicy5)
 
         self.s_per_trial_disp_layout.addWidget(self.s_per_trial_data)
-
 
         self.param_disp_layout.addWidget(self.s_per_trial_widget)
 
@@ -230,9 +278,7 @@ class MainUI(object):
 
         self.num_frames_layout.addWidget(self.num_frames_data)
 
-
         self.param_disp_layout.addWidget(self.num_frames_widget)
-
 
         self.left_pane_layout.addWidget(self.param_disp)
 
@@ -269,7 +315,6 @@ class MainUI(object):
 
         self.acquisition_mode_layout.addWidget(self.acquisition_mode_data)
 
-
         self.controls_layout.addWidget(self.acquisition_mode)
 
         self.exposure_control = QGroupBox(self.controls)
@@ -298,7 +343,8 @@ class MainUI(object):
         font1.setPointSize(12)
         font1.setBold(False)
         self.exposure_value.setFont(font1)
-        self.exposure_value.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+        self.exposure_value.setAlignment(
+            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTrailing | Qt.AlignmentFlag.AlignVCenter)
         self.exposure_value.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.PlusMinus)
         self.exposure_value.setAccelerated(True)
         self.exposure_value.setProperty(u"showGroupSeparator", False)
@@ -330,9 +376,7 @@ class MainUI(object):
 
         self.center_apply_button_layout.addWidget(self.exposure_apply)
 
-
         self.exposure_layout.addWidget(self.center_apply_button)
-
 
         self.controls_layout.addWidget(self.exposure_control)
 
@@ -349,7 +393,8 @@ class MainUI(object):
         self.s_per_trial_val = QDoubleSpinBox(self.s_per_trial)
         self.s_per_trial_val.setObjectName(u"s_per_trial_val")
         self.s_per_trial_val.setFont(font1)
-        self.s_per_trial_val.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+        self.s_per_trial_val.setAlignment(
+            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTrailing | Qt.AlignmentFlag.AlignVCenter)
         self.s_per_trial_val.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.PlusMinus)
         self.s_per_trial_val.setAccelerated(True)
         self.s_per_trial_val.setProperty(u"showGroupSeparator", False)
@@ -361,7 +406,6 @@ class MainUI(object):
         self.s_per_trial_val.setValue(2.000000000000000)
 
         self.secondsper_trial_layout.addWidget(self.s_per_trial_val)
-
 
         self.controls_layout.addWidget(self.s_per_trial)
 
@@ -402,7 +446,7 @@ class MainUI(object):
         self.arm_button.setBaseSize(QSize(30, 30))
         self.arm_button.setFont(font)
         self.arm_button.setStyleSheet(u"background-color: rgb(0, 170, 255);\n"
-"color:rgb(0, 0, 0);")
+                                      "color:rgb(0, 0, 0);")
         self.arm_button.setFlat(False)
 
         self.buttons_layout.addWidget(self.arm_button, 0, 1, 1, 1)
@@ -417,7 +461,7 @@ class MainUI(object):
         self.stop_button.setBaseSize(QSize(30, 30))
         self.stop_button.setFont(font)
         self.stop_button.setStyleSheet(u"background-color:rgb(129, 0, 0);\n"
-"")
+                                       "")
         self.stop_button.setFlat(False)
 
         self.buttons_layout.addWidget(self.stop_button, 1, 1, 1, 1)
@@ -431,17 +475,14 @@ class MainUI(object):
         self.capture_button.setBaseSize(QSize(30, 30))
         self.capture_button.setFont(font)
         self.capture_button.setStyleSheet(u"background-color: rgb(179, 179, 0);\n"
-"color: rgb(0, 0, 0);")
+                                          "color: rgb(0, 0, 0);")
         self.capture_button.setFlat(False)
 
         self.buttons_layout.addWidget(self.capture_button, 0, 0, 1, 1)
 
-
         self.controls_layout.addWidget(self.buttons)
 
-
         self.left_pane_layout.addWidget(self.controls)
-
 
         self.main_layout.addWidget(self.left_pane, 0, 0, 1, 1)
 
@@ -475,16 +516,19 @@ class MainUI(object):
         self.retranslateUi(main_window)
 
         QMetaObject.connectSlotsByName(main_window)
+
     # setupUi
 
     def retranslateUi(self, main_window):
-        main_window.setWindowTitle(QCoreApplication.translate("main_window", u"Dewan Lab FLIR Blackfly S Camera Acquisition", None))
+        main_window.setWindowTitle(
+            QCoreApplication.translate("main_window", u"Dewan Lab FLIR Blackfly S Camera Acquisition", None))
         self.actionExit.setText(QCoreApplication.translate("main_window", u"Exit", None))
         self.actionOpen.setText(QCoreApplication.translate("main_window", u"Open", None))
         self.actionSave.setText(QCoreApplication.translate("main_window", u"Save", None))
         self.actionSave_As.setText(QCoreApplication.translate("main_window", u"Save As", None))
         self.actionAbout.setText(QCoreApplication.translate("main_window", u"About", None))
-        self.current_exposure_label.setText(QCoreApplication.translate("main_window", u"Current Exposure Time (\u03bcS):", None))
+        self.current_exposure_label.setText(
+            QCoreApplication.translate("main_window", u"Current Exposure Time (\u03bcS):", None))
         self.current_exposure_data.setText(QCoreApplication.translate("main_window", u"0", None))
         self.current_fps_label.setText(QCoreApplication.translate("main_window", u"Current Framerate (FPS):", None))
         self.current_fps_data.setText(QCoreApplication.translate("main_window", u"0", None))
@@ -502,7 +546,9 @@ class MainUI(object):
         self.exposure_control.setTitle(QCoreApplication.translate("main_window", u"Exposure", None))
         self.exposure_mode.setItemText(0, QCoreApplication.translate("main_window", u"Manual Exposure", None))
         self.exposure_mode.setItemText(1, QCoreApplication.translate("main_window", u"Automatic Single Shot", None))
-        self.exposure_mode.setItemText(2, QCoreApplication.translate("main_window", u"Automatic Continuous (Variable FPS)", None))
+        self.exposure_mode.setItemText(2,
+                                       QCoreApplication.translate("main_window", u"Automatic Continuous (Variable FPS)",
+                                                                  None))
 
         self.exposure_value.setSuffix(QCoreApplication.translate("main_window", u"(\u03bcS)", None))
         self.exposure_apply.setText(QCoreApplication.translate("main_window", u"Apply", None))
@@ -514,5 +560,3 @@ class MainUI(object):
         self.menuFile.setTitle(QCoreApplication.translate("main_window", u"File", None))
         self.menuCamera_Info.setTitle(QCoreApplication.translate("main_window", u"Camera Info", None))
         self.menuHelp.setTitle(QCoreApplication.translate("main_window", u"Help", None))
-    # retranslateUi
-
