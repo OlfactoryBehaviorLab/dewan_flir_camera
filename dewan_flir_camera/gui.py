@@ -102,7 +102,7 @@ class ControlWindow(QMainWindow):
         pass
 
     def capture_button_callback(self):
-        pass
+        self.camera.capture_single_frame()
 
     def open_action_callback(self):
         pass
