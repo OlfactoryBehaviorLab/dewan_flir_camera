@@ -6,8 +6,10 @@ def update_ui(gui):
     # get camera data here
     data = gui.camera.poll()
 
-    gui.update_exposure_time(data['exposure_time'])
-    # gui.update_current_fps(data['fps'])
     max_fps = gui.calc_max_fps(data['exposure_time'])
+    trial_time_s = gui.get_trial_time_s()
+    trial_time_frames = gui.s_to_frames(trial_time_s, max_fps)
+    gui.update_exposure_time(data['exposure_time'])
     gui.update_MAX_FPS(max_fps)
-    # TODO: get trial_time_s value and multiply it by FPS to get frames.
+    gui.update_trial_time_frames(trial_time_frames)
+
