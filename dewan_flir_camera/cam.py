@@ -5,6 +5,7 @@ from .options import AutoExposureMode, AcquisitionMode
 
 DEBUG = True
 
+
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
         super().__init__(cam_ptr)
@@ -46,7 +47,6 @@ class Cam(SpinnakerObject):
                 err_msg = f'Error deinitializing camera {self.number}!'
                 self.handle_error(se, err_msg, DEBUG)
 
-
     def poll(self):
         data = {
             'exposure_time': self.get_exposure(),
@@ -54,7 +54,6 @@ class Cam(SpinnakerObject):
         }
 
         return data
-
 
     def set_exposure(self, new_exposure) -> None:
         try:
@@ -69,7 +68,6 @@ class Cam(SpinnakerObject):
             err_msg = 'Error setting the exposure!'
             self.handle_error(se, err_msg, DEBUG)
 
-
     def set_exposure_mode(self, exposure_mode: AutoExposureMode) -> None:
         try:
             # if exposure_mode not in AutoExposureMode:
@@ -82,14 +80,12 @@ class Cam(SpinnakerObject):
             err_msg = 'Error setting the exposure!'
             self.handle_error(se, err_msg, DEBUG)
 
-
     def set_acquisition_mode(self, mode) -> None:
         try:
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
             err_msg = 'Error configuring acquisition mode!'
             self.handle_error(se, err_msg, DEBUG)
-
 
     def get_exposure(self) -> float:
         try:
@@ -105,7 +101,6 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             return 0.0
 
-
     def get_exposure_mode(self) -> AutoExposureMode or None:
         try:
             exposure_mode = self.ExposureAuto.GetValue()
@@ -116,7 +111,6 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             return None
 
-
     def get_acquisition_mode(self):
         try:
             acquisition_mode = self.AcquisitionMode.GetValue()
@@ -126,7 +120,6 @@ class Cam(SpinnakerObject):
             err_msg = 'Error reading acquisition mode!'
             self.handle_error(se, err_msg, DEBUG)
             return None
-
 
     def register_event_handler(self, event_handler):
         try:
@@ -155,7 +148,6 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             err_msg = f'An error occurred while configuring camera {self.number}''s trigger'
             self.handle_error(se, err_msg, DEBUG)
-
 
     @property
     def frame_size(self):
@@ -222,7 +214,6 @@ class Cam(SpinnakerObject):
 
     def __str__(self):
         return f'Camera {self.number}'
-
 
     def __repr__(self):
         return (f'Class: {self.__class__}:\n',
