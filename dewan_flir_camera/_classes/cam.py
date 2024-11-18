@@ -5,6 +5,7 @@ from .options import AutoExposureMode, AcquisitionMode
 
 DEBUG = True
 
+
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
         super().__init__(cam_ptr)
@@ -23,7 +24,6 @@ class Cam(SpinnakerObject):
         self._get_cam_tl_info()
         self._get_stream_tl_info()
 
-
     def init(self):
         if self.is_init:
             print(f'Camera {self.number} is already initialized!')
@@ -34,7 +34,6 @@ class Cam(SpinnakerObject):
             except SpinnakerException as se:
                 err_msg = 'Error initializing camera!'
                 self.handle_error(se, err_msg, DEBUG)
-
 
     def deinit(self):
         if not self.is_init:
@@ -48,7 +47,6 @@ class Cam(SpinnakerObject):
                 err_msg = f'Error deinitializing camera {self.number}!'
                 self.handle_error(se, err_msg, DEBUG)
 
-
     def poll(self):
         data = {
             'exposure_time': self.get_exposure(),
@@ -56,7 +54,6 @@ class Cam(SpinnakerObject):
         }
 
         return data
-
 
     def set_exposure(self, new_exposure) -> None:
         try:
@@ -71,7 +68,6 @@ class Cam(SpinnakerObject):
             err_msg = 'Error setting the exposure!'
             self.handle_error(se, err_msg, DEBUG)
 
-
     def set_exposure_mode(self, exposure_mode: AutoExposureMode) -> None:
         try:
             # if exposure_mode not in AutoExposureMode:
@@ -84,14 +80,12 @@ class Cam(SpinnakerObject):
             err_msg = 'Error setting the exposure!'
             self.handle_error(se, err_msg, DEBUG)
 
-
     def set_acquisition_mode(self, mode) -> None:
         try:
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
             err_msg = 'Error configuring acquisition mode!'
             self.handle_error(se, err_msg, DEBUG)
-
 
     def get_exposure(self) -> float:
         try:
@@ -107,7 +101,6 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             return 0.0
 
-
     def get_exposure_mode(self) -> AutoExposureMode or None:
         try:
             exposure_mode = self.ExposureAuto.GetValue()
@@ -117,7 +110,6 @@ class Cam(SpinnakerObject):
             err_msg = 'Error reading exposure_mode mode!'
             self.handle_error(se, err_msg, DEBUG)
             return None
-
 
     def get_acquisition_mode(self):
         try:
@@ -129,7 +121,6 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             return None
 
-
     def register_event_handler(self, event_handler):
         try:
             self.RegisterEventHandler(event_handler)
@@ -137,7 +128,6 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             err_msg = 'Error registering event handler!'
             self.handle_error(se, err_msg, DEBUG)
-
 
     def unregister_event_handler(self):
         try:
@@ -147,7 +137,6 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             err_msg = 'Error unregistering event handler!'
             self.handle_error(se, err_msg, DEBUG)
-
 
     def configure_trigger(self):
         try:
@@ -160,11 +149,9 @@ class Cam(SpinnakerObject):
             err_msg = f'An error occurred while configuring camera {self.number}''s trigger'
             self.handle_error(se, err_msg, DEBUG)
 
-
     @property
     def frame_size(self):
         return self.Width, self.Height
-
 
     def __getattr__(self, attribute):
         """
@@ -186,13 +173,11 @@ class Cam(SpinnakerObject):
             else:
                 raise SpinnakerException(f'Camera must be initialized to read {attribute}')
 
-
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
         self.ptr.DeInit()
         del self.ptr
-        #self.ptr = []
-
+        # self.ptr = []
 
     def _get_cam_tl_info(self):
         """
@@ -209,7 +194,6 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             self._exit_on_exception(self, se)
 
-
     def _get_stream_tl_info(self):
         """
         Internal method to get properties from stream transport layer
@@ -222,10 +206,8 @@ class Cam(SpinnakerObject):
             self.handle_error(se, err_msg, DEBUG)
             self._exit_on_exception(self, se)
 
-
     def __str__(self):
         return f'Camera {self.number}'
-
 
     def __repr__(self):
         return (f'Class: {self.__class__}:\n',
