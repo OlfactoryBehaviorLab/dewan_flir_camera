@@ -40,11 +40,12 @@ class Cam(SpinnakerObject):
 
     def deinit(self):
         if not self.is_init:
-            print(f"Camera {self.number} is not initialized, no need to deinitialize!")
+            self.logger.info("Camera %s is not initialized, no need to deinitialize!", self.number)
         else:
             try:
                 self.unregister_event_handler()
                 self.is_init = False
+                self.ptr.DeInit() # Must DeInit camera ptr
                 super().deinit()
             except SpinnakerException as se:
                 err_msg = f'Error deinitializing camera {self.number}!'
