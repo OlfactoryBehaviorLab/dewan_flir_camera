@@ -10,8 +10,11 @@ class SpinnakerObject:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        import traceback
+        if self.ptr:
+            # If we got here and the pointer is still around; release it
+            self.deinit()
 
+        import traceback
         if exc_type is not None:
             traceback.print_exception(exc_type, exc_val, exc_tb)
         print(f'Shutting down {self}!')
@@ -42,9 +45,6 @@ class SpinnakerObject:
         else:
             return None
 
-    @staticmethod
-    def _exit_on_exception(self, ex):
-        self.__exit__(type(ex), str(ex), ex.__traceback__())
 
 class CameraException(Exception):
     def __init__(self, msg: str):
