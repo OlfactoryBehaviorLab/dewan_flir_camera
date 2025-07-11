@@ -3,9 +3,9 @@ import PySpin
 
 
 class SpinnakerObject:
-    def __init__(self, ptr):
+    def __init__(self, ptr, logger):
         self.ptr = ptr
-
+        self.logger = logger
     def __enter__(self):
         return self
 
@@ -17,13 +17,12 @@ class SpinnakerObject:
         import traceback
         if exc_type is not None:
             traceback.print_exception(exc_type, exc_val, exc_tb)
-        print(f'Shutting down {self}!')
 
     def __repr__(self):
         return f"Class: {self.__class__}"
 
     def deinit(self):
-        self.ptr.DeInit()
+        self.logger.debug("Deleting %s", self.ptr)
         del self.ptr
 
 
