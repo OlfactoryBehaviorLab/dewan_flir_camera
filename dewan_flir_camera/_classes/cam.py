@@ -2,6 +2,7 @@ import PySpin
 from PySpin import SpinnakerException
 from ._generics import SpinnakerObject
 
+
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
         super().__init__(cam_ptr)
@@ -20,31 +21,28 @@ class Cam(SpinnakerObject):
         self._get_cam_tl_info()
         self._get_stream_tl_info()
 
-
     def init(self):
         if self.is_init:
-            print(f'Camera {self.number} is already initialized!')
+            print(f"Camera {self.number} is already initialized!")
         else:
             try:
                 self.ptr.Init()
                 self.is_init = True
             except SpinnakerException as ex:
-                print(f'Error initializing camera {self.number}!')
+                print(f"Error initializing camera {self.number}!")
                 print(ex)
-
 
     def deinit(self):
         if not self.is_init:
-            print(f'Camera {self.number} is not initialized, no need to deinitialize!')
+            print(f"Camera {self.number} is not initialized, no need to deinitialize!")
         else:
             try:
                 self.unregister_event_handler()
                 self.ptr.DeInit()
                 self.is_init = False
             except SpinnakerException as ex:
-                print(f'Error deinitializing camera {self.number}!')
+                print(f"Error deinitializing camera {self.number}!")
                 print(ex)
-
 
     def configure_acquisition_mode(self, mode):
         try:
@@ -58,9 +56,8 @@ class Cam(SpinnakerObject):
             self.RegisterEventHandler(event_handler)
             self.event_handler_ptr = event_handler
         except SpinnakerException as se:
-            print('Error registering event handler!')
+            print("Error registering event handler!")
             print(se)
-
 
     def unregister_event_handler(self):
         try:
@@ -68,9 +65,8 @@ class Cam(SpinnakerObject):
                 self.UnregisterEventHandler(self.event_handler_ptr)
                 self.event_handler_ptr = None
         except SpinnakerException as se:
-            print('Error unregistering event handler!')
+            print("Error unregistering event handler!")
             print(se)
-
 
     def configure_trigger(self):
         try:
@@ -80,13 +76,12 @@ class Cam(SpinnakerObject):
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
         except SpinnakerException as se:
-            print(f'An error occurred while configuring camera {self.number}''s trigger')
+            print(f"An error occurred while configuring camera {self.number}s trigger")
             print(se)
 
     @property
     def frame_size(self):
         return self.Width, self.Height
-
 
     def __getattr__(self, attribute):
         """
@@ -94,27 +89,31 @@ class Cam(SpinnakerObject):
         since the underlying functionality is a bit ambiguous
         """
         try:
-            return_ptr = self.ptr.__getattribute__(attribute)  ## See if the camera_ptr class has the attribute
+            return_ptr = self.ptr.__getattribute__(
+                attribute
+            )  ## See if the camera_ptr class has the attribute
             return return_ptr
 
         except AttributeError as ae:
-            print(f'The camera does not have a property or attribute named {attribute}')
-            print(f'Original Exception: {ae}')
+            print(f"The camera does not have a property or attribute named {attribute}")
+            print(f"Original Exception: {ae}")
         except SpinnakerException as se:
-            if 'AccessException' in str(se):
-                print(f'An AccessException occurred when trying to read {attribute}.'
-                      f' It is likely that your camera does not have this property')
-                print(f'Original Exception: {se}')
+            if "AccessException" in str(se):
+                print(
+                    f"An AccessException occurred when trying to read {attribute}."
+                    f" It is likely that your camera does not have this property"
+                )
+                print(f"Original Exception: {se}")
             else:
-                raise SpinnakerException(f'Camera must be initialized to read {attribute}')
-
+                raise SpinnakerException(
+                    f"Camera must be initialized to read {attribute}"
+                )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
         self.ptr.DeInit()
         del self.ptr
-        #self.ptr = []
-
+        # self.ptr = []
 
     def _get_cam_tl_info(self):
         """
@@ -131,7 +130,6 @@ class Cam(SpinnakerObject):
             print(ex)
             self._exit_on_exception(self, ex)
 
-
     def _get_stream_tl_info(self):
         """
         Internal method to get properties from stream transport layer
@@ -144,17 +142,17 @@ class Cam(SpinnakerObject):
             print(ex)
             self._exit_on_exception(self, ex)
 
-
     def __str__(self):
-        return (f'Camera {self.number}:\n'
-                f'\t -Vendor: {self.vendor}\n'
-                f'\t -Model: {self.model}\n'
-                f'\t -Serial: {self.serial}\n'
-                f'\t -Speed: {self.speed}\n'
-                f'Stream Information:\n'
-                f'\t -Stream ID: {self.stream_ID}\n'
-                f'\t -Stream Type: {self.stream_type}\n\n')
-
+        return (
+            f"Camera {self.number}:\n"
+            f"\t -Vendor: {self.vendor}\n"
+            f"\t -Model: {self.model}\n"
+            f"\t -Serial: {self.serial}\n"
+            f"\t -Speed: {self.speed}\n"
+            f"Stream Information:\n"
+            f"\t -Stream ID: {self.stream_ID}\n"
+            f"\t -Stream Type: {self.stream_type}\n\n"
+        )
 
     def __repr__(self):
-        return f'Class: {self.__class__}'
+        return f"Class: {self.__class__}"

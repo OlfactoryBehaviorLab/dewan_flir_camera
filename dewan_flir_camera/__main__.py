@@ -5,11 +5,11 @@ from time import sleep
 from _classes.spin_system import SpinSystem
 from _classes.acquisition import ImageHandler
 
-def main():
 
+def main():
     with SpinSystem() as system:
         camera = system.cameras[0]
-        event_handler = ImageHandler('./images')
+        event_handler = ImageHandler("./images")
 
         camera.init()
 
@@ -20,7 +20,7 @@ def main():
 
         while True:
             try:
-                print('Waiting for trigger!')
+                print("Waiting for trigger!")
                 camera.BeginAcquisition()
                 event_handler.reset()
                 wait_for_trigger(event_handler)
@@ -33,7 +33,6 @@ def main():
         del camera
 
 
-
 def wait_for_trigger(event_handler, num_frames=100, wait_time_s=0.1):
     try:
         while True:
@@ -41,10 +40,11 @@ def wait_for_trigger(event_handler, num_frames=100, wait_time_s=0.1):
             if event_handler.num_acquired_images >= num_frames:
                 return
     except SpinnakerException as se:
-        print('Error while acquiring images!')
+        print("Error while acquiring images!")
         print(se)
     except Exception as e:
         print(e)
+
 
 if __name__ == "__main__":
     main()
