@@ -24,6 +24,9 @@ def main():
 
         # camera.register_event_handler(event_handler)
         camera.ExposureAuto.SetValue(AutoExposureMode.CONTINUOUS)
+        camera.configure_acquisition_mode(PySpin.AcquisitionMode_Continuous)
+        camera.register_event_handler(event_handler)
+        ui = gui.launch_gui(camera)
 
         while True:
             try:
