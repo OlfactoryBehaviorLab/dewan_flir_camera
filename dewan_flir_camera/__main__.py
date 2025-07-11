@@ -4,7 +4,7 @@ from time import sleep
 from dewan_flir_camera import gui
 from spin_system import SpinSystem
 from acquisition import ImageHandler
-from options import AutoExposureMode
+from options import AutoExposureMode, AcquisitionMode
 
 
 def main():
@@ -20,11 +20,11 @@ def main():
         event_handler = ImageHandler('./images')
         camera.init()
 
-        camera.configure_trigger()
+        camera.configure_hardware_trigger()
 
         # camera.register_event_handler(event_handler)
         camera.ExposureAuto.SetValue(AutoExposureMode.CONTINUOUS)
-        camera.configure_acquisition_mode(PySpin.AcquisitionMode_Continuous)
+        camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
         camera.register_event_handler(event_handler)
         ui = gui.launch_gui(camera)
 
