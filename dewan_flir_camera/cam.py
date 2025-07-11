@@ -220,6 +220,8 @@ class Cam(SpinnakerObject):
                 )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        # Overload to ensure that the cameras local deinit function gets called if camera is used in a context manager
+        self.deinit()
         super().__exit__(exc_type, exc_val, exc_tb)
 
     def _get_cam_tl_info(self):
