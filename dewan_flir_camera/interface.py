@@ -1,5 +1,5 @@
 from PySpin import SpinnakerException
-from ._generics import SpinnakerObject
+from dewan_flir_camera._generics import SpinnakerObject
 
 
 class Interface(SpinnakerObject):

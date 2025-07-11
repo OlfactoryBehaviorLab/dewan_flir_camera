@@ -1,8 +1,8 @@
 import sys
 
-from options import AcquisitionMode, AutoExposureMode
-from ._ui import about, FLIR
-from . import threads
+from dewan_flir_camera.options import AcquisitionMode, AutoExposureMode
+from dewan_flir_camera.ui import about, FLIR
+from dewan_flir_camera import threads
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
 

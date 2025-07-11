@@ -1,9 +1,9 @@
 import traceback
-
+import time
 import PySpin
 from PySpin import SpinnakerException
-from ._generics import SpinnakerObject
-from .options import AutoExposureMode, AcquisitionMode
+from dewan_flir_camera._generics import SpinnakerObject
+from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode
 
 DEBUG = True
 

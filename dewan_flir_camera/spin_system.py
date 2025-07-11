@@ -1,6 +1,6 @@
 import PySpin
-from ._generics import SpinnakerObject
-from .cam import Cam
+from dewan_flir_camera._generics import SpinnakerObject
+from dewan_flir_camera.cam import Cam
 
 
 class SpinSystem(SpinnakerObject):

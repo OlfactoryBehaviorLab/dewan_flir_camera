@@ -1,7 +1,7 @@
 from PySpin import SpinnakerException
 from time import sleep
 
-from . import gui
+from dewan_flir_camera import gui
 from spin_system import SpinSystem
 from acquisition import ImageHandler
 from options import AutoExposureMode
