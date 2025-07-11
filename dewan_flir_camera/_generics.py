@@ -41,3 +41,9 @@ class SpinnakerObject:
     @staticmethod
     def _exit_on_exception(self, ex):
         self.__exit__(type(ex), str(ex), ex.__traceback__())
+
+class CameraException(Exception):
+    def __init__(self, msg: str):
+        super().__init__()
+        self.msg = msg
+        print(f"There was a problem loading the cameras: {msg}")

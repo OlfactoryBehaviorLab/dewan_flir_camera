@@ -1,6 +1,6 @@
 import logging
 import PySpin
-from dewan_flir_camera._generics import SpinnakerObject
+from dewan_flir_camera._generics import SpinnakerObject, CameraException
 from dewan_flir_camera.cam import Cam
 
 
