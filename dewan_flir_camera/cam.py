@@ -10,8 +10,8 @@ DEBUG = True
 
 
 class Cam(SpinnakerObject):
-    def __init__(self, cam_ptr, number):
-        super().__init__(cam_ptr)
+    def __init__(self, cam_ptr, logger, number):
+        super().__init__(cam_ptr, logger)
         self.number = number
         self.is_init = False
         self.vendor = []

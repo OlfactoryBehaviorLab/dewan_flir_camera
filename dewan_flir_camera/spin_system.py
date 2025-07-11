@@ -23,7 +23,7 @@ class SpinSystem(SpinnakerObject):
         self.interfaces = []
 
         self._initialize_system()
-        super().__init__(self.system)
+        super().__init__(self.system, self.logger)
 
     def __enter__(self):
         if self.system:
@@ -86,5 +86,6 @@ class SpinSystem(SpinnakerObject):
         self.logger.info("Instantiating Camera Wrappers")
         for i, cam in enumerate(self.camera_list):
             new_cam = Cam(cam, i)
+            new_cam = Cam(cam, self.logger, i)
             self.cameras.append(new_cam)
         del cam

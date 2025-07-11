@@ -3,8 +3,8 @@ from dewan_flir_camera._generics import SpinnakerObject, CameraException
 
 
 class Interface(SpinnakerObject):
-    def __init__(self, interface_ptr, number):
-        super().__init__(interface_ptr)
+    def __init__(self, interface_ptr, logger, number):
+        super().__init__(interface_ptr, logger)
         self.number = number
         self.interface_name = []
         self.interface_id = []
