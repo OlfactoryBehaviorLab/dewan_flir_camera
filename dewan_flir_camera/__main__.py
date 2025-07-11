@@ -6,6 +6,8 @@ from spin_system import SpinSystem
 from acquisition import ImageHandler
 from options import AutoExposureMode, AcquisitionMode
 
+import logging
+logging.basicConfig(level=logging.NOTSET)
 
 def main():
     with SpinSystem() as system:
@@ -15,7 +17,9 @@ def main():
         if system.num_cams == 0 or system.num_interfaces == 0:
             print('No suitable cameras or interfaces found! Exiting!')
             return
+    logger = logging.getLogger(__name__)
 
+    with SpinSystem(logger) as system:
         camera = system.cameras[0]
         event_handler = ImageHandler('./images')
         camera.init()

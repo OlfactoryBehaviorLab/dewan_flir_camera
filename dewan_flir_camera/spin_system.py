@@ -1,11 +1,13 @@
+import logging
 import PySpin
 from dewan_flir_camera._generics import SpinnakerObject
 from dewan_flir_camera.cam import Cam
 
 
 class SpinSystem(SpinnakerObject):
-    def __init__(self):
+    def __init__(self, logger: logging.Logger):
         self.system: PySpin.System = []
+        self.logger: logging.Logger = logger
         self.version = []
         self._interface_list: PySpin.InterfaceList = []
         self.num_interfaces: int = 0
@@ -49,6 +51,7 @@ class SpinSystem(SpinnakerObject):
             self.system.ReleaseInstance()
 
         self.system = []
+        self.logger.info("Hit context manager exit")
         super().__exit__(exc_type, exc_val, tb)
 
     def __str__(self):
@@ -56,7 +59,7 @@ class SpinSystem(SpinnakerObject):
 
     def _initialize_system(self):
         try:
-            print('Initializing System!')
+            self.logger.info('Initializing Spinnaker System')
             self.system = PySpin.System.GetInstance()
             self.version = self.system.GetLibraryVersion()
             self._interface_list = self.system.GetInterfaces()
@@ -74,12 +77,13 @@ class SpinSystem(SpinnakerObject):
                 print(
                     f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)"
                 )
+                self.logger.info("System Initialized! %s camera(s) found on %s interface(s)", self.num_cams, self.num_interfaces)
         except PySpin.SpinnakerException as ex:
             print('Error initializing system!')
             self._exit_on_exception(self, ex)
 
     def _instantiate_camera_wrappers(self):
-        print("Instantiating Camera Wrappers...")
+        self.logger.info("Instantiating Camera Wrappers")
         for i, cam in enumerate(self.camera_list):
             new_cam = Cam(cam, i)
             self.cameras.append(new_cam)
