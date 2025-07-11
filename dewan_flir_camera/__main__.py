@@ -2,8 +2,8 @@ import PySpin
 from PySpin import SpinnakerException
 from time import sleep
 
-from _classes.spin_system import SpinSystem
-from _classes.acquisition import ImageHandler
+from dewan_flir_camera.spin_system import SpinSystem
+from dewan_flir_camera.acquisition import ImageHandler
 
 
 def main():
