@@ -1,11 +1,10 @@
-import PySpin
 from PySpin import SpinnakerException
 from time import sleep
 
 from . import gui
-from ._classes.spin_system import SpinSystem
-from ._classes.acquisition import ImageHandler
-from ._classes.options import AutoExposureMode
+from spin_system import SpinSystem
+from acquisition import ImageHandler
+from options import AutoExposureMode
 
 
 def main():

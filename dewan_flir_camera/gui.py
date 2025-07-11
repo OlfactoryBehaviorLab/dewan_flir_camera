@@ -1,10 +1,10 @@
 import sys
 
-from ._classes.options import AcquisitionMode, AutoExposureMode
+from options import AcquisitionMode, AutoExposureMode
 from ._ui import about, FLIR
 from . import threads
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QTimer, Slot
+from PySide6.QtCore import QTimer
 
 
 class ControlWindow(QMainWindow):
