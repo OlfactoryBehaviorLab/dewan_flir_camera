@@ -19,6 +19,10 @@ class SpinnakerObject:
     def __repr__(self):
         return f"Class: {self.__class__}"
 
+    def deinit(self):
+        self.ptr.DeInit()
+        del self.ptr
+
 
     @staticmethod
     def handle_error(exception: type[BaseException], error_msg=None, DEBUG=False):

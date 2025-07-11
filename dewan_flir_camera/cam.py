@@ -44,8 +44,8 @@ class Cam(SpinnakerObject):
         else:
             try:
                 self.unregister_event_handler()
-                self.ptr.DeInit()
                 self.is_init = False
+                super().deinit()
             except SpinnakerException as se:
                 err_msg = f'Error deinitializing camera {self.number}!'
                 self.handle_error(se, err_msg, DEBUG)
@@ -221,9 +221,6 @@ class Cam(SpinnakerObject):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
-        self.ptr.DeInit()
-        del self.ptr
-        # self.ptr = []
 
     def _get_cam_tl_info(self):
         """

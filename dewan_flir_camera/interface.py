@@ -20,9 +20,6 @@ class Interface(SpinnakerObject):
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
 
-        del self.ptr
-        self.interface_ptr = []
-
     def _get_interface_tl_info(self):
         """
         Internal method to get interface properties from the transport layer
@@ -37,7 +34,7 @@ class Interface(SpinnakerObject):
         except SpinnakerException as ex:
             print("Error getting interface information!")
             print(ex)
-            self._exit_on_exception(self, ex)
+            self.deinit()
 
     def _get_HBA_tl_info(self):
         """
@@ -57,7 +54,7 @@ class Interface(SpinnakerObject):
         except SpinnakerException as ex:
             print("Error getting HBA information!")
             print(ex)
-            self._exit_on_exception(self, ex)
+            self.deinit()
 
     def __str__(self):
         return (
