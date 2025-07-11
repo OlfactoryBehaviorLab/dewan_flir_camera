@@ -152,6 +152,8 @@ class Cam(SpinnakerObject):
             self.RegisterEventHandler(event_handler)
             self.event_handler_ptr = event_handler
         except SpinnakerException as se:
+            err_msg = 'Error registering event handler!'
+            self.handle_error(se, err_msg, DEBUG)
 
     def unregister_event_handler(self):
         try:
