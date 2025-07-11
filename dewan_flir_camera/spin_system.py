@@ -2,6 +2,7 @@ import logging
 import PySpin
 from dewan_flir_camera._generics import SpinnakerObject, CameraException
 from dewan_flir_camera.cam import Cam
+from dewan_flir_camera.interface import Interface
 
 
 class SpinSystem(SpinnakerObject):
@@ -46,7 +47,6 @@ class SpinSystem(SpinnakerObject):
             self.version = self.system.GetLibraryVersion()
             self._interface_list = self.system.GetInterfaces()
             self.num_interfaces = self._interface_list.GetSize()
-            self.interface_list = list(self._interface_list)
             self._camera_list = self.system.GetCameras()
             self.num_cams = self._camera_list.GetSize()
             self.camera_list = list(self._camera_list)
@@ -55,6 +55,7 @@ class SpinSystem(SpinnakerObject):
                 # No cameras or interfaces to initialize
                 self._cleanup()
             else:
+                self._instantiate_interface_wrappers()
                 self._instantiate_camera_wrappers()
                 self.logger.info("System Initialized! %s camera(s) found on %s interface(s)", self.num_cams, self.num_interfaces)
         except PySpin.SpinnakerException as ex:
@@ -85,7 +86,14 @@ class SpinSystem(SpinnakerObject):
     def _instantiate_camera_wrappers(self):
         self.logger.info("Instantiating Camera Wrappers")
         for i, cam in enumerate(self.camera_list):
-            new_cam = Cam(cam, i)
             new_cam = Cam(cam, self.logger, i)
             self.cameras.append(new_cam)
         del cam
+
+    def _instantiate_interface_wrappers(self):
+        self.logger.info("Instantiating Interface Wrappers")
+        for i, interface in enumerate(self._interface_list):
+            new_cam = Interface(interface, self.logger, i)
+            self.interfaces.append(new_cam)
+        del interface
+
