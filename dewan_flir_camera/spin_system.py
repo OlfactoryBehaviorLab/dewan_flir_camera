@@ -29,29 +29,11 @@ class SpinSystem(SpinnakerObject):
         if self.system:
             return self
         else:
-            return []
+            raise CameraException("Unable to initialize SpinSystem!")
 
     def __exit__(self, exc_type, exc_val, tb):
-
-        ## Clean up our classes if we leave the scope of this system
-        for camera in self.cameras:
-            camera.__exit__(None, None, None)
-        for interface in self.interfaces:
-            interface.__exit__(None, None, None)
-
-        ## Clear lists that reference the pointers
-        self.camera_list = []
-        self.interface_list = []
-
-        if self._camera_list:
-            self._camera_list.Clear()
-        if self._interface_list:
-            self._interface_list.Clear()
-        if self.system:
-            self.system.ReleaseInstance()
-
-        self.system = []
         self.logger.info("Hit context manager exit")
+        self._cleanup()
         super().__exit__(exc_type, exc_val, tb)
 
     def __str__(self):
@@ -70,17 +52,35 @@ class SpinSystem(SpinnakerObject):
             self.camera_list = list(self._camera_list)
 
             if self.num_cams == 0 or self.num_interfaces == 0:
-                print("No cameras present! Exiting!")
-                self.__exit__([], [], [])
+                # No cameras or interfaces to initialize
+                self._cleanup()
             else:
                 self._instantiate_camera_wrappers()
-                print(
-                    f"System Initialized! {self.num_cams} camera(s) found on {self.num_interfaces} interface(s)"
-                )
                 self.logger.info("System Initialized! %s camera(s) found on %s interface(s)", self.num_cams, self.num_interfaces)
         except PySpin.SpinnakerException as ex:
-            print('Error initializing system!')
-            self._exit_on_exception(self, ex)
+            # Unexpected error, cleanup and raise our general exception
+            self._cleanup()
+            raise CameraException('Error initializing system!') from ex
+
+    def _cleanup(self):
+        ## Clean up our classes if we leave the scope of this system
+        for camera in self.cameras:
+            camera.deinit()
+        for interface in self.interfaces:
+            interface.deinit()
+
+        ## Clear lists that reference the pointers
+        self.camera_list = []
+        self.interface_list = []
+
+        if self._camera_list:
+            self._camera_list.Clear()
+        if self._interface_list:
+            self._interface_list.Clear()
+        if self.system:
+            self.system.ReleaseInstance()
+
+        self.system = []
 
     def _instantiate_camera_wrappers(self):
         self.logger.info("Instantiating Camera Wrappers")
