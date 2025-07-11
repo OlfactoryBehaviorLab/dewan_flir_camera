@@ -11,12 +11,13 @@ class SpinnakerObject:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         import traceback
+
         if exc_type is not None:
             traceback.print_exception(exc_type, exc_val, exc_tb)
         print(f'Shutting down {self}!')
 
     def __repr__(self):
-        return f'Class: {self.__class__}'
+        return f"Class: {self.__class__}"
 
 
     @staticmethod

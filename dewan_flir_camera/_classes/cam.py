@@ -8,6 +8,7 @@ from .options import AutoExposureMode, AcquisitionMode
 DEBUG = True
 
 
+
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
         super().__init__(cam_ptr)
@@ -28,7 +29,7 @@ class Cam(SpinnakerObject):
 
     def init(self):
         if self.is_init:
-            print(f'Camera {self.number} is already initialized!')
+            print(f"Camera {self.number} is already initialized!")
         else:
             try:
                 self.ptr.Init()
@@ -39,7 +40,7 @@ class Cam(SpinnakerObject):
 
     def deinit(self):
         if not self.is_init:
-            print(f'Camera {self.number} is not initialized, no need to deinitialize!')
+            print(f"Camera {self.number} is not initialized, no need to deinitialize!")
         else:
             try:
                 self.unregister_event_handler()
@@ -151,8 +152,6 @@ class Cam(SpinnakerObject):
             self.RegisterEventHandler(event_handler)
             self.event_handler_ptr = event_handler
         except SpinnakerException as se:
-            err_msg = 'Error registering event handler!'
-            self.handle_error(se, err_msg, DEBUG)
 
     def unregister_event_handler(self):
         try:
@@ -198,19 +197,25 @@ class Cam(SpinnakerObject):
         since the underlying functionality is a bit ambiguous
         """
         try:
-            return_ptr = self.ptr.__getattribute__(attribute)  ## See if the camera_ptr class has the attribute
+            return_ptr = self.ptr.__getattribute__(
+                attribute
+            )  ## See if the camera_ptr class has the attribute
             return return_ptr
 
         except AttributeError as ae:
-            print(f'The camera does not have a property or attribute named {attribute}')
-            print(f'Original Exception: {ae}')
+            print(f"The camera does not have a property or attribute named {attribute}")
+            print(f"Original Exception: {ae}")
         except SpinnakerException as se:
-            if 'AccessException' in str(se):
-                print(f'An AccessException occurred when trying to read {attribute}.'
-                      f' It is likely that your camera does not have this property')
-                print(f'Original Exception: {se}')
+            if "AccessException" in str(se):
+                print(
+                    f"An AccessException occurred when trying to read {attribute}."
+                    f" It is likely that your camera does not have this property"
+                )
+                print(f"Original Exception: {se}")
             else:
-                raise SpinnakerException(f'Camera must be initialized to read {attribute}')
+                raise SpinnakerException(
+                    f"Camera must be initialized to read {attribute}"
+                )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         super().__exit__(exc_type, exc_val, exc_tb)
