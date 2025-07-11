@@ -16,6 +16,8 @@ dependencies = [
     "PySide6"
     #"PySpin" # Manually install
 ]
+[tool.setuptools]
+packages = ["dewan_flir_camera"]
 
 [tool.setuptools.dynamic]
 version = {attr="dewan_flir_camera.__version__"}
