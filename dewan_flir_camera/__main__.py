@@ -10,13 +10,6 @@ import logging
 logging.basicConfig(level=logging.NOTSET)
 
 def main():
-    with SpinSystem() as system:
-        system.get_interfaces()
-        system.get_cameras()
-
-        if system.num_cams == 0 or system.num_interfaces == 0:
-            print('No suitable cameras or interfaces found! Exiting!')
-            return
     logger = logging.getLogger(__name__)
 
     with SpinSystem(logger) as system:
