@@ -498,17 +498,17 @@ font: 700 16pt &quot;Arial&quot;;</string>
               <widget class="QComboBox" name="acquisition_mode_data">
                <item>
                 <property name="text">
-                 <string>Frame Burst</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
                  <string>Continuous</string>
                 </property>
                </item>
                <item>
                 <property name="text">
                  <string>Single Frame</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Frame Burst</string>
                 </property>
                </item>
               </widget>
@@ -560,16 +560,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
                 <bool>false</bool>
                </property>
                <property name="currentText">
-                <string>Automatic Single Shot</string>
+                <string>Manual Exposure</string>
                </property>
                <item>
                 <property name="text">
-                 <string>Automatic Single Shot</string>
+                 <string>Manual Exposure</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>Manual Exposure</string>
+                 <string>Automatic Single Shot</string>
                 </property>
                </item>
                <item>
