@@ -568,8 +568,8 @@ class MainUI(object):
         self.acquisition_mode_data.setItemText(2, QCoreApplication.translate("main_window", u"Single Frame", None))
 
         self.exposure_control.setTitle(QCoreApplication.translate("main_window", u"Exposure", None))
-        self.exposure_mode.setItemText(0, QCoreApplication.translate("main_window", u"Automatic Single Shot", None))
-        self.exposure_mode.setItemText(1, QCoreApplication.translate("main_window", u"Manual Exposure", None))
+        self.exposure_mode.setItemText(0, QCoreApplication.translate("main_window", u"Manual Exposure", None))
+        self.exposure_mode.setItemText(1, QCoreApplication.translate("main_window", u"Automatic Single Shot", None))
         self.exposure_mode.setItemText(2, QCoreApplication.translate("main_window", u"Automatic Continuous (Variable FPS)", None))
 
         self.exposure_mode.setCurrentText(QCoreApplication.translate("main_window", u"Automatic Single Shot", None))
