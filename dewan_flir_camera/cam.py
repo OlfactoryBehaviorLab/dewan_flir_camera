@@ -2,8 +2,8 @@ import traceback
 import time
 import PySpin
 from PySpin import SpinnakerException
-from dewan_flir_camera._generics import SpinnakerObject
-from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode
+from dewan_flir_camera._generics import SpinnakerObject, CameraException
+from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode, AcquisitionState
 
 DEBUG = True
 
@@ -21,6 +21,8 @@ class Cam(SpinnakerObject):
 
         self.stream_type = []
         self.stream_ID = []
+
+        self.acquisition_enabled: bool = False
 
         self.event_handler_ptr = None
 
@@ -59,15 +61,31 @@ class Cam(SpinnakerObject):
                 self.set_acquisition_mode(AcquisitionMode.SINGLE)
             self.configure_software_trigger()
 
-            self.BeginAcquisition()
-            self.TriggerSoftware.Execute()
-            time.sleep(2)
-            self.EndAcquisition()
-
-            self.set_acquisition_mode(current_acquisition_mode)  # Reset to initial mode
-
+            if self.trigger_acquisition(AcquisitionState.BEGIN):
+                self.TriggerSoftware.Execute()
+                time.sleep(2)
+            if self.trigger_acquisition(AcquisitionState.END):
+                self.set_acquisition_mode(current_acquisition_mode)  # Reset to initial mode
         except SpinnakerException as se:
-            print(traceback.format_exception(se))
+            raise CameraException("Unable to capture single frame!") from se
+
+    def trigger_acquisition(self, state: AcquisitionState) -> bool:
+        try:
+            if state == AcquisitionState.BEGIN:
+                if self.acquisition_enabled:
+                    self.logger.info("Camera acquisition already enabled!")
+                else:
+                    self.BeginAcquisition()
+                    self.acquisition_enabled = True
+            elif state == AcquisitionState.END:
+                if self.acquisition_enabled:
+                    self.EndAcquisition()
+                    self.acquisition_enabled = False
+                else:
+                    self.logger.info("Camera acquisition already disabled!")
+            return self.acquisition_enabled
+        except SpinnakerException as se:
+            raise CameraException(f"Unable to set camera acquisition state to {state}!") from se
 
 
     def poll(self):
