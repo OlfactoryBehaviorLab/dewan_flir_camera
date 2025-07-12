@@ -7,6 +7,9 @@ class AcquisitionMode(IntEnum):
     SINGLE = PySpin.AcquisitionMode_SingleFrame # 1
     MULTI = PySpin.AcquisitionMode_MultiFrame # 2
 
+class AcquisitionState(IntEnum):
+    BEGIN = 1
+    END = 0
 
 class AutoExposureMode(IntEnum):
     OFF = PySpin.ExposureAuto_Off # 0
