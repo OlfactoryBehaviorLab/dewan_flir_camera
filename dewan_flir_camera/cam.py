@@ -47,6 +47,9 @@ class Cam(SpinnakerObject):
             try:
                 self.unregister_event_handler()
                 self.is_init = False
+                if self.acquisition_state == AcquisitionState.BEGIN:
+                    self.logger.warning("Force ending camera acquisition to clean up!\n End acquisition before deinitializing camera!")
+                    self.trigger_acquisition(AcquisitionState.END, force=True)
                 self.ptr.DeInit() # Must DeInit camera ptr
                 super().deinit()
             except SpinnakerException as se:
@@ -69,21 +72,21 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             raise CameraException("Unable to capture single frame!") from se
 
-    def trigger_acquisition(self, state: AcquisitionState) -> bool:
+    def trigger_acquisition(self, state: AcquisitionState, force: bool=False) -> AcquisitionState:
         try:
             if state == AcquisitionState.BEGIN:
-                if self.acquisition_enabled:
+                if self.acquisition_state == AcquisitionState.BEGIN:
                     self.logger.info("Camera acquisition already enabled!")
                 else:
                     self.BeginAcquisition()
                     self.acquisition_state = state
             elif state == AcquisitionState.END:
-                if self.acquisition_enabled:
+                if self.acquisition_state == AcquisitionState.BEGIN or force:
                     self.EndAcquisition()
                     self.acquisition_state = state
                 else:
                     self.logger.info("Camera acquisition already disabled!")
-            return self.acquisition_enabled
+            return self.acquisition_state
         except SpinnakerException as se:
             raise CameraException(f"Unable to set camera acquisition state to {state}!") from se
 
