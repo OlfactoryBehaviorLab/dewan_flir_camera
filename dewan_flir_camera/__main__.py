@@ -39,6 +39,7 @@ def main():
         window = gui.launch_gui(camera)
         camera.deinit()
         del camera
+        ui = gui.launch_gui(camera, logger)
 
 
 def wait_for_trigger(event_handler, num_frames=100, wait_time_s=0.1):

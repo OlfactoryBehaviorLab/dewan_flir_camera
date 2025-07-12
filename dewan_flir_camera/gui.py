@@ -8,8 +8,9 @@ from PySide6.QtCore import QTimer
 
 
 class ControlWindow(QMainWindow):
-    def __init__(self, camera):
+    def __init__(self, camera, logger):
         super().__init__()
+        self.logger = logger
         self.camera = camera
         self.main_ui = FLIR.MainUI(self)
         self.main_ui.about_widget = about.About()
@@ -85,7 +86,10 @@ class ControlWindow(QMainWindow):
         new_value = self.main_ui.exposure_value.value()
         new_value = int(new_value)
         new_time = self.camera.set_exposure(new_value)  # Just incase the camera bounds the user's input
-        self.main_ui.exposure_value.setValue(new_time)
+        try:
+            self.main_ui.exposure_value.setValue(new_time)
+        except (TypeError, ValueError) as ve:
+            self.logger.error("%s is not a valid value for setValue!", new_time)
 
     def trial_time_s_changed_callback(self):
         trial_time_s = self.get_trial_time_s()
@@ -113,7 +117,7 @@ class ControlWindow(QMainWindow):
         pass
 
 
-def launch_gui(camera=None):
+def launch_gui(camera=None, logger=None):
     if not camera:
         raise ValueError('A camera must be passed to the GUI!')
 
@@ -124,7 +128,7 @@ def launch_gui(camera=None):
         app = QApplication(sys.argv)
     app.setStyle('fusion')
 
-    window = ControlWindow(camera)
+    window = ControlWindow(camera, logger)
     window.show()
     _ = app.exec()
 
