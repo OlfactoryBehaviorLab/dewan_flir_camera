@@ -29,10 +29,16 @@ class ControlWindow(QMainWindow):
         self.main_ui.exposure_apply.clicked.connect(self.exposure_apply_callback)
         self.main_ui.s_per_trial_val.valueChanged.connect(self.trial_time_s_changed_callback)
 
+        self.update_trial_time_s(self.main_ui.s_per_trial_val.value())
+        self.update_trial_time_frames(
+            self.s_to_frames(
+                self.main_ui.s_per_trial_val.value(),
+                int(self.main_ui.max_fps_data.text())
+            )
+        )
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(lambda: threads.update_ui(self))
         self.update_timer.start(100)  # Poll rate in ms
-
 
     @staticmethod
     def calc_max_fps(exposure_time_us):
