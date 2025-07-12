@@ -1,8 +1,8 @@
 import sys
 
-from dewan_flir_camera.options import AcquisitionMode, AutoExposureMode
+from dewan_flir_camera.options import AcquisitionMode, AutoExposureMode, AcquisitionState
 from dewan_flir_camera.ui import about, FLIR
-from dewan_flir_camera import threads
+from dewan_flir_camera import threads, cam
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
 
@@ -11,7 +11,7 @@ class ControlWindow(QMainWindow):
     def __init__(self, camera, logger):
         super().__init__()
         self.logger = logger
-        self.camera = camera
+        self.camera: cam.Cam  = camera
         self.main_ui = FLIR.MainUI(self)
         self.main_ui.about_widget = about.About()
 
@@ -96,10 +96,51 @@ class ControlWindow(QMainWindow):
         self.update_trial_time_s(trial_time_s)
 
     def start_button_callback(self):
-        pass
+        current_state = self.camera.acquisition_state
 
-    def stop_button_callback(self):
-        pass
+        if (current_state == AcquisitionState.BEGIN and
+            self.camera.trigger_acquisition(AcquisitionState.END) == AcquisitionState.END
+            ):
+            self.main_ui.start_button.setText("START ACQUISITION")
+            self.main_ui.start_button.setStyleSheet(u"QPushButton{\n"
+                                            "background-color: rgb(0, 85, 0);\n"
+                                            "color:rgb(255,255,255);\n"
+                                            "}\n"
+                                            "QPushButton::hover{\n"
+                                            "background-color: rgb(0, 85, 0);\n"
+                                            "    border-color: rgb(60, 231, 195);\n"
+                                            "    border-style: outset;\n"
+                                            "    color: rgb(255,255,255);\n"
+                                            "    border-width: 2px;\n"
+                                            "    border-radius: 12px;\n"
+                                            "    padding: 6px;\n"
+                                            "}\n"
+                                            "QPushButton::pressed{\n"
+                                            "background-color: rgb(0, 60, 0);\n"
+                                            "color:rgb(255,255,255);\n"
+                                            "}")
+        if (current_state == AcquisitionState.END and
+                self.camera.trigger_acquisition(AcquisitionState.BEGIN) == AcquisitionState.BEGIN):
+            self.main_ui.start_button.setText("END ACQUISITION")
+            self.main_ui.start_button.setStyleSheet("QPushButton{\n"
+            "background-color: rgb(170, 0, 0);\n"
+            "color:rgb(255,255,255);\n"
+            "}\n"
+            "QPushButton::hover{\n"
+            "background-color: rgb(170, 0, 0);\n"
+            "    border-color: rgb(60, 231, 195);\n"
+            "    border-style: outset;\n"
+            "    color: rgb(255,255,255);\n"
+            "    border-width: 2px;\n"
+            "    border-radius: 12px;\n"
+            "    padding: 6px;\n"
+            "}\n"
+            "QPushButton::pressed{\n"
+            "background-color: rgb(150, 0, 0);\n"
+            "color:rgb(255,255,255);\n"
+            "}")
+
+
 
     def arm_button_callback(self):
         pass
