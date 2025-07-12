@@ -22,7 +22,7 @@ class Cam(SpinnakerObject):
         self.stream_type = []
         self.stream_ID = []
 
-        self.acquisition_enabled: bool = False
+        self.acquisition_state: AcquisitionState = AcquisitionState.END
 
         self.event_handler_ptr = None
 
@@ -76,11 +76,11 @@ class Cam(SpinnakerObject):
                     self.logger.info("Camera acquisition already enabled!")
                 else:
                     self.BeginAcquisition()
-                    self.acquisition_enabled = True
+                    self.acquisition_state = state
             elif state == AcquisitionState.END:
                 if self.acquisition_enabled:
                     self.EndAcquisition()
-                    self.acquisition_enabled = False
+                    self.acquisition_state = state
                 else:
                     self.logger.info("Camera acquisition already disabled!")
             return self.acquisition_enabled
