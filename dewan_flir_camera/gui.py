@@ -20,7 +20,6 @@ class ControlWindow(QMainWindow):
         self.main_ui.actionSave_As.triggered.connect(self.save_as_action_callback)
 
         self.main_ui.start_button.clicked.connect(self.start_button_callback)
-        self.main_ui.stop_button.clicked.connect(self.stop_button_callback)
         self.main_ui.arm_button.clicked.connect(self.arm_button_callback)
         self.main_ui.capture_button.clicked.connect(self.capture_button_callback)
 

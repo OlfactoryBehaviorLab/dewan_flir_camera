@@ -23,7 +23,9 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QComboBox, QDoubl
     QSpinBox, QStatusBar, QTabWidget, QVBoxLayout,
     QWidget)
 
-class Ui_main_window(object):
+class MainUI(object):
+    def __init__(self, main_window):
+        self.setupUi(main_window)
     def setupUi(self, main_window):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
@@ -556,7 +558,6 @@ class Ui_main_window(object):
 
         QMetaObject.connectSlotsByName(main_window)
     # setupUi
-
     def retranslateUi(self, main_window):
         main_window.setWindowTitle(QCoreApplication.translate("main_window", u"Dewan Lab FLIR Blackfly S Camera Acquisition", None))
         self.actionExit.setText(QCoreApplication.translate("main_window", u"Exit", None))
