@@ -25,18 +25,6 @@ class SpinnakerObject:
         self.logger.debug("Deleting %s", self.ptr)
         del self.ptr
 
-
-    @staticmethod
-    def handle_error(exception: type[BaseException], error_msg=None, DEBUG=False):
-        if DEBUG:
-            print(traceback.format_exception(exception))
-        else:
-            if error_msg:
-                print(error_msg)
-            else:
-                print(exception)
-
-
     @staticmethod
     def get_node_info(node):
         if node is not None and PySpin.IsReadable(node):

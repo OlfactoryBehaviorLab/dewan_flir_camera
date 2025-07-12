@@ -33,7 +33,7 @@ class SpinSystem(SpinnakerObject):
             raise CameraException("Unable to initialize SpinSystem!")
 
     def __exit__(self, exc_type, exc_val, tb):
-        self.logger.info("Hit context manager exit")
+        self.logger.debug("Hit context manager exit")
         self._cleanup()
         super().__exit__(exc_type, exc_val, tb)
 
