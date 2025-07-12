@@ -30,7 +30,7 @@ class MainUI(object):
         if not main_window.objectName():
             main_window.setObjectName(u"main_window")
         main_window.setWindowModality(Qt.WindowModality.WindowModal)
-        main_window.resize(978, 550)
+        main_window.resize(978, 617)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -427,7 +427,6 @@ class MainUI(object):
 "background-color: rgb(255, 85, 0);\n"
 "color:rgb(255,255,255);\n"
 "}\n"
-"\n"
 "QPushButton::hover{\n"
 "    background-color: rgb(255, 85, 0);\n"
 "    border-color: rgb(60, 231, 195);\n"
@@ -437,15 +436,9 @@ class MainUI(object):
 "    border-radius: 12px;\n"
 "    padding: 6px;\n"
 "}\n"
-"\n"
 "QPushButton::pressed{\n"
 "    background-color:rgb(115, 38, 0);\n"
-"}\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"")
+"}")
         self.arm_button.setFlat(False)
 
         self.buttons_layout.addWidget(self.arm_button, 0, 1, 1, 1)
@@ -463,7 +456,6 @@ class MainUI(object):
         self.capture_button.setStyleSheet(u"QPushButton{\n"
 "background-color: rgb(179, 179, 0);\n"
 "}\n"
-"\n"
 "QPushButton::hover{\n"
 "    background-color: rgb(179, 179, 0);\n"
 "    border-color: rgb(60, 231, 195);\n"
@@ -473,16 +465,9 @@ class MainUI(object):
 "    border-radius: 12px;\n"
 "    padding: 6px;\n"
 "}\n"
-"\n"
 "QPushButton::pressed{\n"
 "    background-color:rgb(74, 74, 0);\n"
-"}\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"")
+"}")
         self.capture_button.setFlat(False)
 
         self.buttons_layout.addWidget(self.capture_button, 0, 0, 1, 1)
@@ -496,12 +481,7 @@ class MainUI(object):
         self.start_button.setBaseSize(QSize(30, 30))
         self.start_button.setFont(font)
         self.start_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.start_button.setStyleSheet(u"QPushButton{\n"
-"background-color: rgb(0, 85, 0);\n"
-"color:rgb(255,255,255);\n"
-"}\n"
-"\n"
-"QPushButton::hover{\n"
+        self.start_button.setStyleSheet(u"QPushButton::hover{\n"
 "background-color: rgb(0, 85, 0);\n"
 "    border-color: rgb(60, 231, 195);\n"
 "    border-style: outset;\n"
@@ -510,9 +490,9 @@ class MainUI(object):
 "    border-radius: 12px;\n"
 "    padding: 6px;\n"
 "}\n"
-"\n"
-"QPushButton::pressed{\n"
-"background-color: rgb(0, 60, 0);\n"
+"QPushButton{\n"
+"background-color: rgb(0, 85, 0);\n"
+"color:rgb(255,255,255);\n"
 "}")
         self.start_button.setFlat(False)
 
@@ -558,6 +538,7 @@ class MainUI(object):
 
         QMetaObject.connectSlotsByName(main_window)
     # setupUi
+
     def retranslateUi(self, main_window):
         main_window.setWindowTitle(QCoreApplication.translate("main_window", u"Dewan Lab FLIR Blackfly S Camera Acquisition", None))
         self.actionExit.setText(QCoreApplication.translate("main_window", u"Exit", None))

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>978</width>
-    <height>550</height>
+    <height>617</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -843,7 +843,6 @@ font: 700 16pt &quot;Arial&quot;;</string>
 background-color: rgb(255, 85, 0);
 color:rgb(255,255,255);
 }
-
 QPushButton::hover{
     background-color: rgb(255, 85, 0);
     border-color: rgb(60, 231, 195);
@@ -853,15 +852,9 @@ QPushButton::hover{
     border-radius: 12px;
     padding: 6px;
 }
-
 QPushButton::pressed{
     background-color:rgb(115, 38, 0);
-}
-
-
-
-
-</string>
+}</string>
                </property>
                <property name="text">
                 <string>ARM TRIGGER</string>
@@ -915,7 +908,6 @@ QPushButton::pressed{
                 <string notr="true">QPushButton{
 background-color: rgb(179, 179, 0);
 }
-
 QPushButton::hover{
     background-color: rgb(179, 179, 0);
     border-color: rgb(60, 231, 195);
@@ -925,16 +917,9 @@ QPushButton::hover{
     border-radius: 12px;
     padding: 6px;
 }
-
 QPushButton::pressed{
     background-color:rgb(74, 74, 0);
-}
-
-
-
-
-
-</string>
+}</string>
                </property>
                <property name="text">
                 <string>SINGLE</string>
@@ -982,12 +967,7 @@ QPushButton::pressed{
                 <enum>Qt::LayoutDirection::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton{
-background-color: rgb(0, 85, 0);
-color:rgb(255,255,255);
-}
-
-QPushButton::hover{
+                <string notr="true">QPushButton::hover{
 background-color: rgb(0, 85, 0);
     border-color: rgb(60, 231, 195);
     border-style: outset;
@@ -996,9 +976,9 @@ background-color: rgb(0, 85, 0);
     border-radius: 12px;
     padding: 6px;
 }
-
-QPushButton::pressed{
-background-color: rgb(0, 60, 0);
+QPushButton{
+background-color: rgb(0, 85, 0);
+color:rgb(255,255,255);
 }</string>
                </property>
                <property name="text">
