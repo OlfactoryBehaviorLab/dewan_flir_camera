@@ -34,10 +34,9 @@ class ControlWindow(QMainWindow):
         self.update_timer.start(100)  # Poll rate in ms
 
 
-
     @staticmethod
     def calc_max_fps(exposure_time_us):
-        exposure_time_s = exposure_time_us / 100000
+        exposure_time_s = exposure_time_us / 1000000
         if exposure_time_s and exposure_time_s > 0:
             return round(1 / exposure_time_s, 2)
         else:
