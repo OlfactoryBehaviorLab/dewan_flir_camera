@@ -481,7 +481,11 @@ class MainUI(object):
         self.start_button.setBaseSize(QSize(30, 30))
         self.start_button.setFont(font)
         self.start_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.start_button.setStyleSheet(u"QPushButton::hover{\n"
+        self.start_button.setStyleSheet(u"QPushButton{\n"
+"background-color: rgb(0, 85, 0);\n"
+"color:rgb(255,255,255);\n"
+"}\n"
+"QPushButton::hover{\n"
 "background-color: rgb(0, 85, 0);\n"
 "    border-color: rgb(60, 231, 195);\n"
 "    border-style: outset;\n"
@@ -490,8 +494,8 @@ class MainUI(object):
 "    border-radius: 12px;\n"
 "    padding: 6px;\n"
 "}\n"
-"QPushButton{\n"
-"background-color: rgb(0, 85, 0);\n"
+"QPushButton::pressed{\n"
+"background-color: rgb(0, 60, 0);\n"
 "color:rgb(255,255,255);\n"
 "}")
         self.start_button.setFlat(False)
