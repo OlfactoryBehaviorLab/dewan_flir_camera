@@ -563,9 +563,9 @@ class MainUI(object):
         self.num_frames_data.setText(QCoreApplication.translate("main_window", u"0", None))
         self.controls_header.setText(QCoreApplication.translate("main_window", u"Controls", None))
         self.acquisition_mode.setTitle(QCoreApplication.translate("main_window", u"Acquisition Mode", None))
-        self.acquisition_mode_data.setItemText(0, QCoreApplication.translate("main_window", u"Frame Burst", None))
-        self.acquisition_mode_data.setItemText(1, QCoreApplication.translate("main_window", u"Continuous", None))
-        self.acquisition_mode_data.setItemText(2, QCoreApplication.translate("main_window", u"Single Frame", None))
+        self.acquisition_mode_data.setItemText(0, QCoreApplication.translate("main_window", u"Continuous", None))
+        self.acquisition_mode_data.setItemText(1, QCoreApplication.translate("main_window", u"Single Frame", None))
+        self.acquisition_mode_data.setItemText(2, QCoreApplication.translate("main_window", u"Frame Burst", None))
 
         self.exposure_control.setTitle(QCoreApplication.translate("main_window", u"Exposure", None))
         self.exposure_mode.setItemText(0, QCoreApplication.translate("main_window", u"Manual Exposure", None))
