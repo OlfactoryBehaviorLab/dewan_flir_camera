@@ -175,9 +175,9 @@ class Cam(SpinnakerObject):
         try:
             self.logger.info('Configuring triggers...')
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
-            self.TriggerSelector.SetValue(PySpin.TriggerSelector_FrameStart)
+            self.TriggerSelector.SetValue(PySpin.TriggerSelector_AcquisitionStart)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
-            self.TriggerActivation.SetValue(PySpin.TriggerActivation_LevelHigh)
+            self.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
         except SpinnakerException as se:
