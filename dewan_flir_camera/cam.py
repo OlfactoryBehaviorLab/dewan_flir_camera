@@ -96,10 +96,11 @@ class Cam(SpinnakerObject):
 
         return data
 
-    def set_exposure(self, new_exposure: AutoExposureMode) -> int:
+    def set_exposure(self, new_exposure: int) -> int:
         try:
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
                 self.logger.warning("Unable to set exposure time. Aborting...")
+                return self.ExposureTime.GetValue()
             if self.get_exposure_mode() == AutoExposureMode.OFF:
                 max_exposure_time = self.ExposureTime.GetMax()
                 min_exposure_time = self.ExposureTime.GetMin()
@@ -109,6 +110,7 @@ class Cam(SpinnakerObject):
                 return exposure_time
             else:
                 self.logger.warning("Automatic exposure must be disabled to manually set the exposure!")
+                return self.ExposureTime.GetValue()
         except SpinnakerException as se:
             raise CameraException("Error setting exposure!") from se
 
