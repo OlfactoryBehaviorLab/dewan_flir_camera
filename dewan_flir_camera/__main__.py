@@ -9,6 +9,8 @@ from options import AutoExposureMode, AcquisitionMode, AcquisitionState
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
+DEFAULT_FPS = 60
+
 def main():
     logger = logging.getLogger(__name__)
 
@@ -17,22 +19,25 @@ def main():
         event_handler = ImageHandler('./images')
         camera.init()
         camera.configure_hardware_trigger()
-        camera.ExposureAuto.SetValue(AutoExposureMode.CONTINUOUS)
-        camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
+        # Default Parameters to match GUI defaults
+        camera.ExposureAuto.SetValue(AutoExposureMode.OFF) # Manual Mode
+        camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS) # Continuous Acquisition
+        camera.set_exposure(gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)) # Set exposure to default FPS
         camera.register_event_handler(event_handler)
+
         ui = gui.launch_gui(camera, logger)
 
-        while True:
-            try:
-                logger.info("Waiting for trigger!")
-                camera.trigger_acquisition(AcquisitionState.BEGIN)
-                event_handler.reset()
-                wait_for_trigger(event_handler, logger)
-                camera.trigger_acquisition(AcquisitionState.END)
-            except KeyboardInterrupt:
-                camera.trigger_acquisition(AcquisitionState.END)
-                event_handler.reset()
-                break
+        # while True:
+        #     try:
+        #         logger.info("Waiting for trigger!")
+        #         camera.trigger_acquisition(AcquisitionState.BEGIN)
+        #         event_handler.reset()
+        #         wait_for_trigger(event_handler, logger)
+        #         camera.trigger_acquisition(AcquisitionState.END)
+        #     except KeyboardInterrupt:
+        #         camera.trigger_acquisition(AcquisitionState.END)
+        #         event_handler.reset()
+        #         break
 
 
 def wait_for_trigger(event_handler, logger, num_frames=100, wait_time_s=0.1):

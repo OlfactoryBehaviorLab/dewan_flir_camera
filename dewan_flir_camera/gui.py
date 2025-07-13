@@ -52,6 +52,15 @@ class ControlWindow(QMainWindow):
     def s_to_frames(seconds, FPS):
         return round(seconds * FPS)
 
+    @staticmethod
+    def FPS_to_exposure(FPS: int) -> int:
+        """
+        Converts FPS to exposure time (uS per frame) using 1/FPS * 1E6us/s
+        :param FPS: (int) FPS to convert to uS
+        :return: (int) exposure time in uS
+        """
+        return int(round((1/FPS)* 1E6, 1))
+
     def get_trial_time_s(self):
         return round(float(self.main_ui.s_per_trial_val.value()) , 2)
 
