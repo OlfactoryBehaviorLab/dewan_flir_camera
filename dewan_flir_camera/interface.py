@@ -17,7 +17,6 @@ class Interface(SpinnakerObject):
         self._get_interface_tl_info()
         self._get_HBA_tl_info()
 
-
     def _get_interface_tl_info(self):
         """
         Internal method to get interface properties from the transport layer

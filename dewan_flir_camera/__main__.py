@@ -7,22 +7,28 @@ from acquisition import ImageHandler
 from options import AutoExposureMode, AcquisitionMode, AcquisitionState
 
 import logging
+
 logging.basicConfig(level=logging.DEBUG)
 
 DEFAULT_FPS = 60
+
 
 def main():
     logger = logging.getLogger(__name__)
 
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
-        event_handler = ImageHandler('./images')
+        event_handler = ImageHandler("./images")
         camera.init()
         camera.configure_hardware_trigger()
         # Default Parameters to match GUI defaults
-        camera.ExposureAuto.SetValue(AutoExposureMode.OFF) # Manual Mode
-        camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS) # Continuous Acquisition
-        camera.set_exposure(gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)) # Set exposure to default FPS
+        camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Mode
+        camera.set_acquisition_mode(
+            AcquisitionMode.CONTINUOUS
+        )  # Continuous Acquisition
+        camera.set_exposure(
+            gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
+        )  # Set exposure to default FPS
         camera.register_event_handler(event_handler)
 
         ui = gui.launch_gui(camera, logger)

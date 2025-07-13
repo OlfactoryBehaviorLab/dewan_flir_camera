@@ -6,6 +6,7 @@ class SpinnakerObject:
     def __init__(self, ptr, logger):
         self.ptr = ptr
         self.logger = logger
+
     def __enter__(self):
         return self
 
@@ -15,6 +16,7 @@ class SpinnakerObject:
             self.deinit()
 
         import traceback
+
         if exc_type is not None:
             traceback.print_exception(exc_type, exc_val, exc_tb)
 

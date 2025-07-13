@@ -38,11 +38,11 @@ class SpinSystem(SpinnakerObject):
         super().__exit__(exc_type, exc_val, tb)
 
     def __str__(self):
-        return f'Spinnaker System'
+        return f"Spinnaker System"
 
     def _initialize_system(self):
         try:
-            self.logger.info('Initializing Spinnaker System')
+            self.logger.info("Initializing Spinnaker System")
             self.system = PySpin.System.GetInstance()
             self.version = self.system.GetLibraryVersion()
             self._interface_list = self.system.GetInterfaces()
@@ -57,11 +57,15 @@ class SpinSystem(SpinnakerObject):
             else:
                 self._instantiate_interface_wrappers()
                 self._instantiate_camera_wrappers()
-                self.logger.info("System Initialized! %s camera(s) found on %s interface(s)", self.num_cams, self.num_interfaces)
+                self.logger.info(
+                    "System Initialized! %s camera(s) found on %s interface(s)",
+                    self.num_cams,
+                    self.num_interfaces,
+                )
         except PySpin.SpinnakerException as ex:
             # Unexpected error, cleanup and raise our general exception
             self._cleanup()
-            raise CameraException('Error initializing system!') from ex
+            raise CameraException("Error initializing system!") from ex
 
     def _cleanup(self):
         ## Clean up our classes if we leave the scope of this system
@@ -96,4 +100,3 @@ class SpinSystem(SpinnakerObject):
             new_cam = Interface(interface, self.logger, i)
             self.interfaces.append(new_cam)
         del interface
-
