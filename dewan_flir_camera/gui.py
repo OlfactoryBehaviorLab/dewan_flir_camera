@@ -29,6 +29,7 @@ class ControlWindow(QMainWindow):
         self.main_ui.exposure_apply.clicked.connect(self.exposure_apply_callback)
         self.main_ui.s_per_trial_val.valueChanged.connect(self.trial_time_s_changed_callback)
 
+        # Update GUI to reflect default parameters set in __main__
         self.update_trial_time_s(self.main_ui.s_per_trial_val.value())
         self.update_trial_time_frames(
             self.s_to_frames(
@@ -36,9 +37,15 @@ class ControlWindow(QMainWindow):
                 int(self.main_ui.max_fps_data.text())
             )
         )
+        # The other camera fields are automatically updated by the timer
+        # This is the only one we need to pull from the camera
+        self.main_ui.exposure_value.setValue(
+            int(self.camera.get_exposure())
+        )
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(lambda: threads.update_ui(self))
         self.update_timer.start(100)  # Poll rate in ms
+
 
     @staticmethod
     def calc_max_fps(exposure_time_us):
@@ -88,7 +95,7 @@ class ControlWindow(QMainWindow):
         index = self.main_ui.exposure_mode.currentIndex()
         exposure_mode = AutoExposureMode(index)
         self.camera.set_exposure_mode(exposure_mode)
-        
+
         if index != 0:
             self.main_ui.exposure_apply.setEnabled(False)
             self.main_ui.exposure_value.setEnabled(False)
@@ -154,8 +161,6 @@ class ControlWindow(QMainWindow):
             "background-color: rgb(150, 0, 0);\n"
             "color:rgb(255,255,255);\n"
             "}")
-
-
 
     def arm_button_callback(self):
         pass
