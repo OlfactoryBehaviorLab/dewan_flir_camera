@@ -48,11 +48,16 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QSizePolicy,
-    QWidget,
+    QWidget, QDialog,
 )
 
 
-class Ui_config_wizard(object):
+class Ui_config_wizard(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.confirm_button.clicked.connect(self.accept)
+
     def setupUi(self, config_wizard):
         if not config_wizard.objectName():
             config_wizard.setObjectName("config_wizard")

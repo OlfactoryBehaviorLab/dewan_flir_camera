@@ -1,15 +1,17 @@
 import sys
 
+from pathlib import Path
 from dewan_flir_camera.options import (
     AcquisitionMode,
     AutoExposureMode,
     AcquisitionState,
 )
-from dewan_flir_camera.ui import about, FLIR
+from dewan_flir_camera.ui import about, FLIR, config
 from dewan_flir_camera import threads, cam
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer
 
+DEFAULT_DIR = './'
 
 class ControlWindow(QMainWindow):
     def __init__(self, camera, logger):
@@ -196,6 +198,24 @@ class ControlWindow(QMainWindow):
     def save_as_action_callback(self):
         pass
 
+def get_experiment_config(logger=None) -> dict:
+    config_ui = config.Ui_config_wizard()
+    config_return = config_ui.exec()
+    if config_return == 1:
+        configuration = {
+            'mouse': config_ui.mouse_ID_field.text(),
+            'experiment': config_ui.experiment_type_field.text(),
+            'save_dir': config_ui.save_path_field.text(),
+        }
+    else:
+        logger.error("Configuration UI returned 0! Setting default values")
+        configuration = {
+            'mouse': 1,
+            'experiment': 'none_specified',
+            'save_dir': Path(DEFAULT_DIR)
+        }
+    logger.debug("Configuration UI returned %s", configuration)
+    return configuration
 
 def launch_gui(camera=None, logger=None):
     if not camera:
@@ -207,6 +227,9 @@ def launch_gui(camera=None, logger=None):
     if not app:
         app = QApplication(sys.argv)
     app.setStyle("fusion")
+
+    # Blocking get config values
+    config_values = get_experiment_config(logger)
 
     window = ControlWindow(camera, logger)
     window.show()
