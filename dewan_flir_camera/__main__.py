@@ -1,4 +1,5 @@
 from PySpin import SpinnakerException
+from pathlib import Path
 from time import sleep
 
 from dewan_flir_camera import gui
@@ -11,10 +12,43 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 DEFAULT_FPS = 60
+DEFAULT_SAVE_DIR = "/flir_recordings"
+DEFAULT_EXPERIMENT_DIR = "default_experiment"
+DEFAULT_MOUSE_DIR = "default_mouse"
+
+def create_dir_if_not_exist(path, default, logger):
+    if path is None or len(str(path)) == 0:
+        path = default
+
+    if type(path) is not Path:
+        path = Path(path)
+
+    if not path.exists():
+        try:
+            path.mkdir(parents=True)
+        except OSError:
+            logger.error("Error creating directory %s. Reverting to default directory!", path)
+            new_path = Path(default)
+            new_path.mkdir(parents=True, exist_ok=True)
+            return new_path
+    return path
 
 
 def main():
     logger = logging.getLogger(__name__)
+
+    app = gui.instantiate_app(logger)
+    config_values = gui.get_config(logger)
+
+    # Create save dir if needed
+    save_dir = create_dir_if_not_exist(config_values["save_dir"], DEFAULT_SAVE_DIR, logger)
+    logger.debug("Save directory: %s", save_dir)
+    _full_default_experiment = save_dir.joinpath(DEFAULT_EXPERIMENT_DIR)
+    _dir_to_create = save_dir.joinpath(config_values["experiment"])
+    experiment_dir = create_dir_if_not_exist(_dir_to_create, _full_default_experiment, logger )
+    _full_default_mouse = experiment_dir.joinpath(DEFAULT_MOUSE_DIR)
+    _dir_to_create = experiment_dir.joinpath(config_values["mouse"])
+    mouse_dir = create_dir_if_not_exist(_dir_to_create, _full_default_mouse, logger)
 
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
@@ -31,8 +65,6 @@ def main():
         )  # Set exposure to default FPS
         camera.register_event_handler(event_handler)
 
-        app = gui.instantiate_app(logger)
-        config_values = gui.get_config(logger)
 
         # ui = gui.launch_gui(app, camera, logger)
 
