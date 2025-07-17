@@ -33,22 +33,25 @@ def create_dir_if_not_exist(path, default, logger):
             return new_path
     return path
 
+def create_session_dirs(config_values, logger):
+    # Create save dir if needed
+    save_dir = create_dir_if_not_exist(config_values["save_dir"], DEFAULT_SAVE_DIR, logger)
+    _full_default_experiment = save_dir.joinpath(DEFAULT_EXPERIMENT_DIR)
+    _dir_to_create = save_dir.joinpath(config_values["experiment"])
+    experiment_dir = create_dir_if_not_exist(_dir_to_create, _full_default_experiment, logger)
+    _full_default_mouse = experiment_dir.joinpath(DEFAULT_MOUSE_DIR)
+    _dir_to_create = experiment_dir.joinpath(config_values["mouse"])
+    mouse_dir = create_dir_if_not_exist(_dir_to_create, _full_default_mouse, logger)
+
+    logger.debug("Save Dir: %s", mouse_dir)
+    return mouse_dir
 
 def main():
     logger = logging.getLogger(__name__)
 
     app = gui.instantiate_app(logger)
     config_values = gui.get_config(logger)
-
-    # Create save dir if needed
-    save_dir = create_dir_if_not_exist(config_values["save_dir"], DEFAULT_SAVE_DIR, logger)
-    logger.debug("Save directory: %s", save_dir)
-    _full_default_experiment = save_dir.joinpath(DEFAULT_EXPERIMENT_DIR)
-    _dir_to_create = save_dir.joinpath(config_values["experiment"])
-    experiment_dir = create_dir_if_not_exist(_dir_to_create, _full_default_experiment, logger )
-    _full_default_mouse = experiment_dir.joinpath(DEFAULT_MOUSE_DIR)
-    _dir_to_create = experiment_dir.joinpath(config_values["mouse"])
-    mouse_dir = create_dir_if_not_exist(_dir_to_create, _full_default_mouse, logger)
+    mouse_dir = create_session_dirs(config_values, logger)
 
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
