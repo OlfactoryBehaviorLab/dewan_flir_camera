@@ -31,7 +31,10 @@ def main():
         )  # Set exposure to default FPS
         camera.register_event_handler(event_handler)
 
-        ui = gui.launch_gui(camera, logger)
+        app = gui.instantiate_app(logger)
+        config_values = gui.get_config(logger)
+
+        # ui = gui.launch_gui(app, camera, logger)
 
         # while True:
         #     try:

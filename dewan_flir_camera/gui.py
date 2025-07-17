@@ -198,29 +198,43 @@ class ControlWindow(QMainWindow):
     def save_as_action_callback(self):
         pass
 
-def get_experiment_config(logger=None) -> dict:
-    config_ui = config.Ui_config_wizard()
-    config_return = config_ui.exec()
-    if config_return == 1:
-        configuration = {
-            'mouse': config_ui.mouse_ID_field.text(),
-            'experiment': config_ui.experiment_type_field.text(),
-            'save_dir': config_ui.save_path_field.text(),
-        }
-    else:
-        logger.error("Configuration UI returned 0! Setting default values")
-        configuration = {
-            'mouse': 1,
-            'experiment': 'none_specified',
-            'save_dir': Path(DEFAULT_DIR)
-        }
-    logger.debug("Configuration UI returned %s", configuration)
-    return configuration
+class ConfigDialog:
+    def __init__(self, logger):
+        self.logger = logger
+        self.config_ui = config.Ui_config_wizard()
+        self.config_ui.mouse_ID_field.textEdited.connect(self.verify_ID)
+        self.config_ui.experiment_type_field.textEdited.connect(self.verify_exp)
+        self.config_ui.save_path_field.textEdited.connect(self.verify_user_path)
 
-def launch_gui(camera=None, logger=None):
-    if not camera:
-        raise ValueError("A camera must be passed to the GUI!")
+    def get_experiment_config(self) -> dict:
+        config_return = self.config_ui.exec()
+        if config_return == 1:
+            configuration = {
+                'mouse': self.config_ui.mouse_ID_field.text(),
+                'experiment': self.config_ui.experiment_type_field.text(),
+                'save_dir': self.config_ui.save_path_field.text(),
+            }
+        else:
+            self.logger.error("Configuration UI returned 0! Setting default values")
+            configuration = {
+                'mouse': 1,
+                'experiment': 'none_specified',
+                'save_dir': Path(DEFAULT_DIR)
+            }
+        self.logger.debug("Configuration UI returned %s", configuration)
+        return configuration
 
+    def verify_ID(self):
+        self.logger.debug("Verifying ID: %s", self.config_ui.mouse_ID_field)
+
+    def verify_exp(self):
+        self.logger.debug("Verifying Experiment: %s", self.config_ui.experiment_type_field)
+
+    def verify_user_path(self):
+        self.logger.debug("Verifying Path: %s", self.config_ui.save_path_field)
+
+
+def instantiate_app(logger=None):
     sys.argv += ["-platform", "windows:darkmode=2"]
 
     app = QApplication.instance()
@@ -228,8 +242,17 @@ def launch_gui(camera=None, logger=None):
         app = QApplication(sys.argv)
     app.setStyle("fusion")
 
+    return app
+
+def get_config(logger):
     # Blocking get config values
-    config_values = get_experiment_config(logger)
+    config_dialog = ConfigDialog(logger)
+    return config_dialog.get_experiment_config()
+
+
+def launch_gui(app: QApplication, camera=None, logger=None):
+    if not camera:
+        raise ValueError("A camera must be passed to the GUI!")
 
     window = ControlWindow(camera, logger)
     window.show()
