@@ -55,7 +55,7 @@ def main():
 
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
-        event_handler = ImageHandler("./images")
+        event_handler = ImageHandler(mouse_dir.joinpath("images"))
         camera.init()
         camera.configure_hardware_trigger()
         # Default Parameters to match GUI defaults

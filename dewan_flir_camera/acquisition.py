@@ -6,21 +6,17 @@ from PySpin import ImageEventHandler, ImageProcessor, SpinnakerException
 
 
 class ImageHandler(ImageEventHandler):
-    def __init__(self, save_dir: Union[str, Path]):
+    def __init__(self, save_dir: Union[str, Path], logger):
         super().__init__()
-        self.save_dir: Path = []
+        self.logger = logger
+        self.save_dir = save_dir
         self.acquired_images = 0
         self._image_processor: PySpin.ImageProcessor = []
 
         self._init_image_processor()
-        self._init_save_dir(save_dir)
+        self._init_save_dir()
 
-    def _init_save_dir(self, save_dir):
-        if type(save_dir) == Path:
-            self.save_dir = save_dir
-        elif type(save_dir) == str:
-            self.save_dir = Path(save_dir)
-
+    def _init_save_dir(self):
         if not self.save_dir.exists():
             self.save_dir.mkdir(exist_ok=True)
 
@@ -32,7 +28,7 @@ class ImageHandler(ImageEventHandler):
 
     def OnImageEvent(self, image):
         if image.IsIncomplete():
-            print(f"Image Incomplete!: {image.GetImageStatus()}")
+            self.logger.error("Image Incomplete!: %s", image.GetImageStatus())
         else:
             try:
                 _image = self._image_processor.Convert(image, PySpin.PixelFormat_Mono8)
@@ -43,8 +39,7 @@ class ImageHandler(ImageEventHandler):
                 # print(f'Saved image: {_file_path}')
                 self.acquired_images += 1
             except Exception as se:
-                print("Error converting or saving image!")
-                print(se)
+                self.logger("Error saving image")
 
     def reset(self):
         self.acquired_images = 0
@@ -52,3 +47,5 @@ class ImageHandler(ImageEventHandler):
     @property
     def num_acquired_images(self):
         return self.acquired_images
+
+
