@@ -55,7 +55,6 @@ def main():
 
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
-        event_handler = ImageHandler(mouse_dir.joinpath("images"))
         camera.init()
         camera.configure_hardware_trigger()
         # Default Parameters to match GUI defaults
@@ -66,8 +65,13 @@ def main():
         camera.set_exposure(
             gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
         )  # Set exposure to default FPS
+        ui = gui.ControlWindow(camera, logger)
+        event_handler = ImageHandler(mouse_dir.joinpath("images"), logger)
+        event_handler.image_event_emitter.image_event_signal.connect(ui.display_image)
         camera.register_event_handler(event_handler)
 
+        ui.show()
+        _ = app.exec()
 
         # ui = gui.launch_gui(app, camera, logger)
 
