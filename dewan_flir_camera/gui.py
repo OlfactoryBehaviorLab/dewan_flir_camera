@@ -1,6 +1,10 @@
 import sys
 
 from pathlib import Path
+
+import numpy as np
+from PySide6.QtGui import QImage, QPixmap
+
 from dewan_flir_camera.options import (
     AcquisitionMode,
     AutoExposureMode,
@@ -8,8 +12,8 @@ from dewan_flir_camera.options import (
 )
 from dewan_flir_camera.ui import about, FLIR, config
 from dewan_flir_camera import threads, cam
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene
+from PySide6.QtCore import Slot
 
 DEFAULT_DIR = './'
 
@@ -198,13 +202,28 @@ class ControlWindow(QMainWindow):
     def save_as_action_callback(self):
         pass
 
+    @Slot(np.ndarray)
+    def display_image(self, image):
+        try:
+            self.logger.info("Displaying Image")
+            q_image = QImage(image, image.shape[1], image.shape[0],
+                             QImage.Format.Format_Grayscale8)
+            pixmap = QPixmap().fromImage(q_image)
+            scene = QGraphicsScene()
+            scene.addPixmap(pixmap)
+            self.main_ui.viewport.setScene(scene)
+            self.main_ui.viewport.fitInView(pixmap.rect())
+        except Exception as e:
+            self.logger.error(e)
+
+
 class ConfigDialog:
     def __init__(self, logger):
         self.logger = logger
         self.config_ui = config.Ui_config_wizard()
-        self.config_ui.mouse_ID_field.textEdited.connect(self.verify_ID)
-        self.config_ui.experiment_type_field.textEdited.connect(self.verify_exp)
-        self.config_ui.save_path_field.textEdited.connect(self.verify_user_path)
+        # self.config_ui.mouse_ID_field.textEdited.connect(self.verify_ID)
+        # self.config_ui.experiment_type_field.textEdited.connect(self.verify_exp)
+        # self.config_ui.save_path_field.textEdited.connect(self.verify_user_path)
 
     def get_experiment_config(self) -> dict:
         config_return = self.config_ui.exec()
