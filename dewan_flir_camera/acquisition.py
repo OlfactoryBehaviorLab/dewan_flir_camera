@@ -7,7 +7,8 @@ import numpy as np
 from PySpin import ImageEventHandler, ImageProcessor, SpinnakerException
 from PySide6.QtCore import Signal, QObject
 
-from options import AcquisitionState
+from gui import ControlWindow
+from options import AcquisitionState, VideoType
 from threads import VideoStreamer
 
 class ImageHandler(ImageEventHandler):
@@ -53,7 +54,7 @@ class ImageHandler(ImageEventHandler):
                 if self.display:
                     self.image_event_emitter.image_event_signal.emit(image_ndarray)
                 if self.record:
-                    self.video_processor.add_new_frame(image_ndarray)
+                    self.video_processor.add_new_frame(_image)
 
                 self.acquired_images += 1
                 _image.Release()
@@ -77,16 +78,21 @@ class VideoAcquisition:
         self.camera = cam
         self.logger = logger
         self.path = path
+        self.video_type = VideoType.H264_MP4
+        self.video_options = []
         self.num_received_frames = 0
         self.num_videos_saved = 0
         self.stream_timer = VideoStreamer(self)
-        self.video_writer = []
+        self.video_writer = PySpin.SpinVideo()
 
         self.event_handler = None
         self.frame_buffer: list[np.ndarray] = []
 
 
     def start_experiment_video_acquisition(self):
+        filename = f"trial_{self.num_videos_saved}"
+        self.set_video_writer_options()
+        self.video_writer.Open(filename, self.video_options)
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000) # start the stream timer
 
@@ -105,15 +111,47 @@ class VideoAcquisition:
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
 
     def save_buffer(self):
-        pass
+        for i, frame in enumerate(self.frame_buffer):
+            self.video_writer.Append(frame)
+            self.frame_buffer.pop(i)
+
 
     def check_done(self):
-        self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s", len(self.frame_buffer))
         frame_num_target = self.camera.num_burst_frames
-        if self.num_received_frames == frame_num_target and len(self.frame_buffer) == 0:
-            self.logger.info("Video acquisition finished for trial $d!", self.num_videos_saved)
+        self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s\nNum Target Frames: %s", len(self.frame_buffer), frame_num_target)
+        if self.num_received_frames >= frame_num_target:
+            self.logger.info("Video acquisition finished for trial %d!", self.num_videos_saved)
             self.num_videos_saved += 1
             self.num_received_frames = 0
-            self.reset_acquisition()
-        elif len(self.frame_buffer) > 0:
+            # self.reset_acquisition()
             self.save_buffer()
+            self.video_writer.Close()
+
+    def set_video_writer_options(self):
+        option = []
+        exposure_time = self.camera.exposure
+        FPS = ControlWindow.calc_max_fps(exposure_time)
+        width, height = self.camera.frame_size
+        self.logger.debug("%s, %s", width, height)
+        if self.video_type == VideoType.UNCOMPRESSED:
+            option = PySpin.AVIOption()
+            option.frameRate = FPS
+            option.height = height
+            option.width = width
+        elif self.video_type == VideoType.MJPG:
+            option = PySpin.MJPGOption()
+            option.frameRate = FPS
+            option.quality = 75
+            option.height = height
+            option.width = width
+        elif self.video_type == VideoType.H264_AVI or self.video_type == VideoType.H264_MP4:
+            option = PySpin.H264Option()
+            option.frameRate = FPS
+            option.bitrate = 1000000
+            option.height = height
+            option.width = width
+            # Set this to true to save to a mp4 container
+            option.useMP4 = (self.video_type == VideoType.H264_MP4)
+            # Decrease this for a higher quality
+            option.crf = 28
+        self.video_options = option
