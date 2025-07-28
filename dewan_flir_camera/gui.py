@@ -135,6 +135,9 @@ class ControlWindow(QMainWindow):
     def trial_time_s_changed_callback(self):
         trial_time_s = self.get_trial_time_s()
         self.update_trial_time_s(trial_time_s)
+        max_fps = self.calc_max_fps(self.camera.exposure)
+        num_burst_frames = self.s_to_frames(trial_time_s, max_fps)
+        self.camera.set_num_burst_frames(num_burst_frames)
 
     def start_button_callback(self):
         current_state = self.camera.acquisition_state
