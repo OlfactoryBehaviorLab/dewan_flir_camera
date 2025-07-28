@@ -6,6 +6,8 @@ import numpy as np
 from PySpin import ImageEventHandler, ImageProcessor, SpinnakerException
 from PySide6.QtCore import Signal, QObject
 
+from options import AcquisitionState
+
 class ImageHandler(ImageEventHandler):
     class ImageEventEmitter(QObject):
         image_event_signal = Signal(np.ndarray)
@@ -70,11 +72,29 @@ class ImageHandler(ImageEventHandler):
 
 class VideoAcquisition:
     def __init__(self, cam, logger, path):
-        self.cam = cam
+        self.camera = cam
         self.logger = logger
         self.path = path
+        self.num_received_frames = 0
+        self.num_videos_saved = 0
 
-        self.frame_buffer: np.ndarray[np.ndarray] = None
+        self.event_handler = None
+        self.frame_buffer: list[np.ndarray] = []
 
 
+    def start_experiment_video_acquisition(self):
+        self.camera.trigger_acquisition(AcquisitionState.BEGIN)
 
+    def add_new_frame(self, image):
+        self.frame_buffer.append(image)
+        self.num_received_frames += 1
+
+    def reset_acquisition(self):
+        self.camera.trigger_acquisition(AcquisitionState.END)
+        self.event_handler.reset()
+
+    def save_buffer(self):
+        pass
+
+    def check_done(self):
+        pass
