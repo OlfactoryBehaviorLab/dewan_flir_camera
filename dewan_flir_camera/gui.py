@@ -194,7 +194,17 @@ class ControlWindow(QMainWindow):
             )
 
     def arm_button_callback(self):
-        pass
+        current_arm_state = self.camera.armed
+
+        if current_arm_state:
+            self.camera.armed = False
+            self.set_gui_state(True)
+            self.main_ui.arm_button.setText("ARM TRIGGER")
+        else:
+            self.camera.armed = True
+            self.set_gui_state(False)
+            self.main_ui.arm_button.setText("TRIGGER ARMED")
+
 
     def capture_button_callback(self):
         self.camera.capture_single_frame()
@@ -207,6 +217,15 @@ class ControlWindow(QMainWindow):
 
     def save_as_action_callback(self):
         pass
+
+    def set_gui_state(self, state: bool):
+        self.main_ui.start_button.setEnabled(state)
+        self.main_ui.capture_button.setEnabled(state)
+        self.main_ui.exposure_apply.setEnabled(state)
+        self.main_ui.exposure_mode.setEnabled(state)
+        self.main_ui.acquisition_mode.setEnabled(state)
+        self.main_ui.s_per_trial.setEnabled(state)
+        self.main_ui.exposure_value.setEnabled(state)
 
     @Slot(np.ndarray)
     def display_image(self, image):
