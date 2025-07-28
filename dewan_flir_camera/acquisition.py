@@ -49,11 +49,9 @@ class ImageHandler(ImageEventHandler):
                 self.logger.debug("Convert to ndarray @ %s, duration: %s", nd_array_time_start, nd_array_time_end-nd_array_time_start)
                 self.logger.debug("Emit signal @ %s", time.time())
                 self.image_event_emitter.image_event_signal.emit(_image_to_display)
-                #
-                # _filename = f"image-{self.num_acquired_images}.jpg"
-                # _file_path = self.save_dir.joinpath(_filename)
-                # _image.Save(str(_file_path))
-                # print(f'Saved image: {_file_path}')
+                _filename = f"image-{self.num_acquired_images}.jpg"
+                _file_path = self.save_dir.joinpath(_filename)
+                _image.Save(str(_file_path))
                 self.acquired_images += 1
                 _image.Release()
             except Exception as se:
