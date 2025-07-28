@@ -25,6 +25,8 @@ class Cam(SpinnakerObject):
         self.stream_type = []
         self.stream_ID = []
 
+        self.current_FPS = 0
+
         self.acquisition_state: AcquisitionState = AcquisitionState.END
 
         self.event_handler_ptr = None
@@ -148,9 +150,17 @@ class Cam(SpinnakerObject):
 
     def set_acquisition_mode(self, mode: AcquisitionMode) -> None:
         try:
+            self.logger.debug("Setting acquisition mode to %s", mode)
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
             raise CameraException("Error configuring acquisition mode!") from se
+
+    def set_num_burst_frames(self, num_frames: int) -> None:
+        try:
+            self.logger.debug("Setting number of burst frames to %s", num_frames)
+            self.AcquisitionFrameCount.SetValue(num_frames)
+        except SpinnakerException as se:
+            raise CameraException("Error setting number of burst frames!") from se
 
     def get_exposure(self) -> float:
         try:
@@ -226,6 +236,12 @@ class Cam(SpinnakerObject):
     @property
     def frame_size(self):
         return self.Width, self.Height
+
+    @property
+    def exposure(self):
+        return self.get_exposure()
+
+
 
     def __getattr__(self, attribute):
         """
