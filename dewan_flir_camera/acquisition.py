@@ -108,7 +108,7 @@ class VideoAcquisition:
         pass
 
     def check_done(self):
-        self.logger.debug("Checking if video acquisition done!")
+        self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s", len(self.frame_buffer))
         frame_num_target = self.camera.num_burst_frames
         if self.num_received_frames == frame_num_target and len(self.frame_buffer) == 0:
             self.logger.info("Video acquisition finished for trial $d!", self.num_videos_saved)
