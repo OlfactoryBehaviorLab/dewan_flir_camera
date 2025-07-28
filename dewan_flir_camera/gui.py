@@ -25,6 +25,9 @@ class ControlWindow(QMainWindow):
         self.main_ui = FLIR.MainUI(self)
         self.main_ui.about_widget = about.About()
 
+        self.scene = QGraphicsScene()
+        self.main_ui.viewport.setScene(self.scene)
+
         self.main_ui.actionAbout.triggered.connect(self.main_ui.about_widget.show)
         self.main_ui.actionOpen.triggered.connect(self.open_action_callback)
         self.main_ui.actionSave.triggered.connect(self.save_action_callback)
@@ -204,15 +207,25 @@ class ControlWindow(QMainWindow):
 
     @Slot(np.ndarray)
     def display_image(self, image):
+        import time
         try:
-            self.logger.info("Displaying Image")
+            self.logger.debug("Received signal @ %s", time.time())
+            qimage_start = time.time()
             q_image = QImage(image, image.shape[1], image.shape[0],
                              QImage.Format.Format_Grayscale8)
+            qimage_end = time.time()
+            self.logger.debug("Create QImage @ %s, elapsed: %s", qimage_start, qimage_end-qimage_start)
+            pixmap_start = time.time()
             pixmap = QPixmap().fromImage(q_image)
-            scene = QGraphicsScene()
-            scene.addPixmap(pixmap)
-            self.main_ui.viewport.setScene(scene)
+            pixmap_end = time.time()
+            self.logger.debug("Create Pixmap @ %s, elapsed: %s", pixmap_start, pixmap_end-pixmap_start)
+
+            display_start = time.time()
+            self.scene.clear()
+            self.scene.addPixmap(pixmap)
             self.main_ui.viewport.fitInView(pixmap.rect())
+            display_end = time.time()
+            self.logger.debug("Display and Resize @ %s, elapsed: %s", display_start, display_end-display_start)
         except Exception as e:
             self.logger.error(e)
 
