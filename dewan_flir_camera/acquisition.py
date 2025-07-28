@@ -32,22 +32,12 @@ class ImageHandler(ImageEventHandler):
         )
 
     def OnImageEvent(self, image):
-        import time
-        start_time = time.time()
         if image.IsIncomplete():
             self.logger.error("Image Incomplete!: %s", image.GetImageStatus())
         else:
             try:
-                convert_time_start = time.time()
                 _image = self._image_processor.Convert(image, PySpin.PixelFormat_Mono8)
-                convert_end_time = time.time()
-                self.logger.debug("Image Event @ %s, delay: %s", start_time, convert_time_start-start_time)
-                self.logger.debug("Convert image @ %s, duration: %s", convert_time_start, convert_end_time-convert_time_start)
-                nd_array_time_start = time.time()
                 _image_to_display = _image.GetNDArray()
-                nd_array_time_end = time.time()
-                self.logger.debug("Convert to ndarray @ %s, duration: %s", nd_array_time_start, nd_array_time_end-nd_array_time_start)
-                self.logger.debug("Emit signal @ %s", time.time())
                 self.image_event_emitter.image_event_signal.emit(_image_to_display)
                 _filename = f"image-{self.num_acquired_images}.jpg"
                 _file_path = self.save_dir.joinpath(_filename)
