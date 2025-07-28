@@ -27,6 +27,8 @@ class Cam(SpinnakerObject):
 
         self.current_FPS = 0
 
+        self.armed = False
+
         self.acquisition_state: AcquisitionState = AcquisitionState.END
 
         self.event_handler_ptr = None
