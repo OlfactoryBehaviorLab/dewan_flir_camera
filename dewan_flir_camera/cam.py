@@ -243,7 +243,7 @@ class Cam(SpinnakerObject):
 
     @property
     def frame_size(self):
-        return self.Width, self.Height
+        return self.Width.GetValue(), self.Height.GetValue()
 
     @property
     def exposure(self):
