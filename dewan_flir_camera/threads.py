@@ -20,6 +20,8 @@ class UpdateTimer(QTimer):
         gui.update_MAX_FPS(max_fps)
         gui.update_trial_time_frames(trial_time_frames)
 
-def stream_video():
-
-    pass
+class VideoStreamer(QTimer):
+    def __init__(self, video_acquisition_handler):
+        super().__init__()
+        self.timeout.connect(video_acquisition_handler.save_buffer)
+        self.timeout.connect(video_acquisition_handler.check_done)
