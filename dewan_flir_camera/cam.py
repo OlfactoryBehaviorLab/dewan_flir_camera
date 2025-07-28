@@ -77,7 +77,7 @@ class Cam(SpinnakerObject):
 
             if self.trigger_acquisition(AcquisitionState.BEGIN):
                 self.TriggerSoftware.Execute()
-                time.sleep(2)
+                time.sleep(0.01)
             if self.trigger_acquisition(AcquisitionState.END):
                 self.set_acquisition_mode(
                     current_acquisition_mode
