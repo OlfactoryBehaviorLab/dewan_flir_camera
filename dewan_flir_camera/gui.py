@@ -60,9 +60,7 @@ class ControlWindow(QMainWindow):
         # The other camera fields are automatically updated by the timer
         # This is the only one we need to pull from the camera
         self.main_ui.exposure_value.setValue(int(self.camera.get_exposure()))
-        self.update_timer = QTimer(self)
-        self.update_timer.timeout.connect(lambda: threads.update_ui(self))
-        self.update_timer.start(100)  # Poll rate in ms
+        self.update_timer = threads.UpdateTimer(self)
 
     @staticmethod
     def calc_max_fps(exposure_time_us):
