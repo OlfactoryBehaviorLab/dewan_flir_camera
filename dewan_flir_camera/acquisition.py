@@ -47,13 +47,13 @@ class ImageHandler(ImageEventHandler):
         else:
             try:
                 _image = self._image_processor.Convert(image, PySpin.PixelFormat_Mono8)
-                _image_to_display = _image.GetNDArray()
+                image_ndarray = _image.GetNDArray()
                 if self.do_save:
                     self.save_image(_image)
                 if self.display:
-                    self.image_event_emitter.image_event_signal.emit(_image_to_display)
+                    self.image_event_emitter.image_event_signal.emit(image_ndarray)
                 if self.record:
-                    pass
+                    self.video_processor.add_new_frame(image_ndarray)
 
                 self.acquired_images += 1
                 _image.Release()
