@@ -22,6 +22,8 @@ class ControlWindow(QMainWindow):
         super().__init__()
         self.logger = logger
         self.camera: cam.Cam = camera
+        self.video_acquisition_handler = video_acquisition_handler
+
         self.main_ui = FLIR.MainUI(self)
         self.main_ui.about_widget = about.About()
 
@@ -198,11 +200,12 @@ class ControlWindow(QMainWindow):
             self.camera.armed = False
             self.set_gui_state(True)
             self.main_ui.arm_button.setText("ARM TRIGGER")
+            self.video_acquisition_handler.end_experiment_video_acquisition()
         else:
             self.camera.armed = True
             self.set_gui_state(False)
             self.main_ui.arm_button.setText("TRIGGER ARMED")
-
+            self.video_acquisition_handler.start_experiment_video_acquisition()
 
     def capture_button_callback(self):
         self.camera.capture_single_frame()
