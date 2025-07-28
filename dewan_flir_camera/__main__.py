@@ -72,28 +72,20 @@ def main():
         )  # Set exposure to default FPS
 
         video_acquisition_handler = VideoAcquisition(camera, logger, mouse_dir)
-
         ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
         event_handler = ImageHandler(image_dir, logger, video_acquisition_handler)
+        video_acquisition_handler.event_handler = event_handler
         event_handler.image_event_emitter.image_event_signal.connect(ui.display_image)
         camera.register_event_handler(event_handler)
+
+
 
         ui.show()
         _ = app.exec()
 
         # ui = gui.launch_gui(app, camera, logger)
 
-        # while True:
-        #     try:
-        #         logger.info("Waiting for trigger!")
-        #         camera.trigger_acquisition(AcquisitionState.BEGIN)
-        #         event_handler.reset()
-        #         wait_for_trigger(event_handler, logger)
-        #         camera.trigger_acquisition(AcquisitionState.END)
-        #     except KeyboardInterrupt:
-        #         camera.trigger_acquisition(AcquisitionState.END)
-        #         event_handler.reset()
-        #         break
+
 
 
 def wait_for_trigger(event_handler, logger, num_frames=100, wait_time_s=0.1):
