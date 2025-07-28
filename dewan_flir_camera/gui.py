@@ -13,7 +13,7 @@ from dewan_flir_camera.options import (
 from dewan_flir_camera.ui import about, FLIR, config
 from dewan_flir_camera import threads, cam
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QTimer
 
 DEFAULT_DIR = './'
 
