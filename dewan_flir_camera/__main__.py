@@ -34,7 +34,7 @@ def create_dir_if_not_exist(path, addition, default, logger):
     if addition is not None:
         path = path.joinpath(addition)
 
-    logger.info("Creating: %s", path)
+    logger.debug("Creating: %s", path)
     try:
         path.mkdir(parents=True, exist_ok=True)
     except OSError:
@@ -48,7 +48,7 @@ def create_session_dirs(config_values, logger):
     experiment_dir = create_dir_if_not_exist(save_dir, config_values["experiment"], DEFAULT_EXPERIMENT_DIR, logger)
     mouse_dir = create_dir_if_not_exist(experiment_dir, config_values["mouse"], DEFAULT_MOUSE_DIR, logger)
 
-    logger.debug("Save Dir: %s", mouse_dir)
+    logger.info("Save Dir: %s", mouse_dir)
     return mouse_dir
 
 def main():
@@ -57,7 +57,7 @@ def main():
     app = gui.instantiate_app(logger)
     config_values = gui.get_config(logger)
     mouse_dir = create_session_dirs(config_values, logger)
-
+    image_dir = create_dir_if_not_exist(mouse_dir, "images", None, logger)
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
         camera.init()
@@ -71,7 +71,7 @@ def main():
             gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
         )  # Set exposure to default FPS
         ui = gui.ControlWindow(camera, logger)
-        event_handler = ImageHandler(mouse_dir.joinpath("images"), logger)
+        event_handler = ImageHandler(image_dir, logger)
         event_handler.image_event_emitter.image_event_signal.connect(ui.display_image)
         camera.register_event_handler(event_handler)
 
