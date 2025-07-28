@@ -24,4 +24,4 @@ class VideoStreamer(QTimer):
     def __init__(self, video_acquisition_handler):
         super().__init__()
         self.timeout.connect(video_acquisition_handler.save_buffer)
-        self.timeout.connect(video_acquisition_handler.check_done)
+        #self.timeout.connect(video_acquisition_handler.check_done)

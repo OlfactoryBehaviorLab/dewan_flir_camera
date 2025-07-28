@@ -1,4 +1,5 @@
 from pathlib import Path
+from time import sleep
 from typing import Union
 
 import PySpin
@@ -7,6 +8,7 @@ from PySpin import ImageEventHandler, ImageProcessor, SpinnakerException
 from PySide6.QtCore import Signal, QObject
 
 from options import AcquisitionState
+from threads import VideoStreamer
 
 class ImageHandler(ImageEventHandler):
     class ImageEventEmitter(QObject):
@@ -77,6 +79,8 @@ class VideoAcquisition:
         self.path = path
         self.num_received_frames = 0
         self.num_videos_saved = 0
+        self.stream_timer = VideoStreamer(self)
+        self.video_writer = []
 
         self.event_handler = None
         self.frame_buffer: list[np.ndarray] = []
@@ -84,6 +88,11 @@ class VideoAcquisition:
 
     def start_experiment_video_acquisition(self):
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
+        self.stream_timer.start(1000) # start the stream timer
+
+    def end_experiment_video_acquisition(self):
+        self.camera.trigger_acquisition(AcquisitionState.END)
+        self.stream_timer.stop()
 
     def add_new_frame(self, image):
         self.frame_buffer.append(image)
@@ -92,9 +101,19 @@ class VideoAcquisition:
     def reset_acquisition(self):
         self.camera.trigger_acquisition(AcquisitionState.END)
         self.event_handler.reset()
+        sleep(0.01)
+        self.camera.trigger_acquisition(AcquisitionState.BEGIN)
 
     def save_buffer(self):
         pass
 
     def check_done(self):
-        pass
+        self.logger.debug("Checking if video acquisition done!")
+        frame_num_target = self.camera.num_burst_frames
+        if self.num_received_frames == frame_num_target and len(self.frame_buffer) == 0:
+            self.logger.info("Video acquisition finished for trial $d!", self.num_videos_saved)
+            self.num_videos_saved += 1
+            self.num_received_frames = 0
+            self.reset_acquisition()
+        elif len(self.frame_buffer) > 0:
+            self.save_buffer()
