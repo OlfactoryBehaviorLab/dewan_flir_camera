@@ -18,7 +18,7 @@ from PySide6.QtCore import Slot, QTimer
 DEFAULT_DIR = './'
 
 class ControlWindow(QMainWindow):
-    def __init__(self, camera, logger):
+    def __init__(self, camera, logger, video_acquisition_handler):
         super().__init__()
         self.logger = logger
         self.camera: cam.Cam = camera

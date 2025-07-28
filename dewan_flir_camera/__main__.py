@@ -4,7 +4,7 @@ from time import sleep
 
 from dewan_flir_camera import gui
 from spin_system import SpinSystem
-from acquisition import ImageHandler
+from acquisition import ImageHandler, VideoAcquisition
 from options import AutoExposureMode, AcquisitionMode, AcquisitionState
 
 import logging
@@ -70,8 +70,11 @@ def main():
         camera.set_exposure(
             gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
         )  # Set exposure to default FPS
-        ui = gui.ControlWindow(camera, logger)
-        event_handler = ImageHandler(image_dir, logger)
+
+        video_acquisition_handler = VideoAcquisition(camera, logger, mouse_dir)
+
+        ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
+        event_handler = ImageHandler(image_dir, logger, video_acquisition_handler)
         event_handler.image_event_emitter.image_event_signal.connect(ui.display_image)
         camera.register_event_handler(event_handler)
 

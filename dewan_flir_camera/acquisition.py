@@ -11,7 +11,7 @@ class ImageHandler(ImageEventHandler):
         image_event_signal = Signal(np.ndarray)
         def __init__(self):
             super().__init__()
-    def __init__(self, save_dir: Union[str, Path], logger):
+    def __init__(self, save_dir: Union[str, Path], logger, video_acquisition_handler):
         super().__init__()
         self.logger = logger
         self.save_dir = save_dir
@@ -21,7 +21,7 @@ class ImageHandler(ImageEventHandler):
         self.display = True
         self.record = True
 
-        self.video_processor = None
+        self.video_processor: VideoAcquisition = video_acquisition_handler
         self._image_processor: PySpin.ImageProcessor = []
         self.image_event_emitter = self.ImageEventEmitter()
         self._init_image_processor()
@@ -67,5 +67,14 @@ class ImageHandler(ImageEventHandler):
     @property
     def num_acquired_images(self):
         return self.acquired_images
+
+class VideoAcquisition:
+    def __init__(self, cam, logger, path):
+        self.cam = cam
+        self.logger = logger
+        self.path = path
+
+        self.frame_buffer: np.ndarray[np.ndarray] = None
+
 
 
