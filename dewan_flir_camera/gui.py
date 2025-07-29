@@ -132,7 +132,7 @@ class ControlWindow(QMainWindow):
         )  # Just incase the camera bounds the user's input
         try:
             self.main_ui.exposure_value.setValue(new_time)
-        except (TypeError, ValueError) as ve:
+        except (TypeError, ValueError):
             self.logger.error("%s is not a valid value for setValue!", new_time)
 
     def trial_time_s_changed_callback(self):
@@ -282,7 +282,8 @@ class ConfigDialog:
 
 def instantiate_app(logger=None):
     sys.argv += ["-platform", "windows:darkmode=2"]
-
+    if logger:
+        logger.debug("Instantiating QApplication")
     app = QApplication.instance()
     if not app:
         app = QApplication(sys.argv)

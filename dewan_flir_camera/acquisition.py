@@ -59,7 +59,7 @@ class ImageHandler(ImageEventHandler):
                 self.acquired_images += 1
                 _image.Release()
             except Exception as se:
-                self.logger("Error saving image")
+                self.logger.error("Error saving image: %s", se)
 
     def save_image(self, image):
         _filename = f"image-{self.num_acquired_images}.jpg"

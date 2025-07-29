@@ -86,7 +86,7 @@ class Cam(SpinnakerObject):
                     current_acquisition_mode
                 )  # Reset to initial mode
         except SpinnakerException as se:
-            self.logger.error("Unable to capture single frame!")
+            self.logger.error("Unable to capture single frame!: %s", se)
 
     def trigger_acquisition(
         self, state: AcquisitionState, force: bool = False
@@ -187,7 +187,7 @@ class Cam(SpinnakerObject):
             acquisition_mode = self.AcquisitionMode.GetValue()
             return AcquisitionMode(acquisition_mode)
         except SpinnakerException as se:
-            raise CameraError("Error reading acquisition mode!")
+            raise CameraError("Error reading acquisition mode!") from se
 
     def get_num_burst_frames(self) -> float:
         try:
@@ -223,7 +223,7 @@ class Cam(SpinnakerObject):
             raise CameraError(
                 f"An error occurred while configuring camera {self.number}"
                 "s hardware trigger"
-            )
+            ) from se
 
     def configure_software_trigger(self):
         try:
@@ -237,7 +237,7 @@ class Cam(SpinnakerObject):
             raise CameraError(
                 f"An error occurred while configuring camera {self.number}"
                 "s software trigger"
-            )
+            ) from se
 
     @property
     def frame_size(self):
@@ -261,7 +261,8 @@ class Cam(SpinnakerObject):
                 attribute
             )  ## See if the camera_ptr class has the attribute
 
-        except AttributeError as ae:
+
+        except AttributeError:
             self.logger.error(
                 "The camera does not have a property or attribute named %s", attribute
             )
@@ -269,8 +270,8 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             if "AccessException" in str(se):
                 self.logger.error(
-                    f"An AccessException occurred when trying to read %."
-                    f" It is likely that your camera does not have this property",
+                    "An AccessException occurred when trying to read %s."
+                    " It is likely that your camera does not have this property",
                     attribute,
                 )
             return None
@@ -303,7 +304,7 @@ class Cam(SpinnakerObject):
             self.stream_ID = self.get_node_info(self.ptr.TLStream.StreamID)
             self.stream_type = self.get_node_info(self.ptr.TLStream.StreamType)
         except SpinnakerException as se:
-            raise CameraError("Error getting stream information!")
+            raise CameraError("Error getting stream information!") from se
 
     def __str__(self):
         return f"Camera {self.number}"

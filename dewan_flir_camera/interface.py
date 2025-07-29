@@ -30,7 +30,7 @@ class Interface(SpinnakerObject):
 
         except SpinnakerException as ex:
             self.deinit()
-            raise CameraError("Error getting interface information!") from None
+            raise CameraError("Error getting interface information!") from ex
 
     def _get_HBA_tl_info(self):
         """
@@ -49,7 +49,7 @@ class Interface(SpinnakerObject):
 
         except SpinnakerException as ex:
             self.deinit()
-            raise CameraError("Error getting HBA information!") from None
+            raise CameraError("Error getting HBA information!") from ex
 
     def __str__(self):
         return (
