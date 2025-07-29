@@ -5,7 +5,7 @@ from time import sleep
 from dewan_flir_camera import gui
 from spin_system import SpinSystem
 from acquisition import ImageHandler, VideoAcquisition
-from options import AutoExposureMode, AcquisitionMode, AcquisitionState
+from options import AutoExposureMode, AcquisitionMode
 
 import logging
 
