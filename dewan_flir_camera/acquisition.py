@@ -91,9 +91,7 @@ class VideoAcquisition:
 
 
     def start_experiment_video_acquisition(self):
-        filename = f"trial_{self.num_videos_saved}"
         self.set_video_writer_options()
-        self.video_writer.Open(filename, self.video_options)
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000) # start the stream timer
 
@@ -112,22 +110,25 @@ class VideoAcquisition:
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
 
     def save_buffer(self):
+        filename = f"{self.file_stem}-trial-{self.num_videos_saved}"
+        save_path = str(self.path.joinpath(filename))
+        self.video_writer.Open(save_path, self.video_options)
         for i, frame in enumerate(self.frame_buffer):
             self.video_writer.Append(frame)
             self.frame_buffer[i].Release() # Need to release the PySpin images
 
         self.frame_buffer = []
+        self.video_writer.Close()
 
     def check_done(self):
         frame_num_target = self.camera.num_burst_frames
         self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s\nNum Target Frames: %s", len(self.frame_buffer), frame_num_target)
         if self.num_received_frames >= frame_num_target:
             self.logger.info("Video acquisition finished for trial %d!", self.num_videos_saved)
+            self.save_buffer()
             self.num_videos_saved += 1
             self.num_received_frames = 0
             # self.reset_acquisition()
-            self.save_buffer()
-            self.video_writer.Close()
 
     def set_video_writer_options(self):
         option = []
