@@ -111,12 +111,11 @@ class Cam(SpinnakerObject):
             ) from se
 
     def poll(self):
-        data = {
+        return {
             "exposure_time": self.get_exposure(),
             "fps": 0,
         }
 
-        return data
 
     def set_exposure(self, new_exposure: int) -> int:
         try:
@@ -170,8 +169,8 @@ class Cam(SpinnakerObject):
                 self.logger.warning("Unable to get exposure time. Aborting...")
                 return 0.0
 
-            exposure = self.ExposureTime.GetValue()
-            return exposure
+            return self.ExposureTime.GetValue()
+
         except SpinnakerException as se:
             raise CameraError("Error reading camera exposure!") from se
 
@@ -258,10 +257,9 @@ class Cam(SpinnakerObject):
         since the underlying functionality is a bit ambiguous
         """
         try:
-            return_ptr = self.ptr.__getattribute__(
+            return self.ptr.__getattribute__(
                 attribute
             )  ## See if the camera_ptr class has the attribute
-            return return_ptr
 
         except AttributeError as ae:
             self.logger.error(
