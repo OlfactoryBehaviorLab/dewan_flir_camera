@@ -4,7 +4,7 @@ from typing import Union
 
 import PySpin
 import numpy as np
-from PySpin import ImageEventHandler, ImageProcessor, SpinnakerException
+from PySpin import ImageEventHandler, ImageProcessor
 from PySide6.QtCore import Signal, QObject
 
 from gui import ControlWindow

@@ -1,19 +1,22 @@
 import sys
-
 from pathlib import Path
-
 import numpy as np
-from PySide6.QtGui import QImage, QPixmap
 
+from dewan_flir_camera import threads, cam
 from dewan_flir_camera.options import (
     AcquisitionMode,
     AutoExposureMode,
     AcquisitionState,
 )
-from dewan_flir_camera.ui import about, FLIR, config
-from dewan_flir_camera import threads, cam
+from dewan_flir_camera.ui import (
+    about,
+    FLIR,
+    config,
+)
+
+from PySide6.QtGui import QImage, QPixmap
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene
-from PySide6.QtCore import Slot, QTimer
 
 DEFAULT_DIR = './'
 

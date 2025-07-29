@@ -1,4 +1,3 @@
-import traceback
 import time
 import PySpin
 from PySpin import SpinnakerException
