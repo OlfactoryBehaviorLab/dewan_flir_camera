@@ -35,7 +35,7 @@ class SpinnakerObject:
             return None
 
 
-class CameraException(Exception):
+class CameraError(Exception):
     def __init__(self, msg: str):
         super().__init__()
         self.msg = msg

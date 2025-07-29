@@ -1,6 +1,6 @@
 import logging
 import PySpin
-from dewan_flir_camera._generics import SpinnakerObject, CameraException
+from dewan_flir_camera._generics import SpinnakerObject, CameraError
 from dewan_flir_camera.cam import Cam
 from dewan_flir_camera.interface import Interface
 
@@ -30,7 +30,7 @@ class SpinSystem(SpinnakerObject):
         if self.system:
             return self
         else:
-            raise CameraException("Unable to initialize SpinSystem!")
+            raise CameraError("Unable to initialize SpinSystem!")
 
     def __exit__(self, exc_type, exc_val, tb):
         self.logger.debug("Hit context manager exit")
@@ -65,7 +65,7 @@ class SpinSystem(SpinnakerObject):
         except PySpin.SpinnakerException as ex:
             # Unexpected error, cleanup and raise our general exception
             self._cleanup()
-            raise CameraException("Error initializing system!") from ex
+            raise CameraError("Error initializing system!") from ex
 
     def _cleanup(self):
         ## Clean up our classes if we leave the scope of this system
