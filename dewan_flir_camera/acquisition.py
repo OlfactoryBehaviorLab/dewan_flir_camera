@@ -74,10 +74,11 @@ class ImageHandler(ImageEventHandler):
         return self.acquired_images
 
 class VideoAcquisition:
-    def __init__(self, cam, logger, path):
+    def __init__(self, cam, logger, path, file_stem):
         self.camera = cam
         self.logger = logger
         self.path = path
+        self.file_stem: str = file_stem
         self.video_type = VideoType.H264_MP4
         self.video_options = []
         self.num_received_frames = 0

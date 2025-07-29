@@ -42,21 +42,24 @@ def create_dir_if_not_exist(path, addition, default, logger):
 
     return path
 
-def create_session_dirs(config_values, logger):
+def create_session_dirs(config_values, logger) -> tuple[Path, str]:
     # Create save dir if needed
     save_dir = create_dir_if_not_exist(config_values["save_dir"], None, DEFAULT_SAVE_DIR, logger)
     experiment_dir = create_dir_if_not_exist(save_dir, config_values["experiment"], DEFAULT_EXPERIMENT_DIR, logger)
+    experiment_stem = experiment_dir.stem
     mouse_dir = create_dir_if_not_exist(experiment_dir, config_values["mouse"], DEFAULT_MOUSE_DIR, logger)
+    mouse_stem = mouse_dir.stem
 
+    file_stem = f"{mouse_stem}-{experiment_stem}"
     logger.info("Save Dir: %s", mouse_dir)
-    return mouse_dir
+    return mouse_dir, file_stem
 
 def main():
     logger = logging.getLogger(__name__)
 
     app = gui.instantiate_app(logger)
     config_values = gui.get_config(logger)
-    mouse_dir = create_session_dirs(config_values, logger)
+    mouse_dir, file_stem = create_session_dirs(config_values, logger)
     image_dir = create_dir_if_not_exist(mouse_dir, "images", None, logger)
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
@@ -71,7 +74,7 @@ def main():
             gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
         )  # Set exposure to default FPS
 
-        video_acquisition_handler = VideoAcquisition(camera, logger, mouse_dir)
+        video_acquisition_handler = VideoAcquisition(camera, logger, mouse_dir, file_stem)
         ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
         event_handler = ImageHandler(image_dir, logger, video_acquisition_handler)
         video_acquisition_handler.event_handler = event_handler
