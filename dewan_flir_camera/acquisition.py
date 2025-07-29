@@ -113,8 +113,9 @@ class VideoAcquisition:
     def save_buffer(self):
         for i, frame in enumerate(self.frame_buffer):
             self.video_writer.Append(frame)
-            self.frame_buffer.pop(i)
+            self.frame_buffer[i].Release() # Need to release the PySpin images
 
+        self.frame_buffer = []
 
     def check_done(self):
         frame_num_target = self.camera.num_burst_frames
