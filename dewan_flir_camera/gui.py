@@ -18,7 +18,8 @@ from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 
-DEFAULT_DIR = './'
+DEFAULT_DIR = "./"
+
 
 class ControlWindow(QMainWindow):
     def __init__(self, camera, logger, video_acquisition_handler):
@@ -234,8 +235,9 @@ class ControlWindow(QMainWindow):
     @Slot(np.ndarray)
     def display_image(self, image):
         try:
-            q_image = QImage(image, image.shape[1], image.shape[0],
-                             QImage.Format.Format_Grayscale8)
+            q_image = QImage(
+                image, image.shape[1], image.shape[0], QImage.Format.Format_Grayscale8
+            )
             pixmap = QPixmap().fromImage(q_image)
             self.scene.clear()
             self.scene.addPixmap(pixmap)
@@ -256,16 +258,16 @@ class ConfigDialog:
         config_return = self.config_ui.exec()
         if config_return == 1:
             configuration = {
-                'mouse': self.config_ui.mouse_ID_field.text(),
-                'experiment': self.config_ui.experiment_type_field.text(),
-                'save_dir': self.config_ui.save_path_field.text(),
+                "mouse": self.config_ui.mouse_ID_field.text(),
+                "experiment": self.config_ui.experiment_type_field.text(),
+                "save_dir": self.config_ui.save_path_field.text(),
             }
         else:
             self.logger.error("Configuration UI returned 0! Setting default values")
             configuration = {
-                'mouse': 1,
-                'experiment': 'none_specified',
-                'save_dir': Path(DEFAULT_DIR)
+                "mouse": 1,
+                "experiment": "none_specified",
+                "save_dir": Path(DEFAULT_DIR),
             }
         self.logger.debug("Configuration UI returned %s", configuration)
         return configuration
@@ -274,7 +276,9 @@ class ConfigDialog:
         self.logger.debug("Verifying ID: %s", self.config_ui.mouse_ID_field)
 
     def verify_exp(self):
-        self.logger.debug("Verifying Experiment: %s", self.config_ui.experiment_type_field)
+        self.logger.debug(
+            "Verifying Experiment: %s", self.config_ui.experiment_type_field
+        )
 
     def verify_user_path(self):
         self.logger.debug("Verifying Path: %s", self.config_ui.save_path_field)
@@ -291,13 +295,14 @@ def instantiate_app(logger=None):
 
     return app
 
+
 def get_config(logger):
     # Blocking get config values
     config_dialog = ConfigDialog(logger)
     return config_dialog.get_experiment_config()
 
 
-def launch_gui(app: QApplication, camera=None, logger=None):
+def launch_gui(app: QApplication, camera, logger):
     if not camera:
         raise ValueError("A camera must be passed to the GUI!")
 

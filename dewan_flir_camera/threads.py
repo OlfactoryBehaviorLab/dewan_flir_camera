@@ -1,5 +1,6 @@
 from PySide6.QtCore import QTimer, Slot
 
+
 class UpdateTimer(QTimer):
     def __init__(self, gui):
         super().__init__()
@@ -19,6 +20,7 @@ class UpdateTimer(QTimer):
         gui.update_exposure_time(data["exposure_time"])
         gui.update_MAX_FPS(max_fps)
         gui.update_trial_time_frames(trial_time_frames)
+
 
 class VideoStreamer(QTimer):
     def __init__(self, video_acquisition_handler):

@@ -43,9 +43,7 @@ class Cam(SpinnakerObject):
                 self.ptr.Init()
                 self.is_init = True
             except SpinnakerException as se:
-                raise CameraError(
-                    f"Error initializing camera {self.number}!"
-                ) from se
+                raise CameraError(f"Error initializing camera {self.number}!") from se
 
     def deinit(self):
         if not self.is_init:
@@ -64,9 +62,7 @@ class Cam(SpinnakerObject):
                 self.ptr.DeInit()  # Must DeInit camera ptr as opposed to just deleting the reference
                 super().deinit()
             except SpinnakerException as se:
-                raise CameraError(
-                    f"Error initializing camera {self.number}!"
-                ) from se
+                raise CameraError(f"Error initializing camera {self.number}!") from se
 
     def capture_single_frame(self):
         try:
@@ -115,7 +111,6 @@ class Cam(SpinnakerObject):
             "exposure_time": self.get_exposure(),
             "fps": 0,
         }
-
 
     def set_exposure(self, new_exposure: int) -> int:
         try:
@@ -260,7 +255,6 @@ class Cam(SpinnakerObject):
             return self.ptr.__getattribute__(
                 attribute
             )  ## See if the camera_ptr class has the attribute
-
 
         except AttributeError:
             self.logger.error(

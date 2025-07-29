@@ -21,6 +21,7 @@ class AutoExposureMode(IntEnum):
 
 class VideoType:
     """'Enum' to select video type to be created and saved"""
+
     UNCOMPRESSED = 0
     MJPG = 1
     H264_AVI = 2

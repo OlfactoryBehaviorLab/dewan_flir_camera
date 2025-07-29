@@ -11,11 +11,14 @@ from gui import ControlWindow
 from options import AcquisitionState, VideoType
 from threads import VideoStreamer
 
+
 class ImageHandler(ImageEventHandler):
     class ImageEventEmitter(QObject):
         image_event_signal = Signal(np.ndarray)
+
         def __init__(self):
             super().__init__()
+
     def __init__(self, save_dir: Union[str, Path], logger, video_acquisition_handler):
         super().__init__()
         self.logger = logger
@@ -73,6 +76,7 @@ class ImageHandler(ImageEventHandler):
     def num_acquired_images(self):
         return self.acquired_images
 
+
 class VideoAcquisition:
     def __init__(self, cam, logger, path, file_stem):
         self.camera = cam
@@ -89,11 +93,10 @@ class VideoAcquisition:
         self.event_handler = None
         self.frame_buffer: list = []
 
-
     def start_experiment_video_acquisition(self):
         self.set_video_writer_options()
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
-        self.stream_timer.start(1000) # start the stream timer
+        self.stream_timer.start(1000)  # start the stream timer
 
     def end_experiment_video_acquisition(self):
         self.camera.trigger_acquisition(AcquisitionState.END)
@@ -115,7 +118,7 @@ class VideoAcquisition:
         self.video_writer.Open(save_path, self.video_options)
         for i, frame in enumerate(self.frame_buffer):
             self.video_writer.Append(frame)
-            self.frame_buffer[i].Release() # Need to release the PySpin images
+            self.frame_buffer[i].Release()  # Need to release the PySpin images
 
         self.frame_buffer = []
         self.video_writer.Close()
@@ -124,7 +127,9 @@ class VideoAcquisition:
         frame_num_target = self.camera.num_burst_frames
         # self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s\nNum Target Frames: %s", len(self.frame_buffer), frame_num_target)
         if self.num_received_frames >= frame_num_target:
-            self.logger.info("Video acquisition finished for trial %d!", self.num_videos_saved)
+            self.logger.info(
+                "Video acquisition finished for trial %d!", self.num_videos_saved
+            )
             self.save_buffer()
             self.num_videos_saved += 1
             self.num_received_frames = 0
@@ -147,14 +152,17 @@ class VideoAcquisition:
             option.quality = 75
             option.height = height
             option.width = width
-        elif self.video_type == VideoType.H264_AVI or self.video_type == VideoType.H264_MP4:
+        elif (
+            self.video_type == VideoType.H264_AVI
+            or self.video_type == VideoType.H264_MP4
+        ):
             option = PySpin.H264Option()
             option.frameRate = FPS
             option.bitrate = 1000000
             option.height = height
             option.width = width
             # Set this to true to save to a mp4 container
-            option.useMP4 = (self.video_type == VideoType.H264_MP4)
+            option.useMP4 = self.video_type == VideoType.H264_MP4
             # Decrease this for a higher quality
             option.crf = 28
         self.video_options = option

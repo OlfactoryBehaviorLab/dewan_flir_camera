@@ -16,8 +16,8 @@ DEFAULT_SAVE_DIR = "/flir_recordings"
 DEFAULT_EXPERIMENT_DIR = "default_experiment"
 DEFAULT_MOUSE_DIR = "default_mouse"
 
-def create_dir_if_not_exist(path, addition, default, logger):
 
+def create_dir_if_not_exist(path, addition, default, logger):
     if path is None or len(str(path)) == 0:
         if addition is None:
             # Create default root dir
@@ -25,7 +25,7 @@ def create_dir_if_not_exist(path, addition, default, logger):
     else:
         # Existing path is good, but we need to add an addition
         if addition is None or len(addition) == 0:
-        # No addition, so use the default addition dir; otherwise, use what the user passed
+            # No addition, so use the default addition dir; otherwise, use what the user passed
             addition = default
 
     if type(path) is not Path:
@@ -38,21 +38,31 @@ def create_dir_if_not_exist(path, addition, default, logger):
     try:
         path.mkdir(parents=True, exist_ok=True)
     except OSError:
-        logger.error("Error creating directory %s. Reverting to default directory!", path)
+        logger.error(
+            "Error creating directory %s. Reverting to default directory!", path
+        )
 
     return path
 
+
 def create_session_dirs(config_values, logger) -> tuple[Path, str]:
     # Create save dir if needed
-    save_dir = create_dir_if_not_exist(config_values["save_dir"], None, DEFAULT_SAVE_DIR, logger)
-    experiment_dir = create_dir_if_not_exist(save_dir, config_values["experiment"], DEFAULT_EXPERIMENT_DIR, logger)
+    save_dir = create_dir_if_not_exist(
+        config_values["save_dir"], None, DEFAULT_SAVE_DIR, logger
+    )
+    experiment_dir = create_dir_if_not_exist(
+        save_dir, config_values["experiment"], DEFAULT_EXPERIMENT_DIR, logger
+    )
     experiment_stem = experiment_dir.stem
-    mouse_dir = create_dir_if_not_exist(experiment_dir, config_values["mouse"], DEFAULT_MOUSE_DIR, logger)
+    mouse_dir = create_dir_if_not_exist(
+        experiment_dir, config_values["mouse"], DEFAULT_MOUSE_DIR, logger
+    )
     mouse_stem = mouse_dir.stem
 
     file_stem = f"{mouse_stem}-{experiment_stem}"
     logger.info("Save Dir: %s", mouse_dir)
     return mouse_dir, file_stem
+
 
 def main():
     logger = logging.getLogger(__name__)
@@ -74,21 +84,19 @@ def main():
             gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
         )  # Set exposure to default FPS
 
-        video_acquisition_handler = VideoAcquisition(camera, logger, mouse_dir, file_stem)
+        video_acquisition_handler = VideoAcquisition(
+            camera, logger, mouse_dir, file_stem
+        )
         ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
         event_handler = ImageHandler(image_dir, logger, video_acquisition_handler)
         video_acquisition_handler.event_handler = event_handler
         event_handler.image_event_emitter.image_event_signal.connect(ui.display_image)
         camera.register_event_handler(event_handler)
 
-
-
         ui.show()
         _ = app.exec()
 
         # ui = gui.launch_gui(app, camera, logger)
-
-
 
 
 def wait_for_trigger(event_handler, logger, num_frames=100, wait_time_s=0.1):
