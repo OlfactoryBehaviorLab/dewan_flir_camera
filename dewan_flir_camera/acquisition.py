@@ -76,8 +76,8 @@ class ImageHandler(ImageEventHandler):
 class VideoAcquisition:
     def __init__(self, cam, logger, path, file_stem):
         self.camera = cam
-        self.logger = logger
-        self.path = path
+        self.logger: logger = logger
+        self.path: Path = path
         self.file_stem: str = file_stem
         self.video_type = VideoType.H264_MP4
         self.video_options = []
@@ -87,7 +87,7 @@ class VideoAcquisition:
         self.video_writer = PySpin.SpinVideo()
 
         self.event_handler = None
-        self.frame_buffer: list[np.ndarray] = []
+        self.frame_buffer: list = []
 
 
     def start_experiment_video_acquisition(self):
