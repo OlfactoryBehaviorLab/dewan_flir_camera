@@ -38,7 +38,7 @@ class SpinSystem(SpinnakerObject):
         super().__exit__(exc_type, exc_val, tb)
 
     def __str__(self):
-        return f"Spinnaker System"
+        return f"Spinnaker System: {self.system}"
 
     def _initialize_system(self):
         try:
