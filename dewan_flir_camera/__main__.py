@@ -9,7 +9,7 @@ from options import AutoExposureMode, AcquisitionMode
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 
 DEFAULT_FPS = 60
 DEFAULT_SAVE_DIR = "/flir_recordings"
