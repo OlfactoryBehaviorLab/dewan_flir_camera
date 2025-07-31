@@ -76,11 +76,13 @@ class Cam(SpinnakerObject):
 
             if self.trigger_acquisition(AcquisitionState.BEGIN):
                 self.TriggerSoftware.Execute()
-                time.sleep(0.01)
+                exposure_time_s = self.exposure / 1000000
+                time.sleep(exposure_time_s)
             if self.trigger_acquisition(AcquisitionState.END):
                 self.set_acquisition_mode(
                     current_acquisition_mode
                 )  # Reset to initial mode
+            self.configure_hardware_trigger() # Enable the hardware trigger again
         except SpinnakerException as se:
             self.logger.error("Unable to capture single frame!: %s", se)
 
