@@ -96,22 +96,5 @@ def main():
         ui.show()
         _ = app.exec()
 
-        # ui = gui.launch_gui(app, camera, logger)
-
-
-def wait_for_trigger(event_handler, logger, num_frames=100, wait_time_s=0.1):
-    try:
-        while True:
-            logger.info("%s frames captured", event_handler.num_acquired_images)
-            sleep(wait_time_s)
-            if event_handler.num_acquired_images >= num_frames:
-                return
-    except SpinnakerException as se:
-        print("Error while acquiring images!")
-        print(se)
-    except Exception as e:
-        print(e)
-
-
 if __name__ == "__main__":
     main()
