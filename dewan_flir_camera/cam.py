@@ -8,8 +8,6 @@ from dewan_flir_camera.options import (
     AcquisitionState,
 )
 
-DEBUG = True
-
 
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, logger, number):
