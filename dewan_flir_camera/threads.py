@@ -31,10 +31,7 @@ class VideoStreamer(QTimer):
         self.timeout.connect(video_acquisition_handler.check_done)
 
 class VideoStreamWorker(QRunnable):
-    error = Signal()
-    finished = Signal()
-    progress = Signal()
-    def __init__(self, save_path: str, FPS: int, height: int, width: int):
+    def __init__(self, save_path: str, FPS: int, width: int, height: int):
         super().__init__()
         self.save_path: str = save_path
         self.logger = logging.getLogger(__name__)
@@ -71,12 +68,14 @@ class VideoStreamWorker(QRunnable):
         self.flush_buffer() # Save the images in the buffer
         if self.is_done: # If we're done end the timer
             self.timer.stop()
+            self.video_writer.release()
+            self.frame_buffer = []
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
         self.logger.debug("Flushing buffer! %d new frames to flush", num_frames - self.frame_counter)
         for i in range(self.frame_counter, num_frames):
-            _image = self.frame_buffer[i]
-            _image_umat = cv2.UMat(_image)
+            _image = self.frame_buffer[i].astype('uint8')
+            _image_umat = cv2.UMat(cv2.UMat(_image))
             self.video_writer.write(_image_umat)
-        self.frame_counter += num_frames
+            self.frame_counter += 1
