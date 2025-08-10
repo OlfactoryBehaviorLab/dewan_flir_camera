@@ -5,11 +5,11 @@ from typing import Union
 import PySpin
 import numpy as np
 from PySpin import ImageEventHandler, ImageProcessor
-from PySide6.QtCore import Signal, QObject
+from PySide6.QtCore import Signal, QObject, QThreadPool
 
 from gui import ControlWindow
 from options import AcquisitionState, VideoType
-from threads import VideoStreamer
+from threads import VideoStreamer, VideoStreamWorker
 
 
 class ImageHandler(ImageEventHandler):
@@ -78,6 +78,12 @@ class ImageHandler(ImageEventHandler):
 
 
 class VideoAcquisition:
+    class VideoAcquisitionEmitter(QObject):
+        add_to_buffer = Signal(np.ndarray)
+        done = Signal()
+        def __init__(self):
+            super().__init__()
+
     def __init__(self, cam, logger, path, file_stem):
         self.camera = cam
         self.logger: logger = logger
@@ -87,14 +93,14 @@ class VideoAcquisition:
         self.video_options = []
         self.num_received_frames = 0
         self.num_videos_saved = 0
+        self.video_acquisition_emitter = self.VideoAcquisitionEmitter()
         self.stream_timer = VideoStreamer(self)
-        self.video_writer = PySpin.SpinVideo()
-
+        self.threadpool = QThreadPool()
+        self.current_worker: VideoStreamWorker = None
         self.event_handler = None
-        self.frame_buffer: list = []
 
     def start_experiment_video_acquisition(self):
-        self.set_video_writer_options()
+        self.init_new_stream_worker()
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000)  # start the stream timer
 
@@ -102,25 +108,34 @@ class VideoAcquisition:
         self.camera.trigger_acquisition(AcquisitionState.END)
         self.stream_timer.stop()
 
+    def init_new_stream_worker(self):
+        filename = f"{self.file_stem}-trial-{self.num_videos_saved + 1}"
+        save_path = str(self.path.joinpath(filename))
+        self.current_worker = VideoStreamWorker(save_path)
+        self.video_acquisition_emitter.add_to_buffer.connect(self.current_worker.add_to_buffer)
+        self.video_acquisition_emitter.done.connect(self.current_worker.stop)
+        # ImageEvent -> emits image_record_signal -> VideoAcquisition.add_new_frame -> emits add_to_bufer -> VideoStreamWorker.add_to_buffer
+        self.threadpool.start(self.current_worker)
+
     def add_new_frame(self, image):
-        self.frame_buffer.append(image)
+        self.video_acquisition_emitter.add_to_buffer.emit(image)
         self.num_received_frames += 1
 
-    def reset_acquisition(self):
-        self.camera.trigger_acquisition(AcquisitionState.END)
-        self.event_handler.reset()
-        sleep(0.01)
-        self.camera.trigger_acquisition(AcquisitionState.BEGIN)
 
+    def reset_acquisition(self):
+        self.end_experiment_video_acquisition()
+        self.event_handler.reset()
+        sleep(0.1)
+        self.start_experiment_video_acquisition()
 
     def check_done(self):
         frame_num_target = self.camera.num_burst_frames
-        # self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s\nNum Target Frames: %s", len(self.frame_buffer), frame_num_target)
+        self.logger.debug("Checking if video acquisition done! Num Frames in buffer: %s\nNum Target Frames: %s", len(self.current_worker.frame_buffer), frame_num_target)
         if self.num_received_frames >= frame_num_target:
             self.logger.info(
                 "Video acquisition finished for trial %d!", self.num_videos_saved
             )
-            self.save_buffer()
+            self.video_acquisition_emitter.done.emit()
             self.num_videos_saved += 1
             self.num_received_frames = 0
             self.reset_acquisition()

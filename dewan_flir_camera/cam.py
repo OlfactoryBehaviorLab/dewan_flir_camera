@@ -154,6 +154,7 @@ class Cam(SpinnakerObject):
         try:
             self.logger.debug("Setting number of burst frames to %s", num_frames)
             self.AcquisitionFrameCount.SetValue(num_frames)
+            self.logger.debug("New number of burst frames is %s", self.num_burst_frames)
         except SpinnakerException as se:
             raise CameraError("Error setting number of burst frames!") from se
 
