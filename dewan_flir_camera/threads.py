@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 from PySide6.QtCore import QTimer, Slot, QRunnable, Signal
-
+import cv2
 
 class UpdateTimer(QTimer):
     def __init__(self, gui):
@@ -38,9 +38,15 @@ class VideoStreamWorker(QRunnable):
         super().__init__()
         self.save_path: str = save_path
         self.logger = logging.getLogger(__name__)
+        self.video_writer = cv2.VideoWriter(
+            self.save_path,
+            cv2.VideoWriter.fourcc(*"avc1"),
+            FPS,
+            (width, height),
+            False
+        )
         self.is_done: bool = False
         self.frame_buffer: list = []
-        self.video_writer = []
         self.frame_counter = 0
         self.timer = QTimer()
 
@@ -68,6 +74,9 @@ class VideoStreamWorker(QRunnable):
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
+        self.logger.debug("Flushing buffer! %d new frames to flush", num_frames - self.frame_counter)
         for i in range(self.frame_counter, num_frames):
-            pass
+            _image = self.frame_buffer[i]
+            _image_umat = cv2.UMat(_image)
+            self.video_writer.write(_image_umat)
         self.frame_counter += num_frames
