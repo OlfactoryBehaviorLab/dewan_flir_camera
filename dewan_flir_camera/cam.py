@@ -7,6 +7,7 @@ from dewan_flir_camera.options import (
     AcquisitionMode,
     AcquisitionState,
 )
+from dewan_flir_camera.gui import ControlWindow
 
 
 class Cam(SpinnakerObject):
@@ -123,6 +124,8 @@ class Cam(SpinnakerObject):
                 exposure_time = min(max_exposure_time, new_exposure)
                 exposure_time = max(exposure_time, min_exposure_time)
                 self.ExposureTime.SetValue(exposure_time)
+                fps = ControlWindow.calc_max_fps(exposure_time)
+                self.current_FPS = fps
                 return exposure_time
             else:
                 self.logger.warning(

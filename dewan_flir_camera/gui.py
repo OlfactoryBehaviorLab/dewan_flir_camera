@@ -1,8 +1,12 @@
 import sys
 from pathlib import Path
 import numpy as np
+from typing import TYPE_CHECKING
 
-from dewan_flir_camera import threads, cam
+if TYPE_CHECKING:
+    from dewan_flir_camera import cam
+
+from dewan_flir_camera import threads
 from dewan_flir_camera.options import (
     AcquisitionMode,
     AutoExposureMode,
