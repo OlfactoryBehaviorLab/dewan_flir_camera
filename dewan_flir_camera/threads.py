@@ -1,4 +1,7 @@
-from PySide6.QtCore import QTimer, Slot
+import logging
+
+import numpy as np
+from PySide6.QtCore import QTimer, Slot, QRunnable, Signal
 
 
 class UpdateTimer(QTimer):
@@ -26,3 +29,34 @@ class VideoStreamer(QTimer):
     def __init__(self, video_acquisition_handler):
         super().__init__()
         self.timeout.connect(video_acquisition_handler.check_done)
+
+class VideoStreamWorker(QRunnable):
+    error = Signal()
+    finished = Signal()
+    progress = Signal()
+    def __init__(self, save_path: str):
+        super().__init__()
+        self.save_path: str = save_path
+        self.logger = logging.getLogger(__name__)
+        self.is_done: bool = False
+        self.frame_buffer: list = []
+        self.video_writer = []
+        self.frame_counter = 0
+
+    @Slot()
+    def add_to_buffer(self, image: np.ndarray):
+        self.frame_buffer.append(image)
+
+    @Slot()
+    def run(self):
+        self.logger.info("Thread for %s started!", self.save_path)
+
+    @Slot()
+    def stop(self):
+        self.is_done = True
+
+    def flush_buffer(self):
+        num_frames = len(self.frame_buffer)
+        for i in range(self.frame_counter, num_frames):
+            pass
+        self.frame_counter += num_frames
