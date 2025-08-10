@@ -14,12 +14,13 @@ from threads import VideoStreamer
 
 class ImageHandler(ImageEventHandler):
     class ImageEventEmitter(QObject):
-        image_event_signal = Signal(np.ndarray)
+        image_display_signal = Signal(np.ndarray)
+        image_record_signal = Signal(np.ndarray)
 
         def __init__(self):
             super().__init__()
 
-    def __init__(self, save_dir: Union[str, Path], logger, video_acquisition_handler):
+    def __init__(self, save_dir: Union[str, Path], logger):
         super().__init__()
         self.logger = logger
         self.save_dir = save_dir
@@ -29,7 +30,6 @@ class ImageHandler(ImageEventHandler):
         self.display = True
         self.record = True
 
-        self.video_processor: VideoAcquisition = video_acquisition_handler
         self._image_processor: PySpin.ImageProcessor = []
         self.image_event_emitter = self.ImageEventEmitter()
         self._init_image_processor()
@@ -55,9 +55,9 @@ class ImageHandler(ImageEventHandler):
                 if self.do_save:
                     self.save_image(_image)
                 if self.display:
-                    self.image_event_emitter.image_event_signal.emit(image_ndarray)
+                    self.image_event_emitter.image_display_signal.emit(image_ndarray)
                 if self.record:
-                    self.video_processor.add_new_frame(_image)
+                    self.image_event_emitter.image_record_signal.emit(image_ndarray)
 
                 self.acquired_images += 1
                 _image.Release()

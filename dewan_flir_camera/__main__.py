@@ -88,9 +88,10 @@ def main():
             camera, logger, mouse_dir, file_stem
         )
         ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
-        event_handler = ImageHandler(image_dir, logger, video_acquisition_handler)
+        event_handler = ImageHandler(image_dir, logger)
         video_acquisition_handler.event_handler = event_handler
-        event_handler.image_event_emitter.image_event_signal.connect(ui.display_image)
+        event_handler.image_event_emitter.image_display_signal.connect(ui.display_image)
+        event_handler.image_event_emitter.image_record_signal.connect(video_acquisition_handler.add_new_frame)
         camera.register_event_handler(event_handler)
 
         ui.show()
