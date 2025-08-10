@@ -1,4 +1,5 @@
 import logging
+import time
 
 import numpy as np
 from PySide6.QtCore import QTimer, Slot, QRunnable, Signal
@@ -31,7 +32,7 @@ class VideoStreamer(QTimer):
         self.timeout.connect(video_acquisition_handler.check_done)
 
 class VideoStreamWorker(QRunnable):
-    def __init__(self, save_path: str, FPS: int, width: int, height: int):
+    def __init__(self, save_path: str, FPS: int, width: int, height: int, logger):
         super().__init__()
         self.save_path: str = save_path
         self.logger = logging.getLogger(__name__)
@@ -43,9 +44,10 @@ class VideoStreamWorker(QRunnable):
             False
         )
         self.is_done: bool = False
+        self.exit_thread: bool = False
         self.frame_buffer: list = []
         self.frame_counter = 0
-        self.timer = QTimer()
+        self.setAutoDelete(True)
 
     @Slot()
     def add_to_buffer(self, image: np.ndarray):
@@ -54,11 +56,12 @@ class VideoStreamWorker(QRunnable):
     @Slot()
     def run(self):
         self.logger.info("Thread for %s started!", self.save_path)
-        self.timer.timeout.connect(self.timer_callback)
+        # Let's just use this
+        while not self.exit_thread:
+            self.timer_callback()
+            time.sleep(.5)
 
-    @Slot()
-    def start(self):
-        self.timer.start(250)
+        self.logger.info("Thread for %s ended!", self.save_path)
 
     @Slot()
     def stop(self):
@@ -66,14 +69,14 @@ class VideoStreamWorker(QRunnable):
 
     def timer_callback(self):
         self.flush_buffer() # Save the images in the buffer
-        if self.is_done: # If we're done end the timer
-            self.timer.stop()
+        if self.is_done: # If we're done release the writer
             self.video_writer.release()
             self.frame_buffer = []
+            self.exit_thread = True
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
-        self.logger.debug("Flushing buffer! %d new frames to flush", num_frames - self.frame_counter)
+        self.logger.debug(f"Flushing buffer! {num_frames - self.frame_counter} new frames to flush")
         for i in range(self.frame_counter, num_frames):
             _image = self.frame_buffer[i].astype('uint8')
             _image_umat = cv2.UMat(cv2.UMat(_image))

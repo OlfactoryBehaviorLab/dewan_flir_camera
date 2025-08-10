@@ -105,7 +105,6 @@ class VideoAcquisition:
         self.init_new_stream_worker()
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000)  # start the stream timer
-        self.video_acquisition_emitter.start.emit()
 
     def end_experiment_video_acquisition(self):
         self.camera.trigger_acquisition(AcquisitionState.END)
@@ -119,7 +118,6 @@ class VideoAcquisition:
         self.current_worker = VideoStreamWorker(save_path, fps, width, height)
         self.video_acquisition_emitter.add_to_buffer.connect(self.current_worker.add_to_buffer)
         self.video_acquisition_emitter.done.connect(self.current_worker.stop)
-        self.video_acquisition_emitter.start.connect(self.current_worker.start)
         # ImageEvent -> emits image_record_signal -> VideoAcquisition.add_new_frame -> emits add_to_bufer -> VideoStreamWorker.add_to_buffer
         self.threadpool.start(self.current_worker)
 
