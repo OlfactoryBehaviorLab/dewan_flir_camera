@@ -81,7 +81,7 @@ class Cam(SpinnakerObject):
                 self.set_acquisition_mode(
                     current_acquisition_mode
                 )  # Reset to initial mode
-            self.configure_hardware_trigger() # Enable the hardware trigger again
+            self.configure_hardware_trigger()  # Enable the hardware trigger again
         except SpinnakerException as se:
             self.logger.error("Unable to capture single frame!: %s", se)
 

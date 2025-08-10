@@ -2,8 +2,9 @@ import logging
 import time
 
 import numpy as np
-from PySide6.QtCore import QTimer, Slot, QRunnable, Signal
+from PySide6.QtCore import QTimer, Slot, QRunnable, Signal, QObject
 import cv2
+
 
 class UpdateTimer(QTimer):
     def __init__(self, gui):
@@ -31,17 +32,14 @@ class VideoStreamer(QTimer):
         super().__init__()
         self.timeout.connect(video_acquisition_handler.check_done)
 
+
 class VideoStreamWorker(QRunnable):
     def __init__(self, save_path: str, FPS: int, width: int, height: int, logger):
         super().__init__()
         self.save_path: str = save_path
         self.logger = logging.getLogger(__name__)
         self.video_writer = cv2.VideoWriter(
-            self.save_path,
-            cv2.VideoWriter.fourcc(*"avc1"),
-            FPS,
-            (width, height),
-            False
+            self.save_path, cv2.VideoWriter.fourcc(*"avc1"), FPS, (width, height), False
         )
         self.is_done: bool = False
         self.exit_thread: bool = False
@@ -59,7 +57,7 @@ class VideoStreamWorker(QRunnable):
         # Let's just use this
         while not self.exit_thread:
             self.timer_callback()
-            time.sleep(.5)
+            time.sleep(0.5)
 
         self.logger.info("Thread for %s ended!", self.save_path)
 
@@ -68,17 +66,19 @@ class VideoStreamWorker(QRunnable):
         self.is_done = True
 
     def timer_callback(self):
-        self.flush_buffer() # Save the images in the buffer
-        if self.is_done: # If we're done release the writer
+        self.flush_buffer()  # Save the images in the buffer
+        if self.is_done:  # If we're done release the writer
             self.video_writer.release()
             self.frame_buffer = []
             self.exit_thread = True
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
-        self.logger.debug(f"Flushing buffer! {num_frames - self.frame_counter} new frames to flush")
+        self.logger.debug(
+            f"Flushing buffer! {num_frames - self.frame_counter} new frames to flush"
+        )
         for i in range(self.frame_counter, num_frames):
-            _image = self.frame_buffer[i].astype('uint8')
+            _image = self.frame_buffer[i].astype("uint8")
             _image_umat = cv2.UMat(cv2.UMat(_image))
             self.video_writer.write(_image_umat)
             self.frame_counter += 1

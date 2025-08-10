@@ -83,6 +83,7 @@ class VideoAcquisition:
         add_to_buffer = Signal(np.ndarray)
         done = Signal()
         start = Signal()
+
         def __init__(self):
             super().__init__()
 
@@ -115,8 +116,12 @@ class VideoAcquisition:
         save_path = str(self.path.joinpath(filename))
         fps = self.camera.current_FPS
         width, height = self.camera.frame_size
-        self.current_worker = VideoStreamWorker(save_path, fps, width, height)
-        self.video_acquisition_emitter.add_to_buffer.connect(self.current_worker.add_to_buffer)
+        self.current_worker = VideoStreamWorker(
+            save_path, fps, width, height, self.logger
+        )
+        self.video_acquisition_emitter.add_to_buffer.connect(
+            self.current_worker.add_to_buffer
+        )
         self.video_acquisition_emitter.done.connect(self.current_worker.stop)
         # ImageEvent -> emits image_record_signal -> VideoAcquisition.add_new_frame -> emits add_to_bufer -> VideoStreamWorker.add_to_buffer
         self.threadpool.start(self.current_worker)
@@ -125,16 +130,19 @@ class VideoAcquisition:
         self.video_acquisition_emitter.add_to_buffer.emit(image)
         self.num_received_frames += 1
 
-
     def reset_acquisition(self):
         self.end_experiment_video_acquisition()
-        self.event_handler.reset()
         sleep(0.1)
+        self.event_handler.reset()
         self.start_experiment_video_acquisition()
 
     def check_done(self):
         frame_num_target = self.camera.num_burst_frames
-        self.logger.debug("Checking if video acquisition done!  %s\\%s Frames received", len(self.current_worker.frame_buffer), frame_num_target)
+        self.logger.debug(
+            "Checking if video acquisition done!  %s\\%s Frames received",
+            len(self.current_worker.frame_buffer),
+            frame_num_target,
+        )
         if self.num_received_frames >= frame_num_target:
             self.logger.info(
                 "Video acquisition finished for trial %d!", self.num_videos_saved

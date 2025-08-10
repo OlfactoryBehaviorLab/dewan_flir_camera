@@ -93,11 +93,14 @@ def main():
         system.video_acquisition_handler = video_acquisition_handler
         # Give the system access to this so it can gracefully shut down if needed
         event_handler.image_event_emitter.image_display_signal.connect(ui.display_image)
-        event_handler.image_event_emitter.image_record_signal.connect(video_acquisition_handler.add_new_frame)
+        event_handler.image_event_emitter.image_record_signal.connect(
+            video_acquisition_handler.add_new_frame
+        )
         camera.register_event_handler(event_handler)
 
         ui.show()
         _ = app.exec()
+
 
 if __name__ == "__main__":
     main()
