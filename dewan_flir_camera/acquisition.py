@@ -112,16 +112,6 @@ class VideoAcquisition:
         sleep(0.01)
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
 
-    def save_buffer(self):
-        filename = f"{self.file_stem}-trial-{self.num_videos_saved}"
-        save_path = str(self.path.joinpath(filename))
-        self.video_writer.Open(save_path, self.video_options)
-        for i, frame in enumerate(self.frame_buffer):
-            self.video_writer.Append(frame)
-            self.frame_buffer[i].Release()  # Need to release the PySpin images
-
-        self.frame_buffer = []
-        self.video_writer.Close()
 
     def check_done(self):
         frame_num_target = self.camera.num_burst_frames
@@ -134,35 +124,4 @@ class VideoAcquisition:
             self.num_videos_saved += 1
             self.num_received_frames = 0
             self.reset_acquisition()
-
-    def set_video_writer_options(self):
-        option = []
-        exposure_time = self.camera.exposure
-        FPS = ControlWindow.calc_max_fps(exposure_time)
-        width, height = self.camera.frame_size
-        self.logger.debug("%s, %s", width, height)
-        if self.video_type == VideoType.UNCOMPRESSED:
-            option = PySpin.AVIOption()
-            option.frameRate = FPS
-            option.height = height
-            option.width = width
-        elif self.video_type == VideoType.MJPG:
-            option = PySpin.MJPGOption()
-            option.frameRate = FPS
-            option.quality = 75
-            option.height = height
-            option.width = width
-        elif (
-            self.video_type == VideoType.H264_AVI
-            or self.video_type == VideoType.H264_MP4
-        ):
-            option = PySpin.H264Option()
-            option.frameRate = FPS
-            option.bitrate = 1000000
-            option.height = height
-            option.width = width
-            # Set this to true to save to a mp4 container
-            option.useMP4 = self.video_type == VideoType.H264_MP4
-            # Decrease this for a higher quality
-            option.crf = 28
-        self.video_options = option
+            
