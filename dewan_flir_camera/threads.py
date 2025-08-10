@@ -34,7 +34,7 @@ class VideoStreamWorker(QRunnable):
     error = Signal()
     finished = Signal()
     progress = Signal()
-    def __init__(self, save_path: str):
+    def __init__(self, save_path: str, FPS: int, height: int, width: int):
         super().__init__()
         self.save_path: str = save_path
         self.logger = logging.getLogger(__name__)
@@ -42,6 +42,7 @@ class VideoStreamWorker(QRunnable):
         self.frame_buffer: list = []
         self.video_writer = []
         self.frame_counter = 0
+        self.timer = QTimer()
 
     @Slot()
     def add_to_buffer(self, image: np.ndarray):
@@ -50,10 +51,20 @@ class VideoStreamWorker(QRunnable):
     @Slot()
     def run(self):
         self.logger.info("Thread for %s started!", self.save_path)
+        self.timer.timeout.connect(self.timer_callback)
+
+    @Slot()
+    def start(self):
+        self.timer.start(250)
 
     @Slot()
     def stop(self):
         self.is_done = True
+
+    def timer_callback(self):
+        self.flush_buffer() # Save the images in the buffer
+        if self.is_done: # If we're done end the timer
+            self.timer.stop()
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)

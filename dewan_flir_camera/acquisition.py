@@ -7,6 +7,7 @@ import numpy as np
 from PySpin import ImageEventHandler, ImageProcessor
 from PySide6.QtCore import Signal, QObject, QThreadPool
 
+from cam import Cam
 from gui import ControlWindow
 from options import AcquisitionState, VideoType
 from threads import VideoStreamer, VideoStreamWorker
@@ -81,11 +82,12 @@ class VideoAcquisition:
     class VideoAcquisitionEmitter(QObject):
         add_to_buffer = Signal(np.ndarray)
         done = Signal()
+        start = Signal()
         def __init__(self):
             super().__init__()
 
     def __init__(self, cam, logger, path, file_stem):
-        self.camera = cam
+        self.camera: Cam = cam
         self.logger: logger = logger
         self.path: Path = path
         self.file_stem: str = file_stem
@@ -103,17 +105,21 @@ class VideoAcquisition:
         self.init_new_stream_worker()
         self.camera.trigger_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000)  # start the stream timer
+        self.video_acquisition_emitter.start.emit()
 
     def end_experiment_video_acquisition(self):
         self.camera.trigger_acquisition(AcquisitionState.END)
         self.stream_timer.stop()
 
     def init_new_stream_worker(self):
-        filename = f"{self.file_stem}-trial-{self.num_videos_saved + 1}"
+        filename = f"{self.file_stem}-trial-{self.num_videos_saved + 1}.mp4"
         save_path = str(self.path.joinpath(filename))
-        self.current_worker = VideoStreamWorker(save_path)
+        fps = self.camera.current_FPS
+        width, height = self.camera.frame_size
+        self.current_worker = VideoStreamWorker(save_path, fps, width, height)
         self.video_acquisition_emitter.add_to_buffer.connect(self.current_worker.add_to_buffer)
         self.video_acquisition_emitter.done.connect(self.current_worker.stop)
+        self.video_acquisition_emitter.start.connect(self.current_worker.start)
         # ImageEvent -> emits image_record_signal -> VideoAcquisition.add_new_frame -> emits add_to_bufer -> VideoStreamWorker.add_to_buffer
         self.threadpool.start(self.current_worker)
 
