@@ -143,3 +143,10 @@ class VideoAcquisition:
             self.num_videos_saved += 1
             self.num_received_frames = 0
             self.reset_acquisition()
+
+    def shutdown(self):
+        self.logger.info("Shutting down all threads!")
+        self.stream_timer.stop()
+        self.stream_timer = []
+        self.video_acquisition_emitter.done.emit()
+        self.threadpool = []

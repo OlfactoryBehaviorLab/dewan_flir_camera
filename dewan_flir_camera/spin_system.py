@@ -14,7 +14,7 @@ class SpinSystem(SpinnakerObject):
         self.num_interfaces: int = 0
         self._camera_list: PySpin.CameraList = []
         self.num_cams: int = 0
-
+        self.video_acquisition_handler = None
         # Lists to hold the pointers so enumerate and for loops don't complain
         self.camera_list = []
         self.interface_list = []
@@ -73,6 +73,8 @@ class SpinSystem(SpinnakerObject):
             camera.deinit()
         for interface in self.interfaces:
             interface.deinit()
+
+        self.video_acquisition_handler.shutdown()
 
         ## Clear lists that reference the pointers
         self.camera_list = []
