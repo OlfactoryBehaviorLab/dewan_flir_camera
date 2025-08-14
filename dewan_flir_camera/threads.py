@@ -3,7 +3,7 @@ import pathlib
 import time
 
 import numpy as np
-from PySide6.QtCore import QTimer, Slot, QRunnable, Signal, QObject
+from PySide6.QtCore import QTimer, Slot, QRunnable
 import cv2
 
 
