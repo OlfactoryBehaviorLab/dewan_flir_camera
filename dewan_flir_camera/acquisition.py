@@ -144,18 +144,43 @@ class VideoAcquisition:
             len(self.current_worker.frame_buffer),
             frame_num_target,
         )
-        if self.num_received_frames >= frame_num_target:
-            self.logger.info(
-                "Video acquisition finished for trial %d!", self.num_videos_saved
-            )
-            self.video_acquisition_emitter.done.emit()
+
+        if 0 < self.num_received_frames == self.last_num_received_frames:
+            if self.cycles_w_no_frames >= 10:
+                self.no_more_frames = True
+            self.cycles_w_no_frames += 1
+        else:
+            self.last_num_received_frames = self.num_received_frames
+
+        if self.no_more_frames:
+            # We aren't receiving frames anymore, so lets save
+            if self.num_received_frames >= frame_num_target:
+                # We received what we expected
+                self.logger.info(
+                    "Video acquisition finished for trial %d!", self.num_videos_saved
+                )
+                self.video_acquisition_emitter.done.emit(False)
+            else:
+                # We did ont receive what we expected
+                self.logger.warning(
+                    "Did not receive the expected number of frames for trial %d, but no more have been received! Force saving...",
+                    self.num_videos_saved
+                )
+                self.video_acquisition_emitter.done.emit(True)
             self.num_videos_saved += 1
-            self.num_received_frames = 0
+            self.reset_acquisition_counters()
             self.reset_acquisition()
+
+
+    def reset_acquisition_counters(self):
+        self.num_received_frames = 0
+        self.last_num_received_frames = 0
+        self.cycles_w_no_frames = 0
+        self.no_more_frames =  0
 
     def shutdown(self):
         self.logger.info("Shutting down all threads!")
         self.stream_timer.stop()
         self.stream_timer = []
-        self.video_acquisition_emitter.done.emit()
+        self.video_acquisition_emitter.done.emit(True)
         self.threadpool = []
