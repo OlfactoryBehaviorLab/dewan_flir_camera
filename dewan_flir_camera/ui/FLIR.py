@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- # NOQA N999
 
 ################################################################################
 ## Form generated from reading UI file 'FLIR.ui'

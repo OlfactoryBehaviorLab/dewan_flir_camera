@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from . import resources
+from . import resources  # NOQA N401
 
 
 class About(QDialog):
