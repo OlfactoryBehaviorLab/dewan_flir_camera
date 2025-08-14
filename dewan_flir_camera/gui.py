@@ -269,7 +269,7 @@ class ConfigDialog:
         else:
             self.logger.error("Configuration UI returned 0! Setting default values")
             configuration = {
-                "mouse": 1,
+                "mouse": '9999',
                 "experiment": "none_specified",
                 "save_dir": Path(DEFAULT_DIR),
             }
