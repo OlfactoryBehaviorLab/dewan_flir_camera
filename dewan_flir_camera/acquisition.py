@@ -8,8 +8,7 @@ from PySpin import ImageEventHandler, ImageProcessor
 from PySide6.QtCore import Signal, QObject, QThreadPool
 
 from cam import Cam
-from gui import ControlWindow
-from options import AcquisitionState, VideoType
+from options import AcquisitionState
 from threads import VideoStreamer, VideoStreamWorker
 
 
