@@ -9,6 +9,7 @@ from options import AutoExposureMode, AcquisitionMode
 logging.basicConfig(level=logging.DEBUG)
 
 DEFAULT_FPS = 60
+DEFAULT_TRIAL_TIME_S = 10
 DEFAULT_SAVE_DIR = "/flir_recordings"
 DEFAULT_EXPERIMENT_DIR = "default_experiment"
 DEFAULT_MOUSE_DIR = "default_mouse"
@@ -61,6 +62,37 @@ def create_session_dirs(config_values, logger) -> tuple[Path, str]:
     return mouse_dir, file_stem
 
 
+def initialize(camera, UI: gui.ControlWindow):
+    # === DEFAULT CAMERA CONFIGURATION === #
+    camera.configure_hardware_trigger() # Configure hardware trigger
+    camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Exposure Mode
+    camera.set_exposure(
+        gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
+    )  # Set exposure to default FPS
+    camera.set_acquisition_mode(
+        AcquisitionMode.MULTI
+    )  # Multiframe/Burst Acquisition
+    num_burst_frames = DEFAULT_FPS * DEFAULT_TRIAL_TIME_S
+    camera.set_num_burst_frames(num_burst_frames)
+
+    # === DEFAULT GUI CONFIGURATION === #
+    # The other camera fields are automatically updated by the timer
+    # This is the only one we need to pull from the camera
+    UI.main_ui.exposure_value.setValue(
+        int(camera.get_exposure())
+    )
+    UI.main_ui.acquisition_mode_data.setCurrentIndex(
+        AcquisitionMode.MULTI
+    )
+    UI.main_ui.exposure_mode.setCurrentIndex(
+        AutoExposureMode.OFF
+    )
+    UI.main_ui.s_per_trial_val.setValue(DEFAULT_TRIAL_TIME_S)
+    UI.update_exposure_time(int(camera.get_exposure()))
+    UI.update_MAX_FPS(DEFAULT_FPS)
+    UI.update_trial_time_s(DEFAULT_TRIAL_TIME_S)
+
+
 def main():
     logger = logging.getLogger(__name__)
 
@@ -71,23 +103,18 @@ def main():
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
         camera.init()
-        camera.configure_hardware_trigger()
-        # Default Parameters to match GUI defaults
-        camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Mode
-        camera.set_acquisition_mode(
-            AcquisitionMode.CONTINUOUS
-        )  # Continuous Acquisition
-        camera.set_exposure(
-            gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
-        )  # Set exposure to default FPS
 
         video_acquisition_handler = VideoAcquisition(
             camera, logger, mouse_dir, file_stem
         )
+
         ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
+        initialize(camera, ui)
+
         event_handler = ImageHandler(image_dir, logger)
         video_acquisition_handler.event_handler = event_handler
         system.video_acquisition_handler = video_acquisition_handler
+
         # Give the system access to this so it can gracefully shut down if needed
         event_handler.image_event_emitter.image_display_signal.connect(ui.display_image)
         event_handler.image_event_emitter.image_record_signal.connect(
