@@ -27,7 +27,7 @@ class ImageHandler(ImageEventHandler):
         self.save_dir = save_dir
         self.acquired_images = 0
 
-        self.do_save = True
+        self.do_save = False  # Causes a huge delay for image acquisition
         self.display = True
         self.record = True
 
@@ -53,15 +53,15 @@ class ImageHandler(ImageEventHandler):
             try:
                 _image = self._image_processor.Convert(image, PySpin.PixelFormat_Mono8)
                 image_ndarray = _image.GetNDArray()
-                if self.do_save:
-                    self.save_image(_image)
+                _image.Release()
                 if self.display:
                     self.image_event_emitter.image_display_signal.emit(image_ndarray)
                 if self.record:
                     self.image_event_emitter.image_record_signal.emit(image_ndarray)
+                if self.do_save:
+                    self.save_image(_image)
 
                 self.acquired_images += 1
-                _image.Release()
             except Exception as se:
                 self.logger.error("Error saving image: %s", se)
 
