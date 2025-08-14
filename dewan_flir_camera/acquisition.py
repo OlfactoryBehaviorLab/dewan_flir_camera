@@ -146,7 +146,7 @@ class VideoAcquisition:
         )
 
         if 0 < self.num_received_frames == self.last_num_received_frames:
-            if self.cycles_w_no_frames >= 10:
+            if self.cycles_w_no_frames >= 3:
                 self.no_more_frames = True
             self.cycles_w_no_frames += 1
         else:
