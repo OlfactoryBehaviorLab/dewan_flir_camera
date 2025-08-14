@@ -64,29 +64,21 @@ def create_session_dirs(config_values, logger) -> tuple[Path, str]:
 
 def initialize(camera, UI: gui.ControlWindow):
     # === DEFAULT CAMERA CONFIGURATION === #
-    camera.configure_hardware_trigger() # Configure hardware trigger
+    camera.configure_hardware_trigger()  # Configure hardware trigger
     camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Exposure Mode
     camera.set_exposure(
         gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
     )  # Set exposure to default FPS
-    camera.set_acquisition_mode(
-        AcquisitionMode.MULTI
-    )  # Multiframe/Burst Acquisition
+    camera.set_acquisition_mode(AcquisitionMode.MULTI)  # Multiframe/Burst Acquisition
     num_burst_frames = DEFAULT_FPS * DEFAULT_TRIAL_TIME_S
     camera.set_num_burst_frames(num_burst_frames)
 
     # === DEFAULT GUI CONFIGURATION === #
     # The other camera fields are automatically updated by the timer
     # This is the only one we need to pull from the camera
-    UI.main_ui.exposure_value.setValue(
-        int(camera.get_exposure())
-    )
-    UI.main_ui.acquisition_mode_data.setCurrentIndex(
-        AcquisitionMode.MULTI
-    )
-    UI.main_ui.exposure_mode.setCurrentIndex(
-        AutoExposureMode.OFF
-    )
+    UI.main_ui.exposure_value.setValue(int(camera.get_exposure()))
+    UI.main_ui.acquisition_mode_data.setCurrentIndex(AcquisitionMode.MULTI)
+    UI.main_ui.exposure_mode.setCurrentIndex(AutoExposureMode.OFF)
     UI.main_ui.s_per_trial_val.setValue(DEFAULT_TRIAL_TIME_S)
     UI.update_exposure_time(int(camera.get_exposure()))
     UI.update_MAX_FPS(DEFAULT_FPS)

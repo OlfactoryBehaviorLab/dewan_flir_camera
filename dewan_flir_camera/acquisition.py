@@ -163,19 +163,18 @@ class VideoAcquisition:
                 # We did ont receive what we expected
                 self.logger.warning(
                     "Did not receive the expected number of frames for trial %d, but no more have been received! Force saving...",
-                    self.num_videos_saved
+                    self.num_videos_saved,
                 )
                 self.video_acquisition_emitter.done.emit(True)
             self.num_videos_saved += 1
             self.reset_acquisition_counters()
             self.reset_acquisition()
 
-
     def reset_acquisition_counters(self):
         self.num_received_frames = 0
         self.last_num_received_frames = 0
         self.cycles_w_no_frames = 0
-        self.no_more_frames =  0
+        self.no_more_frames = 0
 
     def shutdown(self):
         self.logger.info("Shutting down all threads!")

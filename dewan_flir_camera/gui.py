@@ -140,7 +140,6 @@ class ControlWindow(QMainWindow):
         except (TypeError, ValueError):
             self.logger.error("%s is not a valid value for setValue!", new_time)
 
-
     def trial_time_s_changed_callback(self):
         trial_time_s = self.get_trial_time_s()
         self.update_trial_time_s(trial_time_s)
@@ -286,7 +285,7 @@ class ConfigDialog:
         else:
             self.logger.error("Configuration UI returned 0! Setting default values")
             configuration = {
-                "mouse": '9999',
+                "mouse": "9999",
                 "experiment": "none_specified",
                 "save_dir": Path(DEFAULT_DIR),
             }
