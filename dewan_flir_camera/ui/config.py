@@ -27,7 +27,7 @@ from PySide6.QtWidgets import (
 )
 
 
-class Ui_config_wizard(QDialog):
+class Ui_config_wizard(QDialog): # NOQA N801
     def __init__(self):
         super().__init__()
         self.setupUi(self)
