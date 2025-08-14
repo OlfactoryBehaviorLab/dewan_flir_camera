@@ -38,7 +38,11 @@ class VideoStreamWorker(QRunnable):
         self.save_path: pathlib.Path = save_path
         self.logger = logging.getLogger(__name__)
         self.video_writer = cv2.VideoWriter(
-            str(self.save_path), cv2.VideoWriter.fourcc(*"avc1"), FPS, (width, height), False
+            str(self.save_path),
+            cv2.VideoWriter.fourcc(*"avc1"),
+            FPS,
+            (width, height),
+            False,
         )
         self.is_done: bool = False
         self.force_stop: bool = False
