@@ -203,7 +203,7 @@ class Ui_config_wizard(QDialog):
 
     # setupUi
 
-    def retranslateUi(self, config_wizard):
+    def retranslateUi(self):
         self.header.setText(
             QCoreApplication.translate("config_wizard", "Configure Experiment", None)
         )

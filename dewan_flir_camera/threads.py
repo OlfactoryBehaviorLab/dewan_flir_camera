@@ -33,7 +33,7 @@ class VideoStreamer(QTimer):
 
 
 class VideoStreamWorker(QRunnable):
-    def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int, logger):
+    def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int):
         super().__init__()
         self.save_path: pathlib.Path = save_path
         self.logger = logging.getLogger(__name__)
