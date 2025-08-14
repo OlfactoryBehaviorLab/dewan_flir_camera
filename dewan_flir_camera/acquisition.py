@@ -114,7 +114,7 @@ class VideoAcquisition:
 
     def init_new_stream_worker(self):
         filename = f"{self.file_stem}-trial-{self.num_videos_saved + 1}.mp4"
-        save_path = str(self.path.joinpath(filename))
+        save_path = self.path.joinpath(filename)
         fps = self.camera.current_FPS
         width, height = self.camera.frame_size
         self.current_worker = VideoStreamWorker(

@@ -1,4 +1,5 @@
 import logging
+import pathlib
 import time
 
 import numpy as np
@@ -34,17 +35,18 @@ class VideoStreamer(QTimer):
 
 
 class VideoStreamWorker(QRunnable):
-    def __init__(self, save_path: str, FPS: int, width: int, height: int, logger):
+    def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int, logger):
         super().__init__()
-        self.save_path: str = save_path
+        self.save_path: pathlib.Path = save_path
         self.logger = logging.getLogger(__name__)
         self.video_writer = cv2.VideoWriter(
-            self.save_path, cv2.VideoWriter.fourcc(*"avc1"), FPS, (width, height), False
+            str(self.save_path), cv2.VideoWriter.fourcc(*"avc1"), FPS, (width, height), False
         )
         self.is_done: bool = False
+        self.force_stop: bool = False
         self.exit_thread: bool = False
         self.frame_buffer: list = []
-        self.frame_counter = 0
+        self.frame_counter: int = 0
         self.setAutoDelete(True)
 
     @Slot()
@@ -61,9 +63,10 @@ class VideoStreamWorker(QRunnable):
 
         self.logger.info("Thread for %s ended!", self.save_path)
 
-    @Slot()
-    def stop(self):
+    @Slot(bool)
+    def stop(self, force_stop):
         self.is_done = True
+        self.force_stop = force_stop
 
     def timer_callback(self):
         self.flush_buffer()  # Save the images in the buffer
@@ -71,6 +74,10 @@ class VideoStreamWorker(QRunnable):
             self.video_writer.release()
             self.frame_buffer = []
             self.exit_thread = True
+
+            if self.force_stop:
+                new_path = self.save_path.with_stem(self.save_path.stem + "-INCOMPLETE")
+                self.save_path.replace(new_path)
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
