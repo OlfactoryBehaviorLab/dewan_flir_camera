@@ -176,7 +176,6 @@ class Cam(SpinnakerObject):
     def get_exposure_mode(self) -> AutoExposureMode or None:
         try:
             exposure_mode = self.ExposureAuto.GetValue()
-            self.logger.debug("%s", exposure_mode)
             return AutoExposureMode(exposure_mode)
         except SpinnakerException as se:
             raise CameraError("Error reading exposure_mode mode!") from se

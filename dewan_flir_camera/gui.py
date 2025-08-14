@@ -32,7 +32,7 @@ class ControlWindow(QMainWindow):
         self.camera: cam.Cam = camera
         self.video_acquisition_handler = video_acquisition_handler
 
-        self.main_ui = FLIR.MainUI(self)
+        self.main_ui: FLIR.MainUI = FLIR.MainUI(self)
         self.main_ui.about_widget = about.About()
 
         self.scene = QGraphicsScene()
@@ -67,9 +67,7 @@ class ControlWindow(QMainWindow):
                 int(self.main_ui.max_fps_data.text()),
             )
         )
-        # The other camera fields are automatically updated by the timer
-        # This is the only one we need to pull from the camera
-        self.main_ui.exposure_value.setValue(int(self.camera.get_exposure()))
+
         self.update_timer = threads.UpdateTimer(self)
 
     @staticmethod
@@ -115,6 +113,7 @@ class ControlWindow(QMainWindow):
         index = self.main_ui.acquisition_mode_data.currentIndex()
         acquisition_mode = AcquisitionMode(index)
         self.camera.set_acquisition_mode(acquisition_mode)
+        self.logger.debug("Acquisition mode changed to: %s", acquisition_mode)
 
     def exposure_mode_changed_callback(self):
         index = self.main_ui.exposure_mode.currentIndex()
@@ -125,9 +124,9 @@ class ControlWindow(QMainWindow):
             self.main_ui.exposure_apply.setEnabled(False)
             self.main_ui.exposure_value.setEnabled(False)
         else:
-            self.logger.debug("Exposure mode set to %s: index %s", exposure_mode, index)
             self.main_ui.exposure_apply.setEnabled(True)
             self.main_ui.exposure_value.setEnabled(True)
+        self.logger.debug("Exposure mode set to %s: index %s", exposure_mode, index)
 
     def exposure_apply_callback(self):
         new_value = self.main_ui.exposure_value.value()
@@ -137,8 +136,10 @@ class ControlWindow(QMainWindow):
         )  # Just incase the camera bounds the user's input
         try:
             self.main_ui.exposure_value.setValue(new_time)
+            self.logger.debug("Exposure value set to %s", new_value)
         except (TypeError, ValueError):
             self.logger.error("%s is not a valid value for setValue!", new_time)
+
 
     def trial_time_s_changed_callback(self):
         trial_time_s = self.get_trial_time_s()
