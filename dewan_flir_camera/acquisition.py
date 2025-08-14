@@ -81,7 +81,7 @@ class ImageHandler(ImageEventHandler):
 class VideoAcquisition:
     class VideoAcquisitionEmitter(QObject):
         add_to_buffer = Signal(np.ndarray)
-        done = Signal()
+        done = Signal(bool)
         start = Signal()
 
         def __init__(self):
@@ -92,15 +92,16 @@ class VideoAcquisition:
         self.logger: logger = logger
         self.path: Path = path
         self.file_stem: str = file_stem
-        self.video_type = VideoType.H264_MP4
-        self.video_options = []
-        self.num_received_frames = 0
-        self.num_videos_saved = 0
         self.video_acquisition_emitter = self.VideoAcquisitionEmitter()
-        self.stream_timer = VideoStreamer(self)
         self.threadpool = QThreadPool()
+        self.stream_timer = VideoStreamer(self)
+        self.no_more_frames: bool = False
+        self.num_received_frames: int = 0
+        self.last_num_received_frames: int = 0
+        self.cycles_w_no_frames: int = 0
+        self.num_videos_saved: int = 0
         self.current_worker: VideoStreamWorker = None
-        self.event_handler = None
+        self.event_handler: ImageEventHandler = None
 
     def start_experiment_video_acquisition(self):
         self.init_new_stream_worker()
