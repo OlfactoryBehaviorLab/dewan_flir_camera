@@ -74,7 +74,8 @@ class SpinSystem(SpinnakerObject):
         for interface in self.interfaces:
             interface.deinit()
 
-        self.video_acquisition_handler.shutdown()
+        if self.video_acquisition_handler:
+            self.video_acquisition_handler.shutdown()
 
         ## Clear lists that reference the pointers
         self.camera_list = []
