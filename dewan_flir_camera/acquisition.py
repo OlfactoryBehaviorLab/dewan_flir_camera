@@ -7,10 +7,9 @@ import numpy as np
 from PySpin import ImageEventHandler, ImageProcessor
 from PySide6.QtCore import Signal, QObject, QThreadPool
 
-from cam import Cam
-from gui import ControlWindow
-from options import AcquisitionState, VideoType
-from threads import VideoStreamer, VideoStreamWorker
+from dewan_flir_camera.cam import Cam
+from dewan_flir_camera.options import AcquisitionState
+from dewan_flir_camera.threads import VideoStreamer, VideoStreamWorker
 
 
 class ImageHandler(ImageEventHandler):

@@ -2,9 +2,9 @@ import logging
 from pathlib import Path
 
 from dewan_flir_camera import gui
-from spin_system import SpinSystem
-from acquisition import ImageHandler, VideoAcquisition
-from options import AutoExposureMode, AcquisitionMode
+from dewan_flir_camera.spin_system import SpinSystem
+from dewan_flir_camera.acquisition import ImageHandler, VideoAcquisition
+from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode
 
 logging.basicConfig(level=logging.DEBUG)
 
