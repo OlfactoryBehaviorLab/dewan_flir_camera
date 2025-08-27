@@ -20,7 +20,7 @@ from dewan_flir_camera.ui import (
 
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene
+from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QFileDialog, QWidget, QDialog
 
 DEFAULT_DIR = "./"
 
@@ -252,12 +252,28 @@ class ControlWindow(QMainWindow):
 
 
 class ConfigDialog:
-    def __init__(self, logger):
+    def __init__(self, logger, default_save_dir: str):
         self.logger = logger
         self.config_ui = config.Ui_config_wizard()
         # self.config_ui.mouse_ID_field.textEdited.connect(self.verify_ID)
         # self.config_ui.experiment_type_field.textEdited.connect(self.verify_exp)
         # self.config_ui.save_path_field.textEdited.connect(self.verify_user_path)
+        self.DEFAULT_SAVE_DIR = default_save_dir
+        self.config_ui.open_dir_button.clicked.connect(self.get_save_dir)
+
+    def get_save_dir(self):
+        save_dir = QFileDialog.getExistingDirectory(
+            self.config_ui,
+            "Select save directory",
+            self.DEFAULT_SAVE_DIR,
+            QFileDialog.Option.ShowDirsOnly
+        )
+
+        if save_dir is not None and len(save_dir) > 0:
+            self.config_ui.save_path_field.setText(save_dir)
+        else:
+            self.config_ui.save_path_field.setText(self.DEFAULT_SAVE_DIR)
+
 
     def get_experiment_config(self) -> dict:
         config_return = self.config_ui.exec()
@@ -301,9 +317,9 @@ def instantiate_app(logger=None):
     return app
 
 
-def get_config(logger):
+def get_config(logger, default_save_dir: str):
     # Blocking get config values
-    config_dialog = ConfigDialog(logger)
+    config_dialog = ConfigDialog(logger, default_save_dir)
     return config_dialog.get_experiment_config()
 
 
