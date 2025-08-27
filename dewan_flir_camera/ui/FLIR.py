@@ -148,23 +148,12 @@ class MainUI(object):
         sizePolicy5.setHeightForWidth(self.param_disp.sizePolicy().hasHeightForWidth())
         self.param_disp.setSizePolicy(sizePolicy5)
         self.param_disp.setMinimumSize(QSize(0, 120))
-        self.param_disp.setMaximumSize(QSize(228, 110))
-        # if QT_CONFIG(statustip)
-        self.param_disp.setStatusTip("")
-        # endif // QT_CONFIG(statustip)
-        # if QT_CONFIG(whatsthis)
-        self.param_disp.setWhatsThis("")
-        # endif // QT_CONFIG(whatsthis)
-        # if QT_CONFIG(accessibility)
-        self.param_disp.setAccessibleName("")
-        # endif // QT_CONFIG(accessibility)
-        # if QT_CONFIG(accessibility)
-        self.param_disp.setAccessibleDescription("")
-        # endif // QT_CONFIG(accessibility)
+        self.param_disp.setMaximumSize(QSize(350, 110))
         self.param_disp.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.param_disp_layout = QVBoxLayout(self.param_disp)
         self.param_disp_layout.setObjectName("param_disp_layout")
-        self.param_disp_layout.setContentsMargins(2, 2, 2, 2)
+        self.param_disp_layout.setContentsMargins(2, 2, 0, 2)
+
         self.current_exposure_widget = QWidget(self.param_disp)
         self.current_exposure_widget.setObjectName("current_exposure_widget")
         sizePolicy4.setHeightForWidth(
@@ -173,16 +162,11 @@ class MainUI(object):
         self.current_exposure_widget.setSizePolicy(sizePolicy4)
         self.current_exposure_disp_layout = QHBoxLayout(self.current_exposure_widget)
         self.current_exposure_disp_layout.setObjectName("current_exposure_disp_layout")
-        self.current_exposure_disp_layout.setContentsMargins(-1, 0, -1, 0)
+        self.current_exposure_disp_layout.setContentsMargins(-1, 0, 0, 0)
         self.current_exposure_label = QLabel(self.current_exposure_widget)
         self.current_exposure_label.setObjectName("current_exposure_label")
         sizePolicy6 = QSizePolicy(
             QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred
-        )
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(
-            self.current_exposure_label.sizePolicy().hasHeightForWidth()
         )
         self.current_exposure_label.setSizePolicy(sizePolicy6)
 
@@ -191,14 +175,11 @@ class MainUI(object):
         self.current_exposure_data = QLabel(self.current_exposure_widget)
         self.current_exposure_data.setObjectName("current_exposure_data")
         sizePolicy7 = QSizePolicy(
-            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred
+            QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Preferred
         )
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(
-            self.current_exposure_data.sizePolicy().hasHeightForWidth()
-        )
+
         self.current_exposure_data.setSizePolicy(sizePolicy7)
+
 
         self.current_exposure_disp_layout.addWidget(self.current_exposure_data)
 
@@ -503,10 +484,10 @@ class MainUI(object):
         self.buttons_layout.setObjectName("buttons_layout")
         self.buttons_layout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
         self.buttons_layout.setContentsMargins(0, 0, 0, 0)
+
         self.arm_button = QPushButton(self.buttons)
         self.arm_button.setObjectName("arm_button")
         self.arm_button.setEnabled(True)
-        sizePolicy8.setHeightForWidth(self.arm_button.sizePolicy().hasHeightForWidth())
         self.arm_button.setSizePolicy(sizePolicy8)
         self.arm_button.setMinimumSize(QSize(30, 30))
         self.arm_button.setMaximumSize(QSize(16777215, 150))
@@ -540,9 +521,6 @@ class MainUI(object):
         self.capture_button = QPushButton(self.buttons)
         self.capture_button.setObjectName("capture_button")
         self.capture_button.setEnabled(True)
-        sizePolicy8.setHeightForWidth(
-            self.capture_button.sizePolicy().hasHeightForWidth()
-        )
         self.capture_button.setSizePolicy(sizePolicy8)
         self.capture_button.setMinimumSize(QSize(50, 40))
         self.capture_button.setMaximumSize(QSize(16777215, 150))
@@ -572,9 +550,6 @@ class MainUI(object):
 
         self.start_button = QPushButton(self.buttons)
         self.start_button.setObjectName("start_button")
-        sizePolicy8.setHeightForWidth(
-            self.start_button.sizePolicy().hasHeightForWidth()
-        )
         self.start_button.setSizePolicy(sizePolicy8)
         self.start_button.setMinimumSize(QSize(30, 30))
         self.start_button.setMaximumSize(QSize(16777215, 150))
