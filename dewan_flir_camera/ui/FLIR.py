@@ -508,7 +508,7 @@ class MainUI(object):
         self.arm_button.setEnabled(True)
         sizePolicy8.setHeightForWidth(self.arm_button.sizePolicy().hasHeightForWidth())
         self.arm_button.setSizePolicy(sizePolicy8)
-        self.arm_button.setMinimumSize(QSize(50, 40))
+        self.arm_button.setMinimumSize(QSize(30, 30))
         self.arm_button.setMaximumSize(QSize(16777215, 150))
         self.arm_button.setBaseSize(QSize(30, 30))
         self.arm_button.setFont(font)
@@ -576,7 +576,7 @@ class MainUI(object):
             self.start_button.sizePolicy().hasHeightForWidth()
         )
         self.start_button.setSizePolicy(sizePolicy8)
-        self.start_button.setMinimumSize(QSize(50, 40))
+        self.start_button.setMinimumSize(QSize(30, 30))
         self.start_button.setMaximumSize(QSize(16777215, 150))
         self.start_button.setBaseSize(QSize(30, 30))
         self.start_button.setFont(font)
@@ -601,8 +601,38 @@ class MainUI(object):
             "}"
         )
         self.start_button.setFlat(False)
+        self.buttons_layout.addWidget(self.start_button, 1, 1, 1, 1)
 
-        self.buttons_layout.addWidget(self.start_button, 1, 0, 1, 2)
+        self.preview_button = QPushButton(self.buttons)
+        self.preview_button.setObjectName(u"preview_button")
+        self.preview_button.setEnabled(True)
+        self.preview_button.setSizePolicy(sizePolicy8)
+        self.preview_button.setMinimumSize(QSize(30, 30))
+        self.preview_button.setMaximumSize(QSize(16777215, 150))
+        self.preview_button.setBaseSize(QSize(30, 30))
+        self.preview_button.setFont(font)
+        self.preview_button.setMouseTracking(True)
+        self.preview_button.setTabletTracking(False)
+        self.preview_button.setAutoFillBackground(False)
+        self.preview_button.setStyleSheet(u"QPushButton{\n"
+                                          "background-color: rgb(0, 170, 255);\n"
+                                          "color:rgb(255,255,255);\n"
+                                          "}\n"
+                                          "QPushButton::hover{\n"
+                                          "    background-color:  rgb(0, 170, 255);\n"
+                                          "    border-color: rgb(60, 231, 195);\n"
+                                          "    border-style: outset;\n"
+                                          "    color: rgb(255,255,255);\n"
+                                          "    border-width: 2px;\n"
+                                          "    border-radius: 12px;\n"
+                                          "    padding: 6px;\n"
+                                          "}\n"
+                                          "QPushButton::pressed{\n"
+                                          "    background-color:rgb(0, 75, 112);\n"
+                                          "}")
+        self.preview_button.setFlat(False)
+
+        self.buttons_layout.addWidget(self.preview_button, 1, 0, 1, 1)
 
         self.controls_layout.addWidget(self.buttons)
 
@@ -738,6 +768,9 @@ class MainUI(object):
         )
         self.start_button.setText(
             QCoreApplication.translate("main_window", "START ACQUISITION", None)
+        )
+        self.preview_button.setText(
+            QCoreApplication.translate("main_window", "LIVE PREVIEW", None)
         )
         self.menuFile.setTitle(QCoreApplication.translate("main_window", "File", None))
         self.menuCamera_Info.setTitle(
