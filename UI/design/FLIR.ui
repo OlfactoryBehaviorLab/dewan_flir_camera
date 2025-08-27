@@ -180,13 +180,19 @@ font: 700 16pt &quot;Arial&quot;;</string>
           <item>
            <widget class="QWidget" name="current_exposure_widget" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <layout class="QHBoxLayout" name="current_exposure_disp_layout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
@@ -195,7 +201,7 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="current_exposure_label">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -773,10 +779,7 @@ font: 700 16pt &quot;Arial&quot;;</string>
             <property name="frameShadow">
              <enum>QFrame::Shadow::Raised</enum>
             </property>
-            <layout class="QGridLayout" name="buttons_layout">
-             <property name="sizeConstraint">
-              <enum>QLayout::SizeConstraint::SetNoConstraint</enum>
-             </property>
+            <layout class="QGridLayout" name="gridLayout">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -792,6 +795,71 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <property name="spacing">
               <number>0</number>
              </property>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="capture_button">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>150</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>12</pointsize>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="mouseTracking">
+                <bool>true</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+background-color: rgb(179, 179, 0);
+}
+QPushButton::hover{
+    background-color: rgb(179, 179, 0);
+    border-color: rgb(60, 231, 195);
+    border-style: outset;
+    color: rgb(255,255,255);
+    border-width: 2px;
+    border-radius: 12px;
+    padding: 6px;
+}
+QPushButton::pressed{
+    background-color:rgb(74, 74, 0);
+}</string>
+               </property>
+               <property name="text">
+                <string>SINGLE</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="arm_button">
                <property name="enabled">
@@ -864,8 +932,8 @@ QPushButton::pressed{
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="capture_button">
+             <item row="1" column="0">
+              <widget class="QPushButton" name="preview_button">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -904,12 +972,19 @@ QPushButton::pressed{
                <property name="mouseTracking">
                 <bool>true</bool>
                </property>
+               <property name="tabletTracking">
+                <bool>false</bool>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton{
-background-color: rgb(179, 179, 0);
+background-color: rgb(0, 170, 255);
+color:rgb(255,255,255);
 }
 QPushButton::hover{
-    background-color: rgb(179, 179, 0);
+    background-color:  rgb(0, 170, 255);
     border-color: rgb(60, 231, 195);
     border-style: outset;
     color: rgb(255,255,255);
@@ -918,18 +993,18 @@ QPushButton::hover{
     padding: 6px;
 }
 QPushButton::pressed{
-    background-color:rgb(74, 74, 0);
+    background-color:rgb(0, 75, 112);
 }</string>
                </property>
                <property name="text">
-                <string>SINGLE</string>
+                <string>LIVE PREVIEW</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
                </property>
               </widget>
              </item>
-             <item row="1" column="0" colspan="2">
+             <item row="1" column="1">
               <widget class="QPushButton" name="start_button">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -986,7 +1061,8 @@ color:rgb(255,255,255);
 }</string>
                </property>
                <property name="text">
-                <string>START ACQUISITION</string>
+                <string>START
+ACQUISITION</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
@@ -1060,11 +1136,17 @@ color:rgb(255,255,255);
    </property>
   </action>
   <action name="actionSave">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
   </action>
   <action name="actionSave_As">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Save As</string>
    </property>
