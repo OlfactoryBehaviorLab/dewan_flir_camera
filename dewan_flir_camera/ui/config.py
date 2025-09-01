@@ -197,13 +197,13 @@ class Ui_config_wizard(QDialog):
 
         self.main_layout.addLayout(self.control_layout, 2, 0, 1, 1)
 
-        self.retranslateUi(config_wizard)
+        self.retranslateUi()
 
         QMetaObject.connectSlotsByName(config_wizard)
 
     # setupUi
 
-    def retranslateUi(self, config_wizard):
+    def retranslateUi(self):
         self.header.setText(
             QCoreApplication.translate("config_wizard", "Configure Experiment", None)
         )
