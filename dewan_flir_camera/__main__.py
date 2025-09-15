@@ -97,7 +97,7 @@ def main():
     logger = logging.getLogger(__name__)
 
     app = gui.instantiate_app(logger)
-    config_values = gui.get_config(logger)
+    config_values = gui.get_config(logger, DEFAULT_SAVE_DIR)
     mouse_dir, file_stem = create_session_dirs(config_values, logger)
     image_dir = create_dir_if_not_exist(mouse_dir, "images", None, logger)
     with SpinSystem(logger) as system:
