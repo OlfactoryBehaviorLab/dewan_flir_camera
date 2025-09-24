@@ -6,8 +6,6 @@ import numpy as np
 from PySide6.QtCore import QTimer, Slot, QRunnable, Signal, QObject
 import cv2
 
-OPENH264_LIB_PATH = "./lib/openh264-1.8.0/openh264-1.8.0-win64.dll"
-
 class UpdateTimer(QTimer):
     def __init__(self, gui):
         super().__init__()
@@ -36,10 +34,6 @@ class VideoStreamer(QTimer):
 class VideoStreamWorker(QRunnable):
 
     def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int, logger):
-        import os
-        from pathlib import Path
-        os.environ["OPENH264_LIBRARY"] = str(Path(OPENH264_LIB_PATH).absolute())
-
         super().__init__()
         self.save_path: pathlib.Path = save_path
         self.logger = logging.getLogger(__name__)

@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-
 from dewan_flir_camera import gui
 from dewan_flir_camera.spin_system import SpinSystem
 from dewan_flir_camera.acquisition import ImageHandler, VideoAcquisition
