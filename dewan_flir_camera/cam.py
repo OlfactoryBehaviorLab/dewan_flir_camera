@@ -86,25 +86,27 @@ class Cam(SpinnakerObject):
             self.logger.error("Unable to capture single frame!: %s", se)
 
     def trigger_acquisition(
-        self, state: AcquisitionState, force: bool = False
+        self, new_state: AcquisitionState, force: bool = False
     ) -> AcquisitionState:
         try:
-            if state == AcquisitionState.BEGIN:
+            if new_state == AcquisitionState.BEGIN:
                 if self.acquisition_state == AcquisitionState.BEGIN:
                     self.logger.info("Camera acquisition already enabled!")
                 else:
+                    self.logger.info("Starting camera acquisition!")
                     self.BeginAcquisition()
-                    self.acquisition_state = state
-            elif state == AcquisitionState.END:
-                if self.acquisition_state == AcquisitionState.BEGIN or force:
-                    self.EndAcquisition()
-                    self.acquisition_state = state
-                else:
+                    self.acquisition_state = new_state
+            elif new_state == AcquisitionState.END:
+                if self.acquisition_state == AcquisitionState.END:
                     self.logger.info("Camera acquisition already disabled!")
+                elif self.acquisition_state == AcquisitionState.BEGIN or force:
+                    self.logger.info("Ending camera acquisition!")
+                    self.EndAcquisition()
+                    self.acquisition_state = new_state
             return self.acquisition_state
         except SpinnakerException as se:
             raise CameraError(
-                f"Unable to set camera acquisition state to {state}!"
+                f"Unable to set camera acquisition state to {new_state}!"
             ) from se
 
     def poll(self):
