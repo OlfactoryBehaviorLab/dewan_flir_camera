@@ -164,13 +164,6 @@ class Cam(SpinnakerObject):
             raise CameraError("Error setting number of burst frames!") from se
 
 
-    def get_acquisition_mode(self) -> AcquisitionMode:
-        try:
-            acquisition_mode = self.AcquisitionMode.GetValue()
-            return AcquisitionMode(acquisition_mode)
-        except SpinnakerException as se:
-            raise CameraError("Error reading acquisition mode!") from se
-
     def register_event_handler(self, event_handler):
         try:
             self.RegisterEventHandler(event_handler)
@@ -246,6 +239,14 @@ class Cam(SpinnakerObject):
             return AutoExposureMode(exposure_mode)
         except SpinnakerException as se:
             raise CameraError("Error reading exposure_mode mode!") from se
+
+    @property
+    def acquisition_mode(self):
+        try:
+            acquisition_mode = self.AcquisitionMode.GetValue()
+            return AcquisitionMode(acquisition_mode)
+        except SpinnakerException as se:
+            raise CameraError("Error reading acquisition mode!") from se
 
     def __getattr__(self, attribute):
         """
