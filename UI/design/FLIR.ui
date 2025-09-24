@@ -795,143 +795,6 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <property name="spacing">
               <number>0</number>
              </property>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="capture_button">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>50</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>150</height>
-                </size>
-               </property>
-               <property name="baseSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Arial</family>
-                 <pointsize>12</pointsize>
-                 <italic>false</italic>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="mouseTracking">
-                <bool>true</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton{
-background-color: rgb(179, 179, 0);
-}
-QPushButton::hover{
-    background-color: rgb(179, 179, 0);
-    border-color: rgb(60, 231, 195);
-    border-style: outset;
-    color: rgb(255,255,255);
-    border-width: 2px;
-    border-radius: 12px;
-    padding: 6px;
-}
-QPushButton::pressed{
-    background-color:rgb(74, 74, 0);
-}</string>
-               </property>
-               <property name="text">
-                <string>SINGLE</string>
-               </property>
-               <property name="flat">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="arm_button">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>50</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>150</height>
-                </size>
-               </property>
-               <property name="baseSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Arial</family>
-                 <pointsize>12</pointsize>
-                 <italic>false</italic>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="mouseTracking">
-                <bool>true</bool>
-               </property>
-               <property name="tabletTracking">
-                <bool>false</bool>
-               </property>
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton{
-background-color: rgb(255, 85, 0);
-color:rgb(255,255,255);
-}
-QPushButton::hover{
-    background-color: rgb(255, 85, 0);
-    border-color: rgb(60, 231, 195);
-    border-style: outset;
-    color: rgb(255,255,255);
-    border-width: 2px;
-    border-radius: 12px;
-    padding: 6px;
-}
-QPushButton::pressed{
-    background-color:rgb(115, 38, 0);
-}</string>
-               </property>
-               <property name="text">
-                <string>ARM TRIGGER</string>
-               </property>
-               <property name="flat">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0">
               <widget class="QPushButton" name="preview_button">
                <property name="enabled">
@@ -1004,7 +867,72 @@ QPushButton::pressed{
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="0" column="0">
+              <widget class="QPushButton" name="capture_button">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>150</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>12</pointsize>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="mouseTracking">
+                <bool>true</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+background-color: rgb(179, 179, 0);
+}
+QPushButton::hover{
+    background-color: rgb(179, 179, 0);
+    border-color: rgb(60, 231, 195);
+    border-style: outset;
+    color: rgb(255,255,255);
+    border-width: 2px;
+    border-radius: 12px;
+    padding: 6px;
+}
+QPushButton::pressed{
+    background-color:rgb(74, 74, 0);
+}</string>
+               </property>
+               <property name="text">
+                <string>TRIGGER</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
               <widget class="QPushButton" name="start_button">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -1063,6 +991,78 @@ color:rgb(255,255,255);
                <property name="text">
                 <string>START
 ACQUISITION</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QPushButton" name="arm_button">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>150</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>12</pointsize>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="mouseTracking">
+                <bool>true</bool>
+               </property>
+               <property name="tabletTracking">
+                <bool>false</bool>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+background-color: rgb(255, 85, 0);
+color:rgb(255,255,255);
+}
+QPushButton::hover{
+    background-color: rgb(255, 85, 0);
+    border-color: rgb(60, 231, 195);
+    border-style: outset;
+    color: rgb(255,255,255);
+    border-width: 2px;
+    border-radius: 12px;
+    padding: 6px;
+}
+QPushButton::pressed{
+    background-color:rgb(115, 38, 0);
+}</string>
+               </property>
+               <property name="text">
+                <string>ARM TRIGGER</string>
                </property>
                <property name="flat">
                 <bool>false</bool>

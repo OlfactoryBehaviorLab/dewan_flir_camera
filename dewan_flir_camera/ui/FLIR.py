@@ -518,7 +518,7 @@ class MainUI(object):
         )
         self.arm_button.setFlat(False)
 
-        self.buttons_layout.addWidget(self.arm_button, 0, 1, 1, 1)
+        self.buttons_layout.addWidget(self.arm_button, 1, 1, 1, 1)
 
         self.capture_button = QPushButton(self.buttons)
         self.capture_button.setObjectName("capture_button")
@@ -578,7 +578,7 @@ class MainUI(object):
             "}"
         )
         self.start_button.setFlat(False)
-        self.buttons_layout.addWidget(self.start_button, 1, 1, 1, 1)
+        self.buttons_layout.addWidget(self.start_button, 0, 1, 1, 1)
 
         self.preview_button = QPushButton(self.buttons)
         self.preview_button.setObjectName(u"preview_button")
@@ -741,7 +741,7 @@ class MainUI(object):
             QCoreApplication.translate("main_window", "ARM TRIGGER", None)
         )
         self.capture_button.setText(
-            QCoreApplication.translate("main_window", "SINGLE", None)
+            QCoreApplication.translate("main_window", "TRIGGER", None)
         )
         self.start_button.setText(
             QCoreApplication.translate("main_window", "START ACQUISITION", None)
