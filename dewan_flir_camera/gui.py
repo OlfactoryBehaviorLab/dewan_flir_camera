@@ -46,7 +46,7 @@ class ControlWindow(QMainWindow):
 
         self.main_ui.start_button.clicked.connect(self.start_button_callback)
         self.main_ui.arm_button.clicked.connect(self.arm_button_callback)
-        self.main_ui.capture_button.clicked.connect(self.capture_button_callback)
+        self.main_ui.trigger_button.clicked.connect(self.trigger_button_callback)
 
         self.main_ui.acquisition_mode_data.currentTextChanged.connect(
             self.acquisition_mode_changed_callback
@@ -216,7 +216,7 @@ class ControlWindow(QMainWindow):
             self.main_ui.arm_button.setText("TRIGGER ARMED")
             self.video_acquisition_handler.start_experiment_video_acquisition()
 
-    def capture_button_callback(self):
+    def trigger_button_callback(self):
         self.camera.capture_single_frame()
 
     def open_action_callback(self):
@@ -230,7 +230,7 @@ class ControlWindow(QMainWindow):
 
     def set_gui_state(self, state: bool):
         self.main_ui.start_button.setEnabled(state)
-        self.main_ui.capture_button.setEnabled(state)
+        self.main_ui.trigger_button.setEnabled(state)
         self.main_ui.exposure_apply.setEnabled(state)
         self.main_ui.exposure_mode.setEnabled(state)
         self.main_ui.acquisition_mode.setEnabled(state)

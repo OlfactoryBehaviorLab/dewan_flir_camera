@@ -520,16 +520,16 @@ class MainUI(object):
 
         self.buttons_layout.addWidget(self.arm_button, 1, 1, 1, 1)
 
-        self.capture_button = QPushButton(self.buttons)
-        self.capture_button.setObjectName("capture_button")
-        self.capture_button.setEnabled(True)
-        self.capture_button.setSizePolicy(sizePolicy8)
-        self.capture_button.setMinimumSize(QSize(50, 40))
-        self.capture_button.setMaximumSize(QSize(16777215, 150))
-        self.capture_button.setBaseSize(QSize(30, 30))
-        self.capture_button.setFont(font)
-        self.capture_button.setMouseTracking(True)
-        self.capture_button.setStyleSheet(
+        self.trigger_button = QPushButton(self.buttons)
+        self.trigger_button.setObjectName("capture_button")
+        self.trigger_button.setEnabled(True)
+        self.trigger_button.setSizePolicy(sizePolicy8)
+        self.trigger_button.setMinimumSize(QSize(50, 40))
+        self.trigger_button.setMaximumSize(QSize(16777215, 150))
+        self.trigger_button.setBaseSize(QSize(30, 30))
+        self.trigger_button.setFont(font)
+        self.trigger_button.setMouseTracking(True)
+        self.trigger_button.setStyleSheet(
             "QPushButton{\n"
             "background-color: rgb(179, 179, 0);\n"
             "}\n"
@@ -546,9 +546,9 @@ class MainUI(object):
             "    background-color:rgb(74, 74, 0);\n"
             "}"
         )
-        self.capture_button.setFlat(False)
+        self.trigger_button.setFlat(False)
 
-        self.buttons_layout.addWidget(self.capture_button, 0, 0, 1, 1)
+        self.buttons_layout.addWidget(self.trigger_button, 0, 0, 1, 1)
 
         self.start_button = QPushButton(self.buttons)
         self.start_button.setObjectName("start_button")
@@ -740,7 +740,7 @@ class MainUI(object):
         self.arm_button.setText(
             QCoreApplication.translate("main_window", "ARM TRIGGER", None)
         )
-        self.capture_button.setText(
+        self.trigger_button.setText(
             QCoreApplication.translate("main_window", "TRIGGER", None)
         )
         self.start_button.setText(
