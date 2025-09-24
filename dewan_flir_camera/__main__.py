@@ -78,7 +78,7 @@ def initialize(camera, UI: gui.ControlWindow):
     # The other camera fields are automatically updated by the timer
     # This is the only one we need to pull from the camera
     UI.main_ui.exposure_value.setValue(
-        int(camera.get_exposure())
+        int(camera.exposure)
     )
     UI.main_ui.acquisition_mode_data.setCurrentIndex(
         AcquisitionMode.MULTI
@@ -87,7 +87,7 @@ def initialize(camera, UI: gui.ControlWindow):
         AutoExposureMode.OFF
     )
     UI.main_ui.s_per_trial_val.setValue(DEFAULT_TRIAL_TIME_S)
-    UI.update_exposure_time(int(camera.get_exposure()))
+    UI.update_exposure_time(int(camera.exposure))
     UI.update_MAX_FPS(DEFAULT_FPS)
     UI.update_trial_time_s(DEFAULT_TRIAL_TIME_S)
 

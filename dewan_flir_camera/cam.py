@@ -109,7 +109,7 @@ class Cam(SpinnakerObject):
 
     def poll(self):
         return {
-            "exposure_time": self.get_exposure(),
+            "exposure_time": self.exposure,
             "fps": 0,
         }
 
@@ -161,17 +161,7 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             raise CameraError("Error setting number of burst frames!") from se
 
-    def get_exposure(self) -> float:
-        try:
-            access_mode = self.ExposureTime.GetAccessMode()
-            if access_mode != PySpin.RO and access_mode != PySpin.RW:
-                self.logger.warning("Unable to get exposure time. Aborting...")
-                return 0.0
 
-            return self.ExposureTime.GetValue()
-
-        except SpinnakerException as se:
-            raise CameraError("Error reading camera exposure!") from se
 
     def get_exposure_mode(self) -> AutoExposureMode or None:
         try:
@@ -243,7 +233,16 @@ class Cam(SpinnakerObject):
 
     @property
     def exposure(self):
-        return self.get_exposure()
+        try:
+            access_mode = self.ExposureTime.GetAccessMode()
+            if access_mode != PySpin.RO and access_mode != PySpin.RW:
+                self.logger.warning("Unable to get exposure time. Aborting...")
+                return 0.0
+
+            return self.ExposureTime.GetValue()
+
+        except SpinnakerException as se:
+            raise CameraError("Error reading camera exposure!") from se
 
     @property
     def num_burst_frames(self):
