@@ -177,11 +177,6 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             raise CameraError("Error reading acquisition mode!") from se
 
-    def get_num_burst_frames(self) -> float:
-        try:
-            return self.AcquisitionFrameCount.GetValue()
-        except SpinnakerException as se:
-            raise CameraError("Error reading acquisition frames!") from se
 
     def register_event_handler(self, event_handler):
         try:
@@ -246,7 +241,10 @@ class Cam(SpinnakerObject):
 
     @property
     def num_burst_frames(self):
-        return self.get_num_burst_frames()
+        try:
+            return self.AcquisitionFrameCount.GetValue()
+        except SpinnakerException as se:
+            raise CameraError("Error reading acquisition frames!") from se
 
     def __getattr__(self, attribute):
         """
