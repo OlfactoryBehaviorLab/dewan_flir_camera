@@ -24,11 +24,11 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QFileDi
 
 DEFAULT_DIR = "./"
 
+logger = logging.getLogger(__name__)
 
 class ControlWindow(QMainWindow):
-    def __init__(self, camera, logger, video_acquisition_handler):
+    def __init__(self, camera, video_acquisition_handler):
         super().__init__()
-        self.logger = logger
         self.camera: cam.Cam = camera
         self.video_acquisition_handler = video_acquisition_handler
 
@@ -113,7 +113,7 @@ class ControlWindow(QMainWindow):
         index = self.main_ui.acquisition_mode_data.currentIndex()
         acquisition_mode = AcquisitionMode(index)
         self.camera.set_acquisition_mode(acquisition_mode)
-        self.logger.debug("Acquisition mode changed to: %s", acquisition_mode)
+        logger.debug("Acquisition mode changed to: %s", acquisition_mode)
 
     def exposure_mode_changed_callback(self):
         index = self.main_ui.exposure_mode.currentIndex()
@@ -126,7 +126,7 @@ class ControlWindow(QMainWindow):
         else:
             self.main_ui.exposure_apply.setEnabled(True)
             self.main_ui.exposure_value.setEnabled(True)
-        self.logger.debug("Exposure mode set to %s: index %s", exposure_mode, index)
+        logger.debug("Exposure mode set to %s: index %s", exposure_mode, index)
 
     def exposure_apply_callback(self):
         new_value = self.main_ui.exposure_value.value()
@@ -136,10 +136,9 @@ class ControlWindow(QMainWindow):
         )  # Just incase the camera bounds the user's input
         try:
             self.main_ui.exposure_value.setValue(new_time)
-            self.logger.debug("Exposure value set to %s", new_value)
+            logger.debug("Exposure value set to %s", new_value)
         except (TypeError, ValueError):
-            self.logger.error("%s is not a valid value for setValue!", new_time)
-
+            logger.error("%s is not a valid value for setValue!", new_time)
 
     def trial_time_s_changed_callback(self):
         trial_time_s = self.get_trial_time_s()
@@ -248,7 +247,7 @@ class ControlWindow(QMainWindow):
             self.scene.addPixmap(pixmap)
             self.main_ui.viewport.fitInView(pixmap.rect())
         except Exception as e:
-            self.logger.error(e)
+            logger.error(e)
 
 
 class ConfigDialog:

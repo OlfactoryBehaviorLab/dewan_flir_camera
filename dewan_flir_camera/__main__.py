@@ -91,12 +91,14 @@ def initialize(camera, UI: gui.ControlWindow):
     UI.update_MAX_FPS(DEFAULT_FPS)
     UI.update_trial_time_s(DEFAULT_TRIAL_TIME_S)
 
-
-def main():
-    logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
     app = gui.instantiate_app(logger)
     config_values = gui.get_config(logger, DEFAULT_SAVE_DIR)
+def main():
+
+    app = gui.instantiate_app()
+    config_values = gui.get_config(DEFAULT_SAVE_DIR)
     mouse_dir, file_stem = create_session_dirs(config_values, logger)
     image_dir = create_dir_if_not_exist(mouse_dir, "images", None, logger)
     with SpinSystem(logger) as system:
@@ -107,7 +109,7 @@ def main():
             camera, logger, mouse_dir, file_stem
         )
 
-        ui = gui.ControlWindow(camera, logger, video_acquisition_handler)
+        ui = gui.ControlWindow(camera, video_acquisition_handler)
         initialize(camera, ui)
 
         event_handler = ImageHandler(image_dir, logger)
