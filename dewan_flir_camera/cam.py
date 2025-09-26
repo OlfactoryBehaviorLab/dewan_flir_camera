@@ -120,7 +120,7 @@ class Cam(SpinnakerObject):
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
                 self.logger.warning("Unable to set exposure time. Aborting...")
                 return self.ExposureTime.GetValue()
-            if self.get_exposure_mode() == AutoExposureMode.OFF:
+            if self.exposure_mode == AutoExposureMode.OFF:
                 max_exposure_time = self.ExposureTime.GetMax()
                 min_exposure_time = self.ExposureTime.GetMin()
                 exposure_time = min(max_exposure_time, new_exposure)
