@@ -93,8 +93,6 @@ def initialize(camera, UI: gui.ControlWindow):
 
 logger = logging.getLogger(__name__)
 
-    app = gui.instantiate_app(logger)
-    config_values = gui.get_config(logger, DEFAULT_SAVE_DIR)
 def main():
 
     app = gui.instantiate_app()
