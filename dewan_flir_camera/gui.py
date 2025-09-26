@@ -322,9 +322,9 @@ def instantiate_app():
     return app
 
 
-def get_config(logger, default_save_dir: str):
+def get_config(default_save_dir: str):
     # Blocking get config values
-    config_dialog = ConfigDialog(logger, default_save_dir)
+    config_dialog = ConfigDialog(default_save_dir)
     return config_dialog.get_experiment_config()
 
 
