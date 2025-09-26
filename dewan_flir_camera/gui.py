@@ -1,3 +1,4 @@
+import logging
 import sys
 from pathlib import Path
 import numpy as np
@@ -57,6 +58,9 @@ class ControlWindow(QMainWindow):
         self.main_ui.exposure_apply.clicked.connect(self.exposure_apply_callback)
         self.main_ui.s_per_trial_val.valueChanged.connect(
             self.trial_time_s_changed_callback
+        )
+        self.main_ui.trigger_source_selection.currentIndexChanged.connect(
+            self.trigger_selection_changed_callback
         )
 
         # Update GUI to reflect default parameters set in __main__
@@ -146,6 +150,9 @@ class ControlWindow(QMainWindow):
         max_fps = self.calc_max_fps(self.camera.exposure)
         num_burst_frames = self.s_to_frames(trial_time_s, max_fps)
         self.camera.set_num_burst_frames(num_burst_frames)
+
+    def trigger_selection_changed_callback(self):
+        logger.debug("Trigger selection changed callback")
 
     def start_button_callback(self):
         current_state = self.camera.acquisition_state
@@ -251,8 +258,7 @@ class ControlWindow(QMainWindow):
 
 
 class ConfigDialog:
-    def __init__(self, logger, default_save_dir: str):
-        self.logger = logger
+    def __init__(self, default_save_dir: str):
         self.config_ui = config.Ui_config_wizard()
         # self.config_ui.mouse_ID_field.textEdited.connect(self.verify_ID)
         # self.config_ui.experiment_type_field.textEdited.connect(self.verify_exp)
@@ -283,28 +289,28 @@ class ConfigDialog:
                 "save_dir": self.config_ui.save_path_field.text(),
             }
         else:
-            self.logger.error("Configuration UI returned 0! Setting default values")
+            logger.error("Configuration UI returned 0! Setting default values")
             configuration = {
                 "mouse": '9999',
                 "experiment": "none_specified",
                 "save_dir": Path(DEFAULT_DIR),
             }
-        self.logger.debug("Configuration UI returned %s", configuration)
+        logger.debug("Configuration UI returned %s", configuration)
         return configuration
 
     def verify_ID(self):
-        self.logger.debug("Verifying ID: %s", self.config_ui.mouse_ID_field)
+        logger.debug("Verifying ID: %s", self.config_ui.mouse_ID_field)
 
     def verify_exp(self):
-        self.logger.debug(
+        logger.debug(
             "Verifying Experiment: %s", self.config_ui.experiment_type_field
         )
 
     def verify_user_path(self):
-        self.logger.debug("Verifying Path: %s", self.config_ui.save_path_field)
+        logger.debug("Verifying Path: %s", self.config_ui.save_path_field)
 
 
-def instantiate_app(logger=None):
+def instantiate_app():
     sys.argv += ["-platform", "windows:darkmode=2"]
     if logger:
         logger.debug("Instantiating QApplication")
