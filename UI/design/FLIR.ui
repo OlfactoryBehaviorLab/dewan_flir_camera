@@ -1019,8 +1019,8 @@ QPushButton::pressed{
 }</string>
                </property>
                <property name="text">
-                <string>MANUAL
-TRIGGER</string>
+                <string>CAPTURE
+FRAME</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
@@ -1085,7 +1085,7 @@ color:rgb(255,255,255);
                </property>
                <property name="text">
                 <string>START
-ACQUISITION</string>
+RECORDING</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
@@ -1158,7 +1158,7 @@ QPushButton::pressed{
                </property>
                <property name="text">
                 <string>ARM
-TRIGGER</string>
+EXPERIMENT</string>
                </property>
                <property name="flat">
                 <bool>false</bool>

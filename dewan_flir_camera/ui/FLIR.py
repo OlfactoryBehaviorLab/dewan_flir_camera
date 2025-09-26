@@ -592,16 +592,16 @@ class MainUI(object):
 
         self.buttons_layout.addWidget(self.arm_button, 1, 1, 1, 1)
 
-        self.trigger_button = QPushButton(self.buttons)
-        self.trigger_button.setObjectName("capture_button")
-        self.trigger_button.setEnabled(True)
-        self.trigger_button.setSizePolicy(sizePolicy8)
-        self.trigger_button.setMinimumSize(QSize(50, 40))
-        self.trigger_button.setMaximumSize(QSize(16777215, 150))
-        self.trigger_button.setBaseSize(QSize(30, 30))
-        self.trigger_button.setFont(font)
-        self.trigger_button.setMouseTracking(True)
-        self.trigger_button.setStyleSheet(
+        self.capture_single_frame = QPushButton(self.buttons)
+        self.capture_single_frame.setObjectName("capture_button")
+        self.capture_single_frame.setEnabled(True)
+        self.capture_single_frame.setSizePolicy(sizePolicy8)
+        self.capture_single_frame.setMinimumSize(QSize(50, 40))
+        self.capture_single_frame.setMaximumSize(QSize(16777215, 150))
+        self.capture_single_frame.setBaseSize(QSize(30, 30))
+        self.capture_single_frame.setFont(font)
+        self.capture_single_frame.setMouseTracking(True)
+        self.capture_single_frame.setStyleSheet(
             "QPushButton{\n"
             "background-color: rgb(179, 179, 0);\n"
             "}\n"
@@ -618,19 +618,19 @@ class MainUI(object):
             "    background-color:rgb(74, 74, 0);\n"
             "}"
         )
-        self.trigger_button.setFlat(False)
+        self.capture_single_frame.setFlat(False)
 
-        self.buttons_layout.addWidget(self.trigger_button, 0, 0, 1, 1)
+        self.buttons_layout.addWidget(self.capture_single_frame, 0, 0, 1, 1)
 
-        self.start_button = QPushButton(self.buttons)
-        self.start_button.setObjectName("start_button")
-        self.start_button.setSizePolicy(sizePolicy8)
-        self.start_button.setMinimumSize(QSize(30, 30))
-        self.start_button.setMaximumSize(QSize(16777215, 150))
-        self.start_button.setBaseSize(QSize(30, 30))
-        self.start_button.setFont(font)
-        self.start_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.start_button.setStyleSheet(
+        self.record_button = QPushButton(self.buttons)
+        self.record_button.setObjectName("start_button")
+        self.record_button.setSizePolicy(sizePolicy8)
+        self.record_button.setMinimumSize(QSize(30, 30))
+        self.record_button.setMaximumSize(QSize(16777215, 150))
+        self.record_button.setBaseSize(QSize(30, 30))
+        self.record_button.setFont(font)
+        self.record_button.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.record_button.setStyleSheet(
             "QPushButton{\n"
             "background-color: rgb(0, 85, 0);\n"
             "color:rgb(255,255,255);\n"
@@ -649,8 +649,8 @@ class MainUI(object):
             "color:rgb(255,255,255);\n"
             "}"
         )
-        self.start_button.setFlat(False)
-        self.buttons_layout.addWidget(self.start_button, 0, 1, 1, 1)
+        self.record_button.setFlat(False)
+        self.buttons_layout.addWidget(self.record_button, 0, 1, 1, 1)
 
         self.preview_button = QPushButton(self.buttons)
         self.preview_button.setObjectName(u"preview_button")
@@ -828,14 +828,14 @@ class MainUI(object):
         self.preview_button.setText(
             QCoreApplication.translate("main_window", "LIVE\nPREVIEW", None)
         )
-        self.trigger_button.setText(
-            QCoreApplication.translate("main_window", "MANUAL\nTRIGGER", None)
+        self.capture_single_frame.setText(
+            QCoreApplication.translate("main_window", "CAPTURE\nFRAME", None)
         )
-        self.start_button.setText(
-            QCoreApplication.translate("main_window", "START\nACQUISITION", None)
+        self.record_button.setText(
+            QCoreApplication.translate("main_window", "START\nRECORDING", None)
         )
         self.arm_button.setText(
-            QCoreApplication.translate("main_window", "ARM\nTRIGGER", None)
+            QCoreApplication.translate("main_window", "ARM\nEXPERIMENT", None)
         )
         self.menuFile.setTitle(QCoreApplication.translate("main_window", "File", None))
         self.menuCamera_Info.setTitle(
