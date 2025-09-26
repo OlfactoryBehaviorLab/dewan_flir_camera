@@ -45,9 +45,9 @@ class ControlWindow(QMainWindow):
         self.main_ui.actionSave_As.triggered.connect(self.save_as_action_callback)
         self.main_ui.actionExit.triggered.connect(self.close)
 
-        self.main_ui.start_button.clicked.connect(self.start_button_callback)
+        self.main_ui.record_button.clicked.connect(self.start_button_callback)
         self.main_ui.arm_button.clicked.connect(self.arm_button_callback)
-        self.main_ui.trigger_button.clicked.connect(self.trigger_button_callback)
+        self.main_ui.capture_single_frame.clicked.connect(self.trigger_button_callback)
 
         self.main_ui.acquisition_mode_data.currentTextChanged.connect(
             self.acquisition_mode_changed_callback
@@ -162,8 +162,8 @@ class ControlWindow(QMainWindow):
             and self.camera.trigger_acquisition(AcquisitionState.END)
             == AcquisitionState.END
         ):
-            self.main_ui.start_button.setText("START ACQUISITION")
-            self.main_ui.start_button.setStyleSheet(
+            self.main_ui.record_button.setText("START\nRECORDING")
+            self.main_ui.record_button.setStyleSheet(
                 "QPushButton{\n"
                 "background-color: rgb(0, 85, 0);\n"
                 "color:rgb(255,255,255);\n"
@@ -187,8 +187,8 @@ class ControlWindow(QMainWindow):
             and self.camera.trigger_acquisition(AcquisitionState.BEGIN)
             == AcquisitionState.BEGIN
         ):
-            self.main_ui.start_button.setText("END ACQUISITION")
-            self.main_ui.start_button.setStyleSheet(
+            self.main_ui.record_button.setText("STOP\nRECORDING")
+            self.main_ui.record_button.setStyleSheet(
                 "QPushButton{\n"
                 "background-color: rgb(170, 0, 0);\n"
                 "color:rgb(255,255,255);\n"
@@ -214,12 +214,12 @@ class ControlWindow(QMainWindow):
         if current_arm_state:
             self.camera.armed = False
             self.set_gui_state(True)
-            self.main_ui.arm_button.setText("ARM TRIGGER")
+            self.main_ui.arm_button.setText("ARM\nEXPERIMENT")
             self.video_acquisition_handler.end_experiment_video_acquisition()
         else:
             self.camera.armed = True
             self.set_gui_state(False)
-            self.main_ui.arm_button.setText("TRIGGER ARMED")
+            self.main_ui.arm_button.setText("EXPERIMENT\nARMED")
             self.video_acquisition_handler.start_experiment_video_acquisition()
 
     def trigger_button_callback(self):
@@ -235,8 +235,8 @@ class ControlWindow(QMainWindow):
         pass
 
     def set_gui_state(self, state: bool):
-        self.main_ui.start_button.setEnabled(state)
-        self.main_ui.trigger_button.setEnabled(state)
+        self.main_ui.record_button.setEnabled(state)
+        self.main_ui.capture_single_frame.setEnabled(state)
         self.main_ui.exposure_apply.setEnabled(state)
         self.main_ui.exposure_mode.setEnabled(state)
         self.main_ui.acquisition_mode.setEnabled(state)
