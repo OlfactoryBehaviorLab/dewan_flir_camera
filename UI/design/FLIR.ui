@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>978</width>
-    <height>617</height>
+    <width>1060</width>
+    <height>736</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -139,14 +139,14 @@ font: 700 16pt &quot;Arial&quot;;</string>
          </property>
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>200</width>
            <height>120</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>228</width>
-           <height>110</height>
+           <width>99999</width>
+           <height>99999</height>
           </size>
          </property>
          <property name="statusTip">
@@ -172,7 +172,7 @@ font: 700 16pt &quot;Arial&quot;;</string>
            <number>2</number>
           </property>
           <property name="rightMargin">
-           <number>2</number>
+           <number>10</number>
           </property>
           <property name="bottomMargin">
            <number>2</number>
@@ -180,20 +180,20 @@ font: 700 16pt &quot;Arial&quot;;</string>
           <item>
            <widget class="QWidget" name="current_exposure_widget" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <layout class="QHBoxLayout" name="current_exposure_disp_layout">
              <property name="spacing">
-              <number>0</number>
+              <number>6</number>
              </property>
              <property name="topMargin">
               <number>0</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>9</number>
              </property>
              <property name="bottomMargin">
               <number>0</number>
@@ -201,7 +201,7 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="current_exposure_label">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -214,13 +214,19 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="current_exposure_data">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::LeftToRight</enum>
+               </property>
                <property name="text">
                 <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -258,13 +264,19 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="current_fps_data">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::LeftToRight</enum>
+               </property>
                <property name="text">
                 <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -305,13 +317,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="max_fps_data">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="text">
                 <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -352,13 +367,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="s_per_trial_data">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="text">
                 <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -399,13 +417,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
              <item>
               <widget class="QLabel" name="num_frames_data">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="text">
                 <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -489,16 +510,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
               <number>0</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>4</number>
              </property>
              <property name="topMargin">
               <number>2</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>4</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>4</number>
              </property>
              <item>
               <widget class="QComboBox" name="acquisition_mode_data">
@@ -549,16 +570,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
               <number>6</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>4</number>
              </property>
              <property name="topMargin">
               <number>2</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>4</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>4</number>
              </property>
              <item>
               <widget class="QComboBox" name="exposure_mode">
@@ -594,6 +615,9 @@ font: 700 16pt &quot;Arial&quot;;</string>
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::RightToLeft</enum>
                </property>
                <property name="alignment">
                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -697,16 +721,16 @@ font: 700 16pt &quot;Arial&quot;;</string>
               <number>6</number>
              </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>4</number>
              </property>
              <property name="topMargin">
               <number>2</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>4</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>4</number>
              </property>
              <item>
               <widget class="QDoubleSpinBox" name="s_per_trial_val">
@@ -717,6 +741,9 @@ font: 700 16pt &quot;Arial&quot;;</string>
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::RightToLeft</enum>
                </property>
                <property name="alignment">
                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -748,6 +775,72 @@ font: 700 16pt &quot;Arial&quot;;</string>
                <property name="value">
                 <double>2.000000000000000</double>
                </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="trigger_control">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Trigger Selection</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>4</number>
+             </property>
+             <property name="leftMargin">
+              <number>4</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>4</number>
+             </property>
+             <property name="bottomMargin">
+              <number>4</number>
+             </property>
+             <item>
+              <widget class="QComboBox" name="trigger_source_selection">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LayoutDirection::LeftToRight</enum>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Software</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Line 1</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Line 2</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Line 3</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -860,7 +953,8 @@ QPushButton::pressed{
 }</string>
                </property>
                <property name="text">
-                <string>LIVE PREVIEW</string>
+                <string>LIVE
+PREVIEW</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
@@ -925,7 +1019,8 @@ QPushButton::pressed{
 }</string>
                </property>
                <property name="text">
-                <string>TRIGGER</string>
+                <string>MANUAL
+TRIGGER</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
@@ -1062,7 +1157,8 @@ QPushButton::pressed{
 }</string>
                </property>
                <property name="text">
-                <string>ARM TRIGGER</string>
+                <string>ARM
+TRIGGER</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
@@ -1085,7 +1181,7 @@ QPushButton::pressed{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>978</width>
+     <width>1060</width>
      <height>33</height>
     </rect>
    </property>

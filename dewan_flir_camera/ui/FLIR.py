@@ -50,7 +50,7 @@ class MainUI(object):
         if not main_window.objectName():
             main_window.setObjectName("main_window")
         main_window.setWindowModality(Qt.WindowModality.WindowModal)
-        main_window.resize(978, 617)
+        main_window.resize(1060, 736)
         sizePolicy = QSizePolicy(
             QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Minimum
         )
@@ -149,39 +149,58 @@ class MainUI(object):
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.param_disp.sizePolicy().hasHeightForWidth())
         self.param_disp.setSizePolicy(sizePolicy5)
-        self.param_disp.setMinimumSize(QSize(0, 120))
-        self.param_disp.setMaximumSize(QSize(350, 110))
+        self.param_disp.setMinimumSize(QSize(200, 120))
+        self.param_disp.setMaximumSize(QSize(99999, 99999))
         self.param_disp.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.param_disp_layout = QVBoxLayout(self.param_disp)
         self.param_disp_layout.setObjectName("param_disp_layout")
-        self.param_disp_layout.setContentsMargins(2, 2, 0, 2)
-
+        self.param_disp_layout.setContentsMargins(2, 2, 10, 2)
         self.current_exposure_widget = QWidget(self.param_disp)
         self.current_exposure_widget.setObjectName("current_exposure_widget")
-        sizePolicy4.setHeightForWidth(
+        sizePolicy6 = QSizePolicy(
+            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum
+        )
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(
             self.current_exposure_widget.sizePolicy().hasHeightForWidth()
         )
-        self.current_exposure_widget.setSizePolicy(sizePolicy4)
+        self.current_exposure_widget.setSizePolicy(sizePolicy6)
         self.current_exposure_disp_layout = QHBoxLayout(self.current_exposure_widget)
+        self.current_exposure_disp_layout.setSpacing(6)
         self.current_exposure_disp_layout.setObjectName("current_exposure_disp_layout")
-        self.current_exposure_disp_layout.setContentsMargins(-1, 0, 0, 0)
+        self.current_exposure_disp_layout.setContentsMargins(-1, 0, 9, 0)
         self.current_exposure_label = QLabel(self.current_exposure_widget)
         self.current_exposure_label.setObjectName("current_exposure_label")
-        sizePolicy6 = QSizePolicy(
+        sizePolicy7 = QSizePolicy(
             QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Preferred
         )
-        self.current_exposure_label.setSizePolicy(sizePolicy6)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(
+            self.current_exposure_label.sizePolicy().hasHeightForWidth()
+        )
+        self.current_exposure_label.setSizePolicy(sizePolicy7)
 
         self.current_exposure_disp_layout.addWidget(self.current_exposure_label)
 
         self.current_exposure_data = QLabel(self.current_exposure_widget)
         self.current_exposure_data.setObjectName("current_exposure_data")
-        sizePolicy7 = QSizePolicy(
-            QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Preferred
+        sizePolicy8 = QSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
         )
-
-        self.current_exposure_data.setSizePolicy(sizePolicy7)
-
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(
+            self.current_exposure_data.sizePolicy().hasHeightForWidth()
+        )
+        self.current_exposure_data.setSizePolicy(sizePolicy8)
+        self.current_exposure_data.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.current_exposure_data.setAlignment(
+            Qt.AlignmentFlag.AlignRight
+            | Qt.AlignmentFlag.AlignTrailing
+            | Qt.AlignmentFlag.AlignVCenter
+        )
 
         self.current_exposure_disp_layout.addWidget(self.current_exposure_data)
 
@@ -198,19 +217,25 @@ class MainUI(object):
         self.current_FPS_disp_layout.setContentsMargins(-1, 0, -1, 0)
         self.current_fps_label = QLabel(self.current_framerate_widget)
         self.current_fps_label.setObjectName("current_fps_label")
-        sizePolicy6.setHeightForWidth(
+        sizePolicy7.setHeightForWidth(
             self.current_fps_label.sizePolicy().hasHeightForWidth()
         )
-        self.current_fps_label.setSizePolicy(sizePolicy6)
+        self.current_fps_label.setSizePolicy(sizePolicy7)
 
         self.current_FPS_disp_layout.addWidget(self.current_fps_label)
 
         self.current_fps_data = QLabel(self.current_framerate_widget)
         self.current_fps_data.setObjectName("current_fps_data")
-        sizePolicy7.setHeightForWidth(
+        sizePolicy8.setHeightForWidth(
             self.current_fps_data.sizePolicy().hasHeightForWidth()
         )
-        self.current_fps_data.setSizePolicy(sizePolicy7)
+        self.current_fps_data.setSizePolicy(sizePolicy8)
+        self.current_fps_data.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.current_fps_data.setAlignment(
+            Qt.AlignmentFlag.AlignRight
+            | Qt.AlignmentFlag.AlignTrailing
+            | Qt.AlignmentFlag.AlignVCenter
+        )
 
         self.current_FPS_disp_layout.addWidget(self.current_fps_data)
 
@@ -227,19 +252,24 @@ class MainUI(object):
         self.max_framerate_disp_layout.setContentsMargins(9, 0, -1, 0)
         self.max_fps_label = QLabel(self.max_framerate_widget)
         self.max_fps_label.setObjectName("max_fps_label")
-        sizePolicy6.setHeightForWidth(
+        sizePolicy7.setHeightForWidth(
             self.max_fps_label.sizePolicy().hasHeightForWidth()
         )
-        self.max_fps_label.setSizePolicy(sizePolicy6)
+        self.max_fps_label.setSizePolicy(sizePolicy7)
 
         self.max_framerate_disp_layout.addWidget(self.max_fps_label)
 
         self.max_fps_data = QLabel(self.max_framerate_widget)
         self.max_fps_data.setObjectName("max_fps_data")
-        sizePolicy7.setHeightForWidth(
+        sizePolicy8.setHeightForWidth(
             self.max_fps_data.sizePolicy().hasHeightForWidth()
         )
-        self.max_fps_data.setSizePolicy(sizePolicy7)
+        self.max_fps_data.setSizePolicy(sizePolicy8)
+        self.max_fps_data.setAlignment(
+            Qt.AlignmentFlag.AlignRight
+            | Qt.AlignmentFlag.AlignTrailing
+            | Qt.AlignmentFlag.AlignVCenter
+        )
 
         self.max_framerate_disp_layout.addWidget(self.max_fps_data)
 
@@ -256,19 +286,24 @@ class MainUI(object):
         self.s_per_trial_disp_layout.setContentsMargins(9, 0, -1, 0)
         self.s_per_trial_label = QLabel(self.s_per_trial_widget)
         self.s_per_trial_label.setObjectName("s_per_trial_label")
-        sizePolicy6.setHeightForWidth(
+        sizePolicy7.setHeightForWidth(
             self.s_per_trial_label.sizePolicy().hasHeightForWidth()
         )
-        self.s_per_trial_label.setSizePolicy(sizePolicy6)
+        self.s_per_trial_label.setSizePolicy(sizePolicy7)
 
         self.s_per_trial_disp_layout.addWidget(self.s_per_trial_label)
 
         self.s_per_trial_data = QLabel(self.s_per_trial_widget)
         self.s_per_trial_data.setObjectName("s_per_trial_data")
-        sizePolicy7.setHeightForWidth(
+        sizePolicy8.setHeightForWidth(
             self.s_per_trial_data.sizePolicy().hasHeightForWidth()
         )
-        self.s_per_trial_data.setSizePolicy(sizePolicy7)
+        self.s_per_trial_data.setSizePolicy(sizePolicy8)
+        self.s_per_trial_data.setAlignment(
+            Qt.AlignmentFlag.AlignRight
+            | Qt.AlignmentFlag.AlignTrailing
+            | Qt.AlignmentFlag.AlignVCenter
+        )
 
         self.s_per_trial_disp_layout.addWidget(self.s_per_trial_data)
 
@@ -285,19 +320,24 @@ class MainUI(object):
         self.num_frames_layout.setContentsMargins(9, 0, -1, 0)
         self.num_frames_label = QLabel(self.num_frames_widget)
         self.num_frames_label.setObjectName("num_frames_label")
-        sizePolicy6.setHeightForWidth(
+        sizePolicy7.setHeightForWidth(
             self.num_frames_label.sizePolicy().hasHeightForWidth()
         )
-        self.num_frames_label.setSizePolicy(sizePolicy6)
+        self.num_frames_label.setSizePolicy(sizePolicy7)
 
         self.num_frames_layout.addWidget(self.num_frames_label)
 
         self.num_frames_data = QLabel(self.num_frames_widget)
         self.num_frames_data.setObjectName("num_frames_data")
-        sizePolicy7.setHeightForWidth(
+        sizePolicy8.setHeightForWidth(
             self.num_frames_data.sizePolicy().hasHeightForWidth()
         )
-        self.num_frames_data.setSizePolicy(sizePolicy7)
+        self.num_frames_data.setSizePolicy(sizePolicy8)
+        self.num_frames_data.setAlignment(
+            Qt.AlignmentFlag.AlignRight
+            | Qt.AlignmentFlag.AlignTrailing
+            | Qt.AlignmentFlag.AlignVCenter
+        )
 
         self.num_frames_layout.addWidget(self.num_frames_data)
 
@@ -334,15 +374,10 @@ class MainUI(object):
 
         self.acquisition_mode = QGroupBox(self.controls)
         self.acquisition_mode.setObjectName("acquisition_mode")
-        sizePolicy8 = QSizePolicy(
-            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Maximum
-        )
-        sizePolicy8.setHorizontalStretch(0)
-        sizePolicy8.setVerticalStretch(0)
-        sizePolicy8.setHeightForWidth(
+        sizePolicy6.setHeightForWidth(
             self.acquisition_mode.sizePolicy().hasHeightForWidth()
         )
-        self.acquisition_mode.setSizePolicy(sizePolicy8)
+        self.acquisition_mode.setSizePolicy(sizePolicy6)
         font = QFont()
         font.setFamilies(["Arial"])
         font.setPointSize(12)
@@ -353,7 +388,7 @@ class MainUI(object):
         self.acquisition_mode_layout = QVBoxLayout(self.acquisition_mode)
         self.acquisition_mode_layout.setSpacing(0)
         self.acquisition_mode_layout.setObjectName("acquisition_mode_layout")
-        self.acquisition_mode_layout.setContentsMargins(0, 2, 0, 2)
+        self.acquisition_mode_layout.setContentsMargins(4, 2, 4, 4)
         self.acquisition_mode_data = QComboBox(self.acquisition_mode)
         self.acquisition_mode_data.addItem("")
         self.acquisition_mode_data.addItem("")
@@ -366,16 +401,16 @@ class MainUI(object):
 
         self.exposure_control = QGroupBox(self.controls)
         self.exposure_control.setObjectName("exposure_control")
-        sizePolicy8.setHeightForWidth(
+        sizePolicy6.setHeightForWidth(
             self.exposure_control.sizePolicy().hasHeightForWidth()
         )
-        self.exposure_control.setSizePolicy(sizePolicy8)
+        self.exposure_control.setSizePolicy(sizePolicy6)
         self.exposure_control.setFont(font)
         self.exposure_control.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.exposure_layout = QVBoxLayout(self.exposure_control)
         self.exposure_layout.setSpacing(6)
         self.exposure_layout.setObjectName("exposure_layout")
-        self.exposure_layout.setContentsMargins(0, 2, 0, 2)
+        self.exposure_layout.setContentsMargins(4, 2, 4, 4)
         self.exposure_mode = QComboBox(self.exposure_control)
         self.exposure_mode.addItem("")
         self.exposure_mode.addItem("")
@@ -388,6 +423,7 @@ class MainUI(object):
         self.exposure_value = QSpinBox(self.exposure_control)
         self.exposure_value.setObjectName("exposure_value")
         self.exposure_value.setFont(font)
+        self.exposure_value.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.exposure_value.setAlignment(
             Qt.AlignmentFlag.AlignRight
             | Qt.AlignmentFlag.AlignTrailing
@@ -407,10 +443,15 @@ class MainUI(object):
 
         self.center_apply_button = QWidget(self.exposure_control)
         self.center_apply_button.setObjectName("center_apply_button")
-        sizePolicy7.setHeightForWidth(
+        sizePolicy9 = QSizePolicy(
+            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred
+        )
+        sizePolicy9.setHorizontalStretch(0)
+        sizePolicy9.setVerticalStretch(0)
+        sizePolicy9.setHeightForWidth(
             self.center_apply_button.sizePolicy().hasHeightForWidth()
         )
-        self.center_apply_button.setSizePolicy(sizePolicy7)
+        self.center_apply_button.setSizePolicy(sizePolicy9)
         self.center_apply_button_layout = QHBoxLayout(self.center_apply_button)
         self.center_apply_button_layout.setSpacing(0)
         self.center_apply_button_layout.setObjectName("center_apply_button_layout")
@@ -420,13 +461,13 @@ class MainUI(object):
         self.center_apply_button_layout.setContentsMargins(2, 2, 2, 0)
         self.exposure_apply = QPushButton(self.center_apply_button)
         self.exposure_apply.setObjectName("exposure_apply")
-        sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
-        sizePolicy9.setHorizontalStretch(0)
-        sizePolicy9.setVerticalStretch(0)
-        sizePolicy9.setHeightForWidth(
+        sizePolicy10 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Fixed)
+        sizePolicy10.setHorizontalStretch(0)
+        sizePolicy10.setVerticalStretch(0)
+        sizePolicy10.setHeightForWidth(
             self.exposure_apply.sizePolicy().hasHeightForWidth()
         )
-        self.exposure_apply.setSizePolicy(sizePolicy9)
+        self.exposure_apply.setSizePolicy(sizePolicy10)
 
         self.center_apply_button_layout.addWidget(self.exposure_apply)
 
@@ -436,17 +477,18 @@ class MainUI(object):
 
         self.s_per_trial = QGroupBox(self.controls)
         self.s_per_trial.setObjectName("s_per_trial")
-        sizePolicy8.setHeightForWidth(self.s_per_trial.sizePolicy().hasHeightForWidth())
-        self.s_per_trial.setSizePolicy(sizePolicy8)
+        sizePolicy6.setHeightForWidth(self.s_per_trial.sizePolicy().hasHeightForWidth())
+        self.s_per_trial.setSizePolicy(sizePolicy6)
         self.s_per_trial.setFont(font)
         self.s_per_trial.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.secondsper_trial_layout = QHBoxLayout(self.s_per_trial)
         self.secondsper_trial_layout.setSpacing(6)
         self.secondsper_trial_layout.setObjectName("secondsper_trial_layout")
-        self.secondsper_trial_layout.setContentsMargins(0, 2, 0, 2)
+        self.secondsper_trial_layout.setContentsMargins(4, 2, 4, 4)
         self.s_per_trial_val = QDoubleSpinBox(self.s_per_trial)
         self.s_per_trial_val.setObjectName("s_per_trial_val")
         self.s_per_trial_val.setFont(font)
+        self.s_per_trial_val.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.s_per_trial_val.setAlignment(
             Qt.AlignmentFlag.AlignRight
             | Qt.AlignmentFlag.AlignTrailing
@@ -468,15 +510,45 @@ class MainUI(object):
 
         self.controls_layout.addWidget(self.s_per_trial)
 
+        self.trigger_control = QGroupBox(self.controls)
+        self.trigger_control.setObjectName("trigger_control")
+        sizePolicy4.setHeightForWidth(
+            self.trigger_control.sizePolicy().hasHeightForWidth()
+        )
+        self.trigger_control.setSizePolicy(sizePolicy4)
+        self.trigger_control.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.verticalLayout = QVBoxLayout(self.trigger_control)
+        self.verticalLayout.setSpacing(4)
+        self.verticalLayout.setObjectName("trigger_control_layout")
+        self.verticalLayout.setContentsMargins(4, 2, 4, 4)
+        self.trigger_source_selection = QComboBox(self.trigger_control)
+        self.trigger_source_selection.addItem("")
+        self.trigger_source_selection.addItem("")
+        self.trigger_source_selection.addItem("")
+        self.trigger_source_selection.addItem("")
+        self.trigger_source_selection.setObjectName("trigger_source_selection")
+        sizePolicy11 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy11.setHorizontalStretch(0)
+        sizePolicy11.setVerticalStretch(0)
+        sizePolicy11.setHeightForWidth(
+            self.trigger_source_selection.sizePolicy().hasHeightForWidth()
+        )
+        self.trigger_source_selection.setSizePolicy(sizePolicy11)
+        self.trigger_source_selection.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+
+        self.verticalLayout.addWidget(self.trigger_source_selection)
+
+        self.controls_layout.addWidget(self.trigger_control)
+
         self.buttons = QFrame(self.controls)
         self.buttons.setObjectName("buttons")
-        sizePolicy10 = QSizePolicy(
+        sizePolicy12 = QSizePolicy(
             QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum
         )
-        sizePolicy10.setHorizontalStretch(0)
-        sizePolicy10.setVerticalStretch(0)
-        sizePolicy10.setHeightForWidth(self.buttons.sizePolicy().hasHeightForWidth())
-        self.buttons.setSizePolicy(sizePolicy10)
+        sizePolicy12.setHorizontalStretch(0)
+        sizePolicy12.setVerticalStretch(0)
+        sizePolicy12.setHeightForWidth(self.buttons.sizePolicy().hasHeightForWidth())
+        self.buttons.setSizePolicy(sizePolicy12)
         self.buttons.setMinimumSize(QSize(0, 50))
         self.buttons.setMaximumSize(QSize(16777215, 150))
         self.buttons.setFrameShape(QFrame.Shape.StyledPanel)
@@ -737,17 +809,33 @@ class MainUI(object):
         self.s_per_trial.setTitle(
             QCoreApplication.translate("main_window", "Seconds per Trial", None)
         )
-        self.arm_button.setText(
-            QCoreApplication.translate("main_window", "ARM TRIGGER", None)
+        self.trigger_control.setTitle(
+            QCoreApplication.translate("main_window", "Trigger Selection", None)
+        )
+        self.trigger_source_selection.setItemText(
+            0, QCoreApplication.translate("main_window", "Software", None)
+        )
+        self.trigger_source_selection.setItemText(
+            1, QCoreApplication.translate("main_window", "Line 1", None)
+        )
+        self.trigger_source_selection.setItemText(
+            2, QCoreApplication.translate("main_window", "Line 2", None)
+        )
+        self.trigger_source_selection.setItemText(
+            3, QCoreApplication.translate("main_window", "Line 3", None)
+        )
+
+        self.preview_button.setText(
+            QCoreApplication.translate("main_window", "LIVE\nPREVIEW", None)
         )
         self.trigger_button.setText(
-            QCoreApplication.translate("main_window", "TRIGGER", None)
+            QCoreApplication.translate("main_window", "MANUAL\nTRIGGER", None)
         )
         self.start_button.setText(
-            QCoreApplication.translate("main_window", "START ACQUISITION", None)
+            QCoreApplication.translate("main_window", "START\nACQUISITION", None)
         )
-        self.preview_button.setText(
-            QCoreApplication.translate("main_window", "LIVE PREVIEW", None)
+        self.arm_button.setText(
+            QCoreApplication.translate("main_window", "ARM\nTRIGGER", None)
         )
         self.menuFile.setTitle(QCoreApplication.translate("main_window", "File", None))
         self.menuCamera_Info.setTitle(
