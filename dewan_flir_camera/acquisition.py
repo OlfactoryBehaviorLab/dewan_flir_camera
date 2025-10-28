@@ -121,7 +121,6 @@ class VideoAcquisition:
         self.camera.toggle_acquisition(AcquisitionState.END)
         self.num_manual_videos_saved += 1
         self.current_video_is_manual = False
-        # self.stream_timer.stop()
         self.camera.configure_hardware_trigger(TriggerAction.SINGLE) # TODO: DYNAMICALLY SET THIS
 
     def start_experiment_video_acquisition(self):
