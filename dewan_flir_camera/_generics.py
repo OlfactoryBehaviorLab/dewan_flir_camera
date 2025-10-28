@@ -50,8 +50,7 @@ class SpinnakerObject:
             return None
 
 
-class CameraError(Exception):
+class GenericSpinnakerError(Exception):
     def __init__(self, msg: str):
         super().__init__()
         self.msg = msg
-        print(f"There was a problem loading the cameras: {msg}")

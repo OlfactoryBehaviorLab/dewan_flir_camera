@@ -1,5 +1,5 @@
 from PySpin import SpinnakerException
-from dewan_flir_camera._generics import SpinnakerObject, CameraError
+from dewan_flir_camera._generics import SpinnakerObject, GenericSpinnakerError
 
 
 class Interface(SpinnakerObject):
@@ -30,7 +30,7 @@ class Interface(SpinnakerObject):
 
         except SpinnakerException as ex:
             self.deinit()
-            raise CameraError("Error getting interface information!") from ex
+            raise GenericSpinnakerError("Error getting interface information!") from ex
 
     def _get_HBA_tl_info(self):
         """
@@ -49,7 +49,7 @@ class Interface(SpinnakerObject):
 
         except SpinnakerException as ex:
             self.deinit()
-            raise CameraError("Error getting HBA information!") from ex
+            raise GenericSpinnakerError("Error getting HBA information!") from ex
 
     def __str__(self):
         return (

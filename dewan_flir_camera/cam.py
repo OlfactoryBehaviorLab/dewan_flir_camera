@@ -1,7 +1,7 @@
 import time
 import PySpin
 from PySpin import SpinnakerException
-from dewan_flir_camera._generics import SpinnakerObject, CameraError
+from dewan_flir_camera._generics import SpinnakerObject, GenericSpinnakerError
 from dewan_flir_camera.options import (
     AutoExposureMode,
     AcquisitionMode,
@@ -43,7 +43,7 @@ class Cam(SpinnakerObject):
                 self.ptr.Init()
                 self.is_init = True
             except SpinnakerException as se:
-                raise CameraError(f"Error initializing camera {self.number}!") from se
+                raise GenericSpinnakerError(f"Error initializing camera {self.number}!") from se
 
     def deinit(self):
         if not self.is_init:
@@ -62,7 +62,7 @@ class Cam(SpinnakerObject):
                 self.ptr.DeInit()  # Must DeInit camera ptr as opposed to just deleting the reference
                 super().deinit()
             except SpinnakerException as se:
-                raise CameraError(f"Error initializing camera {self.number}!") from se
+                raise GenericSpinnakerError(f"Error initializing camera {self.number}!") from se
 
     def capture_single_frame(self):
         try:
@@ -106,7 +106,7 @@ class Cam(SpinnakerObject):
                     self.acquisition_state = new_state
             return self.acquisition_state
         except SpinnakerException as se:
-            raise CameraError(
+            raise GenericSpinnakerError(
                 f"Unable to set camera acquisition state to {new_state}!"
             ) from se
 
@@ -136,7 +136,7 @@ class Cam(SpinnakerObject):
                 )
                 return self.ExposureTime.GetValue()
         except SpinnakerException as se:
-            raise CameraError("Error setting exposure!") from se
+            raise GenericSpinnakerError("Error setting exposure!") from se
 
     def set_exposure_mode(self, exposure_mode: AutoExposureMode) -> None:
         try:
@@ -147,14 +147,14 @@ class Cam(SpinnakerObject):
             else:
                 self.ExposureAuto.SetValue(exposure_mode)
         except SpinnakerException as se:
-            raise CameraError("Error setting the exposure!") from se
+            raise GenericSpinnakerError("Error setting the exposure!") from se
 
     def set_acquisition_mode(self, mode: AcquisitionMode) -> None:
         try:
             self.logger.debug("Setting acquisition mode to %s", mode)
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
-            raise CameraError("Error configuring acquisition mode!") from se
+            raise GenericSpinnakerError("Error configuring acquisition mode!") from se
 
     def set_num_burst_frames(self, num_frames: int) -> None:
         try:
@@ -162,14 +162,14 @@ class Cam(SpinnakerObject):
             self.AcquisitionFrameCount.SetValue(num_frames)
             self.logger.debug("New number of burst frames is %s", self.num_burst_frames)
         except SpinnakerException as se:
-            raise CameraError("Error setting number of burst frames!") from se
+            raise GenericSpinnakerError("Error setting number of burst frames!") from se
 
     def register_event_handler(self, event_handler):
         try:
             self.RegisterEventHandler(event_handler)
             self.event_handler_ptr = event_handler
         except SpinnakerException as se:
-            raise CameraError("Error registering event handler!") from se
+            raise GenericSpinnakerError("Error registering event handler!") from se
 
     def unregister_event_handler(self):
         try:
@@ -177,7 +177,7 @@ class Cam(SpinnakerObject):
                 self.UnregisterEventHandler(self.event_handler_ptr)
                 self.event_handler_ptr = None
         except SpinnakerException as se:
-            raise CameraError("Error unregistering event handler!") from se
+            raise GenericSpinnakerError("Error unregistering event handler!") from se
 
     def configure_hardware_trigger(self, action: TriggerAction):
         try:
@@ -189,7 +189,7 @@ class Cam(SpinnakerObject):
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
         except SpinnakerException as se:
-            raise CameraError(
+            raise GenericSpinnakerError(
                 f"An error occurred while configuring camera {self.number}"
                 "s hardware trigger"
             ) from se
@@ -203,7 +203,7 @@ class Cam(SpinnakerObject):
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
         except SpinnakerException as se:
-            raise CameraError(
+            raise GenericSpinnakerError(
                 f"An error occurred while configuring camera {self.number}"
                 "s software trigger"
             ) from se
@@ -223,14 +223,14 @@ class Cam(SpinnakerObject):
             return self.ExposureTime.GetValue()
 
         except SpinnakerException as se:
-            raise CameraError("Error reading camera exposure!") from se
+            raise GenericSpinnakerError("Error reading camera exposure!") from se
 
     @property
     def num_burst_frames(self):
         try:
             return self.AcquisitionFrameCount.GetValue()
         except SpinnakerException as se:
-            raise CameraError("Error reading acquisition frames!") from se
+            raise GenericSpinnakerError("Error reading acquisition frames!") from se
 
     @property
     def exposure_mode(self):
@@ -238,7 +238,7 @@ class Cam(SpinnakerObject):
             exposure_mode = self.ExposureAuto.GetValue()
             return AutoExposureMode(exposure_mode)
         except SpinnakerException as se:
-            raise CameraError("Error reading exposure_mode mode!") from se
+            raise GenericSpinnakerError("Error reading exposure_mode mode!") from se
 
     @property
     def acquisition_mode(self):
@@ -246,7 +246,7 @@ class Cam(SpinnakerObject):
             acquisition_mode = self.AcquisitionMode.GetValue()
             return AcquisitionMode(acquisition_mode)
         except SpinnakerException as se:
-            raise CameraError("Error reading acquisition mode!") from se
+            raise GenericSpinnakerError("Error reading acquisition mode!") from se
 
     def __getattr__(self, attribute):
         """
@@ -288,7 +288,7 @@ class Cam(SpinnakerObject):
             self.speed = self.get_node_info(self.ptr.TLDevice.DeviceCurrentSpeed)
 
         except SpinnakerException as se:
-            raise CameraError(
+            raise GenericSpinnakerError(
                 "Error getting camera information from transport layer!"
             ) from se
 
@@ -300,7 +300,7 @@ class Cam(SpinnakerObject):
             self.stream_ID = self.get_node_info(self.ptr.TLStream.StreamID)
             self.stream_type = self.get_node_info(self.ptr.TLStream.StreamType)
         except SpinnakerException as se:
-            raise CameraError("Error getting stream information!") from se
+            raise GenericSpinnakerError("Error getting stream information!") from se
 
     def __str__(self):
         return f"Camera {self.number}"
