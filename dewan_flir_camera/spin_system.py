@@ -106,7 +106,7 @@ class SpinSystem(SpinnakerObject):
         """
         logger.info("Instantiating Camera Wrappers")
         for i, cam in enumerate(self.camera_list):
-            new_cam = Cam(cam, logger, i)
+            new_cam = Cam(cam, i)
             self.cameras.append(new_cam)
         del cam
 
