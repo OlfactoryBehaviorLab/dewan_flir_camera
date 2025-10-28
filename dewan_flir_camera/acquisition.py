@@ -8,7 +8,7 @@ from PySpin import ImageEventHandler, ImageProcessor
 from PySide6.QtCore import Signal, QObject, QThreadPool
 
 from dewan_flir_camera.cam import Cam
-from dewan_flir_camera.options import AcquisitionState
+from dewan_flir_camera.options import AcquisitionState, AcquisitionMode
 from dewan_flir_camera.threads import VideoStreamer, VideoStreamWorker
 
 
@@ -98,9 +98,24 @@ class VideoAcquisition:
         self.num_received_frames: int = 0
         self.last_num_received_frames: int = 0
         self.cycles_w_no_frames: int = 0
-        self.num_videos_saved: int = 0
+        self.num_trials_saved: int = 0
+        self.num_manual_videos_saved: int = 0
         self.current_worker: VideoStreamWorker = None
         self.event_handler: ImageEventHandler = None
+        self.current_video_is_manual: bool = False
+
+    def start_manual_video_acquisition(self):
+        self.camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
+        self.camera.configure_software_trigger()
+        self.init_new_stream_worker(True)
+        self.camera.toggle_acquisition(AcquisitionState.BEGIN)
+        self.camera.TriggerSoftware.Execute()
+        self.stream_timer.start(1000)
+
+    def end_manual_video_acquisition(self):
+        self.camera.toggle_acquisition(AcquisitionState.END)
+        self.stream_timer.stop()
+        self.camera.configure_hardware_trigger()
 
     def start_experiment_video_acquisition(self):
         self.init_new_stream_worker()
@@ -111,9 +126,15 @@ class VideoAcquisition:
         self.camera.toggle_acquisition(AcquisitionState.END)
         self.stream_timer.stop()
 
-    def init_new_stream_worker(self):
-        filename = f"{self.file_stem}-trial-{self.num_videos_saved + 1}.mp4"
-        save_path = self.path.joinpath(filename)
+    def init_new_stream_worker(self, manual: bool=False):
+        if not manual:
+            filename = f"{self.file_stem}-trial-{self.num_trials_saved + 1}.mp4"
+            save_path = self.path.joinpath(filename)
+        else:
+            self.current_video_is_manual = True
+            filename = f"{self.file_stem}-manual-{self.num_manual_videos_saved + 1}.mp4"
+            save_path = self.path.joinpath(filename)
+
         fps = self.camera.current_FPS
         width, height = self.camera.frame_size
         self.current_worker = VideoStreamWorker(
@@ -156,17 +177,21 @@ class VideoAcquisition:
             if self.num_received_frames >= frame_num_target:
                 # We received what we expected
                 self.logger.info(
-                    "Video acquisition finished for trial %d!", self.num_videos_saved
+                    "Video acquisition finished for trial %d!", self.num_trials_saved
                 )
                 self.video_acquisition_emitter.done.emit(False)
             else:
                 # We did ont receive what we expected
                 self.logger.warning(
                     "Did not receive the expected number of frames for trial %d, but no more have been received! Force saving...",
-                    self.num_videos_saved
+                    self.num_trials_saved
                 )
                 self.video_acquisition_emitter.done.emit(True)
-            self.num_videos_saved += 1
+            if not self.current_video_is_manual:
+                self.num_trials_saved += 1
+            else:
+                self.num_manual_videos_saved += 1
+                self.current_video_is_manual = False
             self.reset_acquisition_counters()
             self.reset_acquisition()
 

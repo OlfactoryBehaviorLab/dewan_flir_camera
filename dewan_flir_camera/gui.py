@@ -157,11 +157,8 @@ class ControlWindow(QMainWindow):
     def start_button_callback(self):
         current_state = self.camera.acquisition_state
 
-        if (
-            current_state == AcquisitionState.BEGIN
-            and self.camera.trigger_acquisition(AcquisitionState.END)
-            == AcquisitionState.END
-        ):
+        if current_state == AcquisitionState.BEGIN:
+            self.video_acquisition_handler.end_manual_video_acquisition()
             self.main_ui.record_button.setText("START\nRECORDING")
             self.main_ui.record_button.setStyleSheet(
                 "QPushButton{\n"
@@ -182,11 +179,8 @@ class ControlWindow(QMainWindow):
                 "color:rgb(255,255,255);\n"
                 "}"
             )
-        if (
-            current_state == AcquisitionState.END
-            and self.camera.trigger_acquisition(AcquisitionState.BEGIN)
-            == AcquisitionState.BEGIN
-        ):
+        if current_state == AcquisitionState.END:
+            self.video_acquisition_handler.start_manual_video_acquisition()
             self.main_ui.record_button.setText("STOP\nRECORDING")
             self.main_ui.record_button.setStyleSheet(
                 "QPushButton{\n"
