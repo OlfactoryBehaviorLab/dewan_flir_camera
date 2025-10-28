@@ -1,13 +1,4 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'FLIR.ui'
-##
-## Created by: Qt User Interface Compiler version 6.9.1
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
+#NOQA N999
 from PySide6.QtCore import (
     QCoreApplication,
     QMetaObject,
@@ -42,7 +33,7 @@ from PySide6.QtWidgets import (
 )
 
 
-class MainUI(object):
+class MainUI:
     def __init__(self, main_window):
         self.setupUi(main_window)
 
@@ -653,7 +644,7 @@ class MainUI(object):
         self.buttons_layout.addWidget(self.record_button, 0, 1, 1, 1)
 
         self.preview_button = QPushButton(self.buttons)
-        self.preview_button.setObjectName(u"preview_button")
+        self.preview_button.setObjectName("preview_button")
         self.preview_button.setEnabled(True)
         self.preview_button.setSizePolicy(sizePolicy8)
         self.preview_button.setMinimumSize(QSize(30, 30))
@@ -663,7 +654,7 @@ class MainUI(object):
         self.preview_button.setMouseTracking(True)
         self.preview_button.setTabletTracking(False)
         self.preview_button.setAutoFillBackground(False)
-        self.preview_button.setStyleSheet(u"QPushButton{\n"
+        self.preview_button.setStyleSheet("QPushButton{\n"
                                           "background-color: rgb(0, 170, 255);\n"
                                           "color:rgb(255,255,255);\n"
                                           "}\n"
