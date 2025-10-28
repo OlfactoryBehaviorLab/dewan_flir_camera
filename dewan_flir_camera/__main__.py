@@ -136,8 +136,8 @@ def main():
     app = gui.instantiate_app()
     config_values = gui.get_config(DEFAULT_SAVE_DIR)
     mouse_dir, file_stem = create_session_dirs(config_values)
-    image_dir = create_dir_if_not_exist(mouse_dir, "images", None)
-    with SpinSystem(logger) as system:
+    image_dir = create_dir_if_not_exist("images", mouse_dir, "images")
+    with SpinSystem() as system:
         camera = system.cameras[0]
         camera.init()
 
