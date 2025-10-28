@@ -1,6 +1,6 @@
+import logging
 from pathlib import Path
 from time import sleep
-from typing import Union
 
 import PySpin
 import numpy as np
@@ -11,6 +11,7 @@ from dewan_flir_camera.cam import Cam
 from dewan_flir_camera.options import AcquisitionState, AcquisitionMode, TriggerAction
 from dewan_flir_camera.threads import VideoStreamer, VideoStreamWorker
 
+logger = logging.getLogger(__name__)
 
 class ImageHandler(ImageEventHandler):
     class ImageEventEmitter(QObject):
@@ -20,9 +21,8 @@ class ImageHandler(ImageEventHandler):
         def __init__(self):
             super().__init__()
 
-    def __init__(self, save_dir: Union[str, Path], logger):
+    def __init__(self, save_dir: str | Path):
         super().__init__()
-        self.logger = logger
         self.save_dir = save_dir
         self.acquired_images = 0
 
@@ -47,7 +47,7 @@ class ImageHandler(ImageEventHandler):
 
     def OnImageEvent(self, image):
         if image.IsIncomplete():
-            self.logger.error("Image Incomplete!: %s", image.GetImageStatus())
+            logger.error("Image Incomplete!: %s", image.GetImageStatus())
         else:
             try:
                 _image = self._image_processor.Convert(image, PySpin.PixelFormat_Mono8)
@@ -62,7 +62,7 @@ class ImageHandler(ImageEventHandler):
 
                 self.acquired_images += 1
             except Exception as se:
-                self.logger.error("Error saving image: %s", se)
+                logger.error("Error saving image: %s", se)
 
     def save_image(self, image):
         _filename = f"image-{self.num_acquired_images}.jpg"
@@ -88,7 +88,7 @@ class VideoAcquisition:
 
     def __init__(self, cam, logger, path, file_stem):
         self.camera: Cam = cam
-        self.logger: logger = logger
+        logger: logger = logger
         self.path: Path = path
         self.file_stem: str = file_stem
         self.video_acquisition_emitter = self.VideoAcquisitionEmitter()
@@ -105,16 +105,16 @@ class VideoAcquisition:
         self.current_video_is_manual: bool = False
 
     def start_manual_video_acquisition(self):
-        self.logger.debug("Starting manual video acquisition!")
+        logger.debug("Starting manual video acquisition!")
         self.camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
         self.camera.configure_software_trigger(TriggerAction.CONTINUOUS)
         self.init_new_stream_worker(True)
         self.camera.toggle_acquisition(AcquisitionState.BEGIN)
-        self.logger.debug("Acquisition mode: %s", self.camera.acquisition_mode)
+        logger.debug("Acquisition mode: %s", self.camera.acquisition_mode)
         self.camera.TriggerSoftware.Execute()
 
     def end_manual_video_acquisition(self):
-        self.logger.debug("Stopping manual video acquisition!")
+        logger.debug("Stopping manual video acquisition!")
         self.video_acquisition_emitter.done.emit(False)
         self.reset_acquisition_counters()
 
@@ -144,7 +144,7 @@ class VideoAcquisition:
         fps = self.camera.current_FPS
         width, height = self.camera.frame_size
         self.current_worker = VideoStreamWorker(
-            save_path, fps, width, height, self.logger
+            save_path, fps, width, height, logger
         )
         self.video_acquisition_emitter.add_to_buffer.connect(
             self.current_worker.add_to_buffer
@@ -165,7 +165,7 @@ class VideoAcquisition:
 
     def check_done(self):
         frame_num_target = self.camera.num_burst_frames
-        self.logger.debug(
+        logger.debug(
             "Checking if video acquisition done!  %s\\%s Frames received",
             len(self.current_worker.frame_buffer),
             frame_num_target,
@@ -182,13 +182,13 @@ class VideoAcquisition:
             # We aren't receiving frames anymore, so lets save
             if self.num_received_frames >= frame_num_target:
                 # We received what we expected
-                self.logger.info(
+                logger.info(
                     "Video acquisition finished for trial %d!", self.num_trials_saved
                 )
                 self.video_acquisition_emitter.done.emit(False)
             else:
                 # We did ont receive what we expected
-                self.logger.warning(
+                logger.warning(
                     "Did not receive the expected number of frames for trial %d, but no more have been received! Force saving...",
                     self.num_trials_saved
                 )
@@ -206,7 +206,7 @@ class VideoAcquisition:
         self.no_more_frames =  0
 
     def shutdown(self):
-        self.logger.info("Shutting down all threads!")
+        logger.info("Shutting down all threads!")
         self.stream_timer.stop()
         self.stream_timer = []
         self.video_acquisition_emitter.done.emit(True)
