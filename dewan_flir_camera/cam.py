@@ -57,7 +57,7 @@ class Cam(SpinnakerObject):
                     self.logger.warning(
                         "Force ending camera acquisition to clean up!\n End acquisition before initializing camera!"
                     )
-                    self.trigger_acquisition(AcquisitionState.END, force=True)
+                    self.toggle_acquisition(AcquisitionState.END, force=True)
                 self.ptr.DeInit()  # Must DeInit camera ptr as opposed to just deleting the reference
                 super().deinit()
             except SpinnakerException as se:
@@ -73,11 +73,11 @@ class Cam(SpinnakerObject):
                 self.set_acquisition_mode(AcquisitionMode.SINGLE)
             self.configure_software_trigger()
 
-            if self.trigger_acquisition(AcquisitionState.BEGIN):
+            if self.toggle_acquisition(AcquisitionState.BEGIN):
                 self.TriggerSoftware.Execute()
                 exposure_time_s = self.exposure / 1000000
                 time.sleep(exposure_time_s)
-            if self.trigger_acquisition(AcquisitionState.END):
+            if self.toggle_acquisition(AcquisitionState.END):
                 self.set_acquisition_mode(
                     current_acquisition_mode
                 )  # Reset to initial mode
@@ -85,7 +85,7 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             self.logger.error("Unable to capture single frame!: %s", se)
 
-    def trigger_acquisition(
+    def toggle_acquisition(
         self, new_state: AcquisitionState, force: bool = False
     ) -> AcquisitionState:
         try:

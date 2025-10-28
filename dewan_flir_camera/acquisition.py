@@ -104,11 +104,11 @@ class VideoAcquisition:
 
     def start_experiment_video_acquisition(self):
         self.init_new_stream_worker()
-        self.camera.trigger_acquisition(AcquisitionState.BEGIN)
+        self.camera.toggle_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000)  # start the stream timer
 
     def end_experiment_video_acquisition(self):
-        self.camera.trigger_acquisition(AcquisitionState.END)
+        self.camera.toggle_acquisition(AcquisitionState.END)
         self.stream_timer.stop()
 
     def init_new_stream_worker(self):
