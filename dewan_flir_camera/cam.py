@@ -66,7 +66,7 @@ class Cam(SpinnakerObject):
     def capture_single_frame(self):
         try:
             self.logger.info("Attempting to capture 1 frame!")
-            current_acquisition_mode = self.get_acquisition_mode()  # Get Current mode
+            current_acquisition_mode = self.acquisition_mode  # Get Current mode
             if (
                 current_acquisition_mode != AcquisitionMode.SINGLE
             ):  # If not single, temporarily set it to single
