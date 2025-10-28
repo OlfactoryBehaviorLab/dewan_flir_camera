@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import Optional
 from dewan_flir_camera import gui
 from dewan_flir_camera.spin_system import SpinSystem
 from dewan_flir_camera.acquisition import ImageHandler, VideoAcquisition
@@ -15,45 +16,66 @@ DEFAULT_EXPERIMENT_DIR = "default_experiment"
 DEFAULT_MOUSE_DIR = "default_mouse"
 
 
-def create_dir_if_not_exist(path, addition, default, logger):
-    if path is None or len(str(path)) == 0:
+def create_dir_if_not_exist(default: str, root_path: Optional[str | Path], addition: Optional[str]) -> Path:
+    """ Creates directory if it doesn't exist
+
+    This function will create a directory or directory tree with a user-supplied addition. If the user does not
+    supply the path/addition, a user-supplied default will be used.
+
+    Parameters
+    ----------
+    default : str
+        Default value to use if path or addition are not provided
+    root_path : str or Path (optional)
+        Path to directory or directory tree to create
+    addition : str (optional)
+        Value to append to end of path
+
+    Returns
+    -------
+    Path
+        Finalize path that was constructed from the parameters and created on disk
+
+    """
+    if root_path is None or len(str(root_path)) == 0:
         if addition is None:
             # Create default root dir
-            path = default
+            root_path = default
     else:
         # Existing path is good, but we need to add an addition
         if addition is None or len(addition) == 0:
             # No addition, so use the default addition dir; otherwise, use what the user passed
             addition = default
 
-    if type(path) is not Path:
-        path = Path(path)
+    if type(root_path) is not Path:
+        root_path = Path(root_path)
 
     if addition is not None:
-        path = path.joinpath(addition)
+        root_path = root_path.joinpath(addition)
 
-    logger.debug("Creating: %s", path)
     try:
-        path.mkdir(parents=True, exist_ok=True)
+        logger.debug("Attempting to creating: %s", root_path)
+        root_path.mkdir(parents=True, exist_ok=True)
     except OSError:
         logger.error(
-            "Error creating directory %s. Reverting to default directory!", path
+            "Error creating directory %s. Reverting to default directory!", root_path
         )
 
-    return path
+    return root_path
 
 
-def create_session_dirs(config_values, logger) -> tuple[Path, str]:
+def create_session_dirs(config_values) -> tuple[Path, str]:
+    
     # Create save dir if needed
     save_dir = create_dir_if_not_exist(
-        config_values["save_dir"], None, DEFAULT_SAVE_DIR, logger
+        DEFAULT_SAVE_DIR, config_values["save_dir"], None
     )
     experiment_dir = create_dir_if_not_exist(
-        save_dir, config_values["experiment"], DEFAULT_EXPERIMENT_DIR, logger
+        DEFAULT_EXPERIMENT_DIR, save_dir, config_values["experiment"]
     )
     experiment_stem = experiment_dir.stem
     mouse_dir = create_dir_if_not_exist(
-        experiment_dir, config_values["mouse"], DEFAULT_MOUSE_DIR, logger
+        DEFAULT_MOUSE_DIR, experiment_dir, config_values["mouse"]
     )
     mouse_stem = mouse_dir.stem
 
@@ -89,7 +111,7 @@ def main():
     app = gui.instantiate_app()
     config_values = gui.get_config(DEFAULT_SAVE_DIR)
     mouse_dir, file_stem = create_session_dirs(config_values, logger)
-    image_dir = create_dir_if_not_exist(mouse_dir, "images", None, logger)
+    image_dir = create_dir_if_not_exist(mouse_dir, "images", None)
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
         camera.init()
