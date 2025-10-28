@@ -69,13 +69,14 @@ class Cam(SpinnakerObject):
 
     def capture_single_frame(self):
         try:
+            prev_trigger_mode = self.TriggerSelector
             logger.info("Attempting to capture 1 frame!")
             current_acquisition_mode = self.acquisition_mode  # Get Current mode
             if (
                 current_acquisition_mode != AcquisitionMode.SINGLE
             ):  # If not single, temporarily set it to single
                 self.set_acquisition_mode(AcquisitionMode.SINGLE)
-            self.configure_software_trigger()
+            self.configure_software_trigger(TriggerAction.SINGLE)
 
             if self.toggle_acquisition(AcquisitionState.BEGIN):
                 self.TriggerSoftware.Execute()
@@ -85,7 +86,7 @@ class Cam(SpinnakerObject):
                 self.set_acquisition_mode(
                     current_acquisition_mode
                 )  # Reset to initial mode
-            self.configure_hardware_trigger()  # Enable the hardware trigger again
+            self.configure_hardware_trigger(prev_trigger_mode)  # Enable the hardware trigger again
         except SpinnakerException as se:
             logger.error("Unable to capture single frame!: %s", se)
 
