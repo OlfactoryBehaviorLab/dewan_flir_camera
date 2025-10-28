@@ -105,16 +105,23 @@ class VideoAcquisition:
         self.current_video_is_manual: bool = False
 
     def start_manual_video_acquisition(self):
+        self.logger.debug("Starting manual video acquisition!")
         self.camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
         self.camera.configure_software_trigger()
         self.init_new_stream_worker(True)
         self.camera.toggle_acquisition(AcquisitionState.BEGIN)
+        self.logger.debug("Acquisition mode: %s", self.camera.acquisition_mode)
         self.camera.TriggerSoftware.Execute()
-        self.stream_timer.start(1000)
 
     def end_manual_video_acquisition(self):
+        self.logger.debug("Stopping manual video acquisition!")
+        self.video_acquisition_emitter.done.emit(False)
+        self.reset_acquisition_counters()
+
         self.camera.toggle_acquisition(AcquisitionState.END)
-        self.stream_timer.stop()
+        self.num_manual_videos_saved += 1
+        self.current_video_is_manual = False
+        # self.stream_timer.stop()
         self.camera.configure_hardware_trigger()
 
     def start_experiment_video_acquisition(self):
@@ -187,13 +194,10 @@ class VideoAcquisition:
                     self.num_trials_saved
                 )
                 self.video_acquisition_emitter.done.emit(True)
-            if not self.current_video_is_manual:
-                self.num_trials_saved += 1
-            else:
-                self.num_manual_videos_saved += 1
-                self.current_video_is_manual = False
             self.reset_acquisition_counters()
+            self.num_trials_saved += 1
             self.reset_acquisition()
+
 
 
     def reset_acquisition_counters(self):
