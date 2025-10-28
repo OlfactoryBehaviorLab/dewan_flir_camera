@@ -27,6 +27,7 @@ DEFAULT_DIR = "./"
 
 logger = logging.getLogger(__name__)
 
+
 class ControlWindow(QMainWindow):
     def __init__(self, camera, video_acquisition_handler):
         super().__init__()
@@ -47,7 +48,9 @@ class ControlWindow(QMainWindow):
 
         self.main_ui.record_button.clicked.connect(self.start_button_callback)
         self.main_ui.arm_button.clicked.connect(self.arm_button_callback)
-        self.main_ui.capture_single_frame.clicked.connect(self.single_frame_button_callback)
+        self.main_ui.capture_single_frame.clicked.connect(
+            self.single_frame_button_callback
+        )
 
         self.main_ui.acquisition_mode_data.currentTextChanged.connect(
             self.acquisition_mode_changed_callback
@@ -265,14 +268,13 @@ class ConfigDialog:
             self.config_ui,
             "Select save directory",
             self.DEFAULT_SAVE_DIR,
-            QFileDialog.Option.ShowDirsOnly
+            QFileDialog.Option.ShowDirsOnly,
         )
 
         if save_dir is not None and len(save_dir) > 0:
             self.config_ui.save_path_field.setText(save_dir)
         else:
             self.config_ui.save_path_field.setText(self.DEFAULT_SAVE_DIR)
-
 
     def get_experiment_config(self) -> dict:
         config_return = self.config_ui.exec()
@@ -285,7 +287,7 @@ class ConfigDialog:
         else:
             logger.error("Configuration UI returned 0! Setting default values")
             configuration = {
-                "mouse": '9999',
+                "mouse": "9999",
                 "experiment": "none_specified",
                 "save_dir": Path(DEFAULT_DIR),
             }
@@ -296,9 +298,7 @@ class ConfigDialog:
         logger.debug("Verifying ID: %s", self.config_ui.mouse_ID_field)
 
     def verify_exp(self):
-        logger.debug(
-            "Verifying Experiment: %s", self.config_ui.experiment_type_field
-        )
+        logger.debug("Verifying Experiment: %s", self.config_ui.experiment_type_field)
 
     def verify_user_path(self):
         logger.debug("Verifying Path: %s", self.config_ui.save_path_field)

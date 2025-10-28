@@ -5,7 +5,8 @@ from dewan_flir_camera._generics import SpinnakerObject, CameraError
 from dewan_flir_camera.options import (
     AutoExposureMode,
     AcquisitionMode,
-    AcquisitionState, TriggerAction,
+    AcquisitionState,
+    TriggerAction,
 )
 from dewan_flir_camera.gui import ControlWindow
 
@@ -162,7 +163,6 @@ class Cam(SpinnakerObject):
             self.logger.debug("New number of burst frames is %s", self.num_burst_frames)
         except SpinnakerException as se:
             raise CameraError("Error setting number of burst frames!") from se
-
 
     def register_event_handler(self, event_handler):
         try:

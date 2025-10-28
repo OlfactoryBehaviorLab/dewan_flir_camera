@@ -8,6 +8,7 @@ import cv2
 
 logger = logging.getLogger(__name__)
 
+
 class UpdateTimer(QTimer):
     def __init__(self, gui):
         super().__init__()
@@ -34,12 +35,15 @@ class VideoStreamer(QTimer):
 
 
 class VideoStreamWorker(QRunnable):
-
     def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int):
         super().__init__()
         self.save_path: pathlib.Path = save_path
         self.video_writer = cv2.VideoWriter(
-            str(self.save_path), cv2.VideoWriter.fourcc(*"avc1"), FPS, (width, height), False
+            str(self.save_path),
+            cv2.VideoWriter.fourcc(*"avc1"),
+            FPS,
+            (width, height),
+            False,
         )
         self.is_done: bool = False
         self.force_stop: bool = False
@@ -82,9 +86,7 @@ class VideoStreamWorker(QRunnable):
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
-        logger.debug(
-            f"Flushing buffer! {num_frames} new frames to flush"
-        )
+        logger.debug(f"Flushing buffer! {num_frames} new frames to flush")
         for i in range(num_frames):
             _image = self.frame_buffer[i].astype("uint8")
             _image_umat = cv2.UMat(cv2.UMat(_image))

@@ -121,7 +121,9 @@ class VideoAcquisition:
         self.camera.toggle_acquisition(AcquisitionState.END)
         self.num_manual_videos_saved += 1
         self.current_video_is_manual = False
-        self.camera.configure_hardware_trigger(TriggerAction.SINGLE) # TODO: DYNAMICALLY SET THIS
+        self.camera.configure_hardware_trigger(
+            TriggerAction.SINGLE
+        )  # TODO: DYNAMICALLY SET THIS
 
     def start_experiment_video_acquisition(self):
         self.init_new_stream_worker()
@@ -132,7 +134,7 @@ class VideoAcquisition:
         self.camera.toggle_acquisition(AcquisitionState.END)
         self.stream_timer.stop()
 
-    def init_new_stream_worker(self, manual: bool=False):
+    def init_new_stream_worker(self, manual: bool = False):
         if not manual:
             filename = f"{self.file_stem}-trial-{self.num_trials_saved + 1}.mp4"
             save_path = self.path.joinpath(filename)
@@ -143,9 +145,7 @@ class VideoAcquisition:
 
         fps = self.camera.current_FPS
         width, height = self.camera.frame_size
-        self.current_worker = VideoStreamWorker(
-            save_path, fps, width, height, logger
-        )
+        self.current_worker = VideoStreamWorker(save_path, fps, width, height, logger)
         self.video_acquisition_emitter.add_to_buffer.connect(
             self.current_worker.add_to_buffer
         )
@@ -190,20 +190,18 @@ class VideoAcquisition:
                 # We did ont receive what we expected
                 logger.warning(
                     "Did not receive the expected number of frames for trial %d, but no more have been received! Force saving...",
-                    self.num_trials_saved
+                    self.num_trials_saved,
                 )
                 self.video_acquisition_emitter.done.emit(True)
             self.reset_acquisition_counters()
             self.num_trials_saved += 1
             self.reset_acquisition()
 
-
-
     def reset_acquisition_counters(self):
         self.num_received_frames = 0
         self.last_num_received_frames = 0
         self.cycles_w_no_frames = 0
-        self.no_more_frames =  0
+        self.no_more_frames = 0
 
     def shutdown(self):
         logger.info("Shutting down all threads!")

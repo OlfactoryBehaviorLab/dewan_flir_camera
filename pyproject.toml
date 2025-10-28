@@ -88,6 +88,7 @@ select = [
     "PD",
     "N",
     "PERF",
+    "U"
 ]
 ignore = ["COM812", "N806", "E501", "N802", "N803", "RET505", "PIE790"]
 

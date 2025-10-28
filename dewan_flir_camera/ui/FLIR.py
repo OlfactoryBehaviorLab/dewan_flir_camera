@@ -1,4 +1,4 @@
-#NOQA N999
+# NOQA N999
 from PySide6.QtCore import (
     QCoreApplication,
     QMetaObject,
@@ -654,22 +654,24 @@ class MainUI:
         self.preview_button.setMouseTracking(True)
         self.preview_button.setTabletTracking(False)
         self.preview_button.setAutoFillBackground(False)
-        self.preview_button.setStyleSheet("QPushButton{\n"
-                                          "background-color: rgb(0, 170, 255);\n"
-                                          "color:rgb(255,255,255);\n"
-                                          "}\n"
-                                          "QPushButton::hover{\n"
-                                          "    background-color:  rgb(0, 170, 255);\n"
-                                          "    border-color: rgb(60, 231, 195);\n"
-                                          "    border-style: outset;\n"
-                                          "    color: rgb(255,255,255);\n"
-                                          "    border-width: 2px;\n"
-                                          "    border-radius: 12px;\n"
-                                          "    padding: 6px;\n"
-                                          "}\n"
-                                          "QPushButton::pressed{\n"
-                                          "    background-color:rgb(0, 75, 112);\n"
-                                          "}")
+        self.preview_button.setStyleSheet(
+            "QPushButton{\n"
+            "background-color: rgb(0, 170, 255);\n"
+            "color:rgb(255,255,255);\n"
+            "}\n"
+            "QPushButton::hover{\n"
+            "    background-color:  rgb(0, 170, 255);\n"
+            "    border-color: rgb(60, 231, 195);\n"
+            "    border-style: outset;\n"
+            "    color: rgb(255,255,255);\n"
+            "    border-width: 2px;\n"
+            "    border-radius: 12px;\n"
+            "    padding: 6px;\n"
+            "}\n"
+            "QPushButton::pressed{\n"
+            "    background-color:rgb(0, 75, 112);\n"
+            "}"
+        )
         self.preview_button.setFlat(False)
 
         self.buttons_layout.addWidget(self.preview_button, 1, 0, 1, 1)
