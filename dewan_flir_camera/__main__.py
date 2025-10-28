@@ -142,13 +142,13 @@ def main():
         camera.init()
 
         video_acquisition_handler = VideoAcquisition(
-            camera, logger, mouse_dir, file_stem
+            camera, mouse_dir, file_stem
         )
 
         ui = gui.ControlWindow(camera, video_acquisition_handler)
         initialize(camera, ui)
 
-        event_handler = ImageHandler(image_dir, logger)
+        event_handler = ImageHandler(image_dir)
         video_acquisition_handler.event_handler = event_handler
         system.video_acquisition_handler = video_acquisition_handler
 

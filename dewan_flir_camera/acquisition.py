@@ -86,9 +86,8 @@ class VideoAcquisition:
         def __init__(self):
             super().__init__()
 
-    def __init__(self, cam, logger, path, file_stem):
+    def __init__(self, cam, path, file_stem):
         self.camera: Cam = cam
-        logger: logger = logger
         self.path: Path = path
         self.file_stem: str = file_stem
         self.video_acquisition_emitter = self.VideoAcquisitionEmitter()
@@ -145,7 +144,7 @@ class VideoAcquisition:
 
         fps = self.camera.current_FPS
         width, height = self.camera.frame_size
-        self.current_worker = VideoStreamWorker(save_path, fps, width, height, logger)
+        self.current_worker = VideoStreamWorker(save_path, fps, width, height)
         self.video_acquisition_emitter.add_to_buffer.connect(
             self.current_worker.add_to_buffer
         )
