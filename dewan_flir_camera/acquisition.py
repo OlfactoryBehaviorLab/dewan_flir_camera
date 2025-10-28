@@ -8,7 +8,7 @@ from PySpin import ImageEventHandler, ImageProcessor
 from PySide6.QtCore import Signal, QObject, QThreadPool
 
 from dewan_flir_camera.cam import Cam
-from dewan_flir_camera.options import AcquisitionState, AcquisitionMode
+from dewan_flir_camera.options import AcquisitionState, AcquisitionMode, TriggerAction
 from dewan_flir_camera.threads import VideoStreamer, VideoStreamWorker
 
 
@@ -107,7 +107,7 @@ class VideoAcquisition:
     def start_manual_video_acquisition(self):
         self.logger.debug("Starting manual video acquisition!")
         self.camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
-        self.camera.configure_software_trigger()
+        self.camera.configure_software_trigger(TriggerAction.CONTINUOUS)
         self.init_new_stream_worker(True)
         self.camera.toggle_acquisition(AcquisitionState.BEGIN)
         self.logger.debug("Acquisition mode: %s", self.camera.acquisition_mode)
@@ -122,7 +122,7 @@ class VideoAcquisition:
         self.num_manual_videos_saved += 1
         self.current_video_is_manual = False
         # self.stream_timer.stop()
-        self.camera.configure_hardware_trigger()
+        self.camera.configure_hardware_trigger(TriggerAction.SINGLE) # TODO: DYNAMICALLY SET THIS
 
     def start_experiment_video_acquisition(self):
         self.init_new_stream_worker()

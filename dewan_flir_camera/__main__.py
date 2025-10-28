@@ -3,7 +3,7 @@ from pathlib import Path
 from dewan_flir_camera import gui
 from dewan_flir_camera.spin_system import SpinSystem
 from dewan_flir_camera.acquisition import ImageHandler, VideoAcquisition
-from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode
+from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode, TriggerAction
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -63,7 +63,7 @@ def create_session_dirs(config_values, logger) -> tuple[Path, str]:
 
 def initialize(camera, UI: gui.ControlWindow):
     # === DEFAULT CAMERA CONFIGURATION === #
-    camera.configure_hardware_trigger() # Configure hardware trigger
+    camera.configure_hardware_trigger(TriggerAction.MULTI) # Configure hardware trigger
     camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Exposure Mode
     camera.set_exposure(
         gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)

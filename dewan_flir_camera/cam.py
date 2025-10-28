@@ -5,7 +5,7 @@ from dewan_flir_camera._generics import SpinnakerObject, CameraError
 from dewan_flir_camera.options import (
     AutoExposureMode,
     AcquisitionMode,
-    AcquisitionState,
+    AcquisitionState, TriggerAction,
 )
 from dewan_flir_camera.gui import ControlWindow
 
@@ -179,11 +179,11 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             raise CameraError("Error unregistering event handler!") from se
 
-    def configure_hardware_trigger(self):
+    def configure_hardware_trigger(self, action: TriggerAction):
         try:
             self.logger.info("Configuring triggers...")
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
-            self.TriggerSelector.SetValue(PySpin.TriggerSelector_AcquisitionStart)
+            self.TriggerSelector.SetValue(action)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
             self.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
@@ -194,11 +194,11 @@ class Cam(SpinnakerObject):
                 "s hardware trigger"
             ) from se
 
-    def configure_software_trigger(self):
+    def configure_software_trigger(self, action: TriggerAction):
         try:
             self.logger.info("Configuring triggers...")
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
-            self.TriggerSelector.SetValue(PySpin.TriggerSelector_FrameStart)
+            self.TriggerSelector.SetValue(action)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Software)
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 

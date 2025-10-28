@@ -19,6 +19,12 @@ class AutoExposureMode(IntEnum):
     CONTINUOUS = PySpin.ExposureAuto_Continuous  # 2
 
 
+class TriggerAction(IntEnum):
+    CONTINUOUS = PySpin.TriggerSelector_AcquisitionStart
+    SINGLE = PySpin.TriggerSelector_FrameStart
+    MULTI = PySpin.TriggerSelector_FrameBurstStart
+
+
 class VideoType:
     """'Enum' to select video type to be created and saved"""
 
