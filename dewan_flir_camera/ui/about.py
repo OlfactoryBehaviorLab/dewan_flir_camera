@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'about.ui'
-##
-## Created by: Qt User Interface Compiler version 6.8.0
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
 from PySide6.QtCore import QCoreApplication, QMetaObject, QSize, Qt
 from PySide6.QtGui import QFont, QPixmap
 from PySide6.QtWidgets import (
@@ -20,7 +10,6 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from . import resources
 
 
 class About(QDialog):
