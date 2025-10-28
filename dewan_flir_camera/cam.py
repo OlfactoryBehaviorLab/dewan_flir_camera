@@ -69,7 +69,7 @@ class Cam(SpinnakerObject):
 
     def capture_single_frame(self):
         try:
-            prev_trigger_mode = self.TriggerSelector
+            prev_trigger_mode = TriggerAction(self.TriggerSelector.GetValue())
             logger.info("Attempting to capture 1 frame!")
             current_acquisition_mode = self.acquisition_mode  # Get Current mode
             if (
