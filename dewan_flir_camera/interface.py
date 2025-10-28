@@ -1,10 +1,26 @@
+"""PySpin interface module"""
+import logging
 from PySpin import SpinnakerException
 from dewan_flir_camera._generics import SpinnakerObject, GenericSpinnakerError
 
+logger = logging.getLogger(__name__)
+
 
 class Interface(SpinnakerObject):
-    def __init__(self, interface_ptr, logger, number):
-        super().__init__(interface_ptr, logger)
+    """Interface class
+
+    Holds system interface and host bus adapter (HBA) information
+
+    Parameters
+    ----------
+    interface_ptr
+        Pointer to this specific interface
+    number : int
+        Interface number
+
+    """
+    def __init__(self, interface_ptr, number: int):
+        super().__init__(interface_ptr)
         self.number = number
         self.interface_name = []
         self.interface_id = []
