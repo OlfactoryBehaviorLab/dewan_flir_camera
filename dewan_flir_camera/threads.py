@@ -63,6 +63,7 @@ class VideoStreamWorker(QRunnable):
 
     @Slot(bool)
     def stop(self, force_stop):
+        self.logger.debug("Thread stop slot hit!")
         self.is_done = True
         self.force_stop = force_stop
 
@@ -72,6 +73,7 @@ class VideoStreamWorker(QRunnable):
             self.video_writer.release()
             self.frame_buffer = []
             self.exit_thread = True
+            self.logger.debug("Thread is done!")
 
             if self.force_stop:
                 new_path = self.save_path.with_stem(self.save_path.stem + "-INCOMPLETE")
@@ -80,10 +82,13 @@ class VideoStreamWorker(QRunnable):
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
         self.logger.debug(
-            f"Flushing buffer! {num_frames - self.frame_counter} new frames to flush"
+            f"Flushing buffer! {num_frames} new frames to flush"
         )
-        for i in range(self.frame_counter, num_frames):
+        for i in range(num_frames):
             _image = self.frame_buffer[i].astype("uint8")
             _image_umat = cv2.UMat(cv2.UMat(_image))
             self.video_writer.write(_image_umat)
             self.frame_counter += 1
+
+        self.frame_buffer = []
+        self.logger.debug(f"Flushing buffer finished! Frames Written: {self.frame_counter}")
