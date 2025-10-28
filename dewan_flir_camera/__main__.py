@@ -6,6 +6,7 @@ from dewan_flir_camera.acquisition import ImageHandler, VideoAcquisition
 from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode, TriggerAction
 
 logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 DEFAULT_FPS = 60
 DEFAULT_TRIAL_TIME_S = 10
@@ -82,9 +83,6 @@ def initialize(camera, UI: gui.ControlWindow):
     UI.update_exposure_time(int(camera.exposure))
     UI.update_MAX_FPS(DEFAULT_FPS)
     UI.update_trial_time_s(DEFAULT_TRIAL_TIME_S)
-
-
-logger = logging.getLogger(__name__)
 
 
 def main():
