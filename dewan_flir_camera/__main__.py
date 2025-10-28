@@ -100,6 +100,16 @@ def create_session_dirs(config_values: dict) -> tuple[Path, str]:
 
 
 def initialize(camera, UI: gui.ControlWindow):
+    """ Sets defaults for camera object and main UI
+
+    Parameters
+    ----------
+    camera : Camera
+        Camera object to configure with defaults
+    UI : gui.ControlWindow
+        Main UI to configure based on the camera defaults
+
+       """
     # === DEFAULT CAMERA CONFIGURATION === #
     camera.configure_hardware_trigger(TriggerAction.MULTI)  # Configure hardware trigger
     camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Exposure Mode
@@ -112,7 +122,7 @@ def initialize(camera, UI: gui.ControlWindow):
 
     # === DEFAULT GUI CONFIGURATION === #
     # The other camera fields are automatically updated by the timer
-    # This is the only one we need to pull from the camera
+    # This is the only one we need to pull from the camera #TODO: make this dynamically updated as well
     UI.main_ui.exposure_value.setValue(int(camera.exposure))
     UI.main_ui.acquisition_mode_data.setCurrentIndex(AcquisitionMode.MULTI)
     UI.main_ui.exposure_mode.setCurrentIndex(AutoExposureMode.OFF)
