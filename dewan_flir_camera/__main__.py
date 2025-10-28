@@ -66,8 +66,21 @@ def create_dir_if_not_exist(default: str, root_path: Optional[str | Path], addit
     return root_path
 
 
-def create_session_dirs(config_values) -> tuple[Path, str]:
-    
+def create_session_dirs(config_values: dict) -> tuple[Path, str]:
+    """Creates directories from user-supplied paths and names
+
+    Parameters
+    ----------
+    config_values : dict
+        Dictionary of user-supplied animal name, experiment name, and save path
+
+    Returns
+    -------
+    tuple[Path, str]
+        Returns tuple containing the full save path for this animal-experiment combination and
+        the stem of the save directory
+
+    """
     # Create save dir if needed
     save_dir = create_dir_if_not_exist(
         DEFAULT_SAVE_DIR, config_values["save_dir"], None
@@ -112,7 +125,7 @@ def initialize(camera, UI: gui.ControlWindow):
 def main():
     app = gui.instantiate_app()
     config_values = gui.get_config(DEFAULT_SAVE_DIR)
-    mouse_dir, file_stem = create_session_dirs(config_values, logger)
+    mouse_dir, file_stem = create_session_dirs(config_values)
     image_dir = create_dir_if_not_exist(mouse_dir, "images", None)
     with SpinSystem(logger) as system:
         camera = system.cameras[0]
