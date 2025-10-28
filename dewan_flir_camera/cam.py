@@ -112,7 +112,7 @@ class Cam(SpinnakerObject):
     def poll(self):
         return {
             "exposure_time": self.exposure,
-            "fps": 0,
+            "fps": self.current_FPS,
         }
 
     def set_exposure(self, new_exposure: int) -> int:
