@@ -1,3 +1,4 @@
+"""Main entry point for dewan_flir_camera module"""
 import logging
 from pathlib import Path
 from typing import Optional
@@ -9,6 +10,7 @@ from dewan_flir_camera.options import AutoExposureMode, AcquisitionMode, Trigger
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+# Some sane defaults
 DEFAULT_FPS = 60
 DEFAULT_TRIAL_TIME_S = 10
 DEFAULT_SAVE_DIR = "/flir_recordings"
