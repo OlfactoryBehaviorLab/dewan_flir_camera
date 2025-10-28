@@ -21,7 +21,7 @@ from dewan_flir_camera.ui import (
 
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QFileDialog, QWidget, QDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QFileDialog
 
 DEFAULT_DIR = "./"
 
