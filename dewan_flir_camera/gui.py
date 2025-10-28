@@ -253,7 +253,7 @@ class ControlWindow(QMainWindow):
 
 class ConfigDialog:
     def __init__(self, default_save_dir: str):
-        self.config_ui = config.Ui_config_wizard()
+        self.config_ui = config.UIConfigWizard()
         # self.config_ui.mouse_ID_field.textEdited.connect(self.verify_ID)
         # self.config_ui.experiment_type_field.textEdited.connect(self.verify_exp)
         # self.config_ui.save_path_field.textEdited.connect(self.verify_user_path)
