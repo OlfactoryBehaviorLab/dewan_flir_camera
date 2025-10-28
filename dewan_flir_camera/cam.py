@@ -1,3 +1,4 @@
+import logging
 import time
 import PySpin
 from PySpin import SpinnakerException
@@ -10,10 +11,12 @@ from dewan_flir_camera.options import (
 )
 from dewan_flir_camera.gui import ControlWindow
 
+logger = logging.getLogger(__name__)
+
 
 class Cam(SpinnakerObject):
-    def __init__(self, cam_ptr, logger, number):
-        super().__init__(cam_ptr, logger)
+    def __init__(self, cam_ptr, number):
+        super().__init__(cam_ptr)
         self.number = number
         self.is_init = False
         self.vendor = []
@@ -37,7 +40,7 @@ class Cam(SpinnakerObject):
 
     def init(self):
         if self.is_init:
-            self.logger.info("Camera %s is already initialized!", self.number)
+            logger.info("Camera %s is already initialized!", self.number)
         else:
             try:
                 self.ptr.Init()
@@ -47,7 +50,7 @@ class Cam(SpinnakerObject):
 
     def deinit(self):
         if not self.is_init:
-            self.logger.info(
+            logger.info(
                 "Camera %s is not initialized, no need to deinitialize!", self.number
             )
         else:
@@ -55,7 +58,7 @@ class Cam(SpinnakerObject):
                 self.unregister_event_handler()
                 self.is_init = False
                 if self.acquisition_state == AcquisitionState.BEGIN:
-                    self.logger.warning(
+                    logger.warning(
                         "Force ending camera acquisition to clean up!\n End acquisition before initializing camera!"
                     )
                     self.toggle_acquisition(AcquisitionState.END, force=True)
@@ -66,7 +69,7 @@ class Cam(SpinnakerObject):
 
     def capture_single_frame(self):
         try:
-            self.logger.info("Attempting to capture 1 frame!")
+            logger.info("Attempting to capture 1 frame!")
             current_acquisition_mode = self.acquisition_mode  # Get Current mode
             if (
                 current_acquisition_mode != AcquisitionMode.SINGLE
@@ -84,7 +87,7 @@ class Cam(SpinnakerObject):
                 )  # Reset to initial mode
             self.configure_hardware_trigger()  # Enable the hardware trigger again
         except SpinnakerException as se:
-            self.logger.error("Unable to capture single frame!: %s", se)
+            logger.error("Unable to capture single frame!: %s", se)
 
     def toggle_acquisition(
         self, new_state: AcquisitionState, force: bool = False
@@ -92,16 +95,16 @@ class Cam(SpinnakerObject):
         try:
             if new_state == AcquisitionState.BEGIN:
                 if self.acquisition_state == AcquisitionState.BEGIN:
-                    self.logger.info("Camera acquisition already enabled!")
+                    logger.info("Camera acquisition already enabled!")
                 else:
-                    self.logger.info("Starting camera acquisition!")
+                    logger.info("Starting camera acquisition!")
                     self.BeginAcquisition()
                     self.acquisition_state = new_state
             elif new_state == AcquisitionState.END:
                 if self.acquisition_state == AcquisitionState.END:
-                    self.logger.info("Camera acquisition already disabled!")
+                    logger.info("Camera acquisition already disabled!")
                 elif self.acquisition_state == AcquisitionState.BEGIN or force:
-                    self.logger.info("Ending camera acquisition!")
+                    logger.info("Ending camera acquisition!")
                     self.EndAcquisition()
                     self.acquisition_state = new_state
             return self.acquisition_state
@@ -119,7 +122,7 @@ class Cam(SpinnakerObject):
     def set_exposure(self, new_exposure: int) -> int:
         try:
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
-                self.logger.warning("Unable to set exposure time. Aborting...")
+                logger.warning("Unable to set exposure time. Aborting...")
                 return self.ExposureTime.GetValue()
             if self.exposure_mode == AutoExposureMode.OFF:
                 max_exposure_time = self.ExposureTime.GetMax()
@@ -131,7 +134,7 @@ class Cam(SpinnakerObject):
                 self.current_FPS = fps
                 return exposure_time
             else:
-                self.logger.warning(
+                logger.warning(
                     "Automatic exposure must be disabled to manually set the exposure!"
                 )
                 return self.ExposureTime.GetValue()
@@ -143,7 +146,7 @@ class Cam(SpinnakerObject):
             # if exposure_mode not in AutoExposureMode:
             #     raise SpinnakerException(f'{exposure_mode} is not a valid exposure mode!')
             if self.ExposureAuto.GetAccessMode() != PySpin.RW:
-                self.logger.warning("Unable to set exposure mode. Aborting...")
+                logger.warning("Unable to set exposure mode. Aborting...")
             else:
                 self.ExposureAuto.SetValue(exposure_mode)
         except SpinnakerException as se:
@@ -151,16 +154,16 @@ class Cam(SpinnakerObject):
 
     def set_acquisition_mode(self, mode: AcquisitionMode) -> None:
         try:
-            self.logger.debug("Setting acquisition mode to %s", mode)
+            logger.debug("Setting acquisition mode to %s", mode)
             self.AcquisitionMode.SetValue(mode)
         except SpinnakerException as se:
             raise GenericSpinnakerError("Error configuring acquisition mode!") from se
 
     def set_num_burst_frames(self, num_frames: int) -> None:
         try:
-            self.logger.debug("Setting number of burst frames to %s", num_frames)
+            logger.debug("Setting number of burst frames to %s", num_frames)
             self.AcquisitionFrameCount.SetValue(num_frames)
-            self.logger.debug("New number of burst frames is %s", self.num_burst_frames)
+            logger.debug("New number of burst frames is %s", self.num_burst_frames)
         except SpinnakerException as se:
             raise GenericSpinnakerError("Error setting number of burst frames!") from se
 
@@ -181,7 +184,7 @@ class Cam(SpinnakerObject):
 
     def configure_hardware_trigger(self, action: TriggerAction):
         try:
-            self.logger.info("Configuring triggers...")
+            logger.info("Configuring triggers...")
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             self.TriggerSelector.SetValue(action)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
@@ -196,7 +199,7 @@ class Cam(SpinnakerObject):
 
     def configure_software_trigger(self, action: TriggerAction):
         try:
-            self.logger.info("Configuring triggers...")
+            logger.info("Configuring triggers...")
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             self.TriggerSelector.SetValue(action)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Software)
@@ -217,7 +220,7 @@ class Cam(SpinnakerObject):
         try:
             access_mode = self.ExposureTime.GetAccessMode()
             if access_mode != PySpin.RO and access_mode != PySpin.RW:
-                self.logger.warning("Unable to get exposure time. Aborting...")
+                logger.warning("Unable to get exposure time. Aborting...")
                 return 0.0
 
             return self.ExposureTime.GetValue()
@@ -259,13 +262,13 @@ class Cam(SpinnakerObject):
             )  ## See if the camera_ptr class has the attribute
 
         except AttributeError:
-            self.logger.error(
+            logger.error(
                 "The camera does not have a property or attribute named %s", attribute
             )
             return None
         except SpinnakerException as se:
             if "AccessException" in str(se):
-                self.logger.error(
+                logger.error(
                     "An AccessException occurred when trying to read %s."
                     " It is likely that your camera does not have this property",
                     attribute,
