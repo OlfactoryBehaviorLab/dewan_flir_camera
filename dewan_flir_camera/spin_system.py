@@ -7,6 +7,11 @@ from dewan_flir_camera.interface import Interface
 logger = logging.getLogger(__name__)
 
 class SpinSystem(SpinnakerObject):
+    """SpinSystem container for all enumerated cameras and interfaces
+
+    Implements a context manager to properly deinitialize and delete system pointers once the context is exited
+
+    """
     def __init__(self):
         self.system: PySpin.System = []
         self.version = []
@@ -26,21 +31,17 @@ class SpinSystem(SpinnakerObject):
         self._initialize_system()
         super().__init__(self.system)
 
-    def __enter__(self):
-        if self.system:
-            return self
-        else:
-            raise GenericSpinnakerError("Unable to initialize SpinSystem!")
-
-    def __exit__(self, exc_type, exc_val, tb):
-        logger.debug("Hit context manager exit")
-        self._cleanup()
-        super().__exit__(exc_type, exc_val, tb)
-
-    def __str__(self):
-        return f"Spinnaker System: {self.system}"
-
     def _initialize_system(self):
+        """Internal SpinSystem initialization method
+
+        Populates system information, enumerates interface and camera pointers and instantiates wrappers for each
+        found interface and camera
+
+        Returns
+        -------
+        None
+
+        """
         try:
             logger.info("Initializing Spinnaker System")
             self.system = PySpin.System.GetInstance()
@@ -68,6 +69,11 @@ class SpinSystem(SpinnakerObject):
             raise GenericSpinnakerError("Error initializing system!") from ex
 
     def _cleanup(self):
+        """Internal SpinSystem cleanup function
+
+        Deletes each interface and camera instance and releases the pointer
+
+        """
         ## Clean up our classes if we leave the scope of this system
         for camera in self.cameras:
             camera.deinit()
@@ -91,6 +97,13 @@ class SpinSystem(SpinnakerObject):
         self.system = []
 
     def _instantiate_camera_wrappers(self):
+        """Loops through pointers and instantiates wrappers for each
+
+
+        Returns
+        -------
+        None
+        """
         logger.info("Instantiating Camera Wrappers")
         for i, cam in enumerate(self.camera_list):
             new_cam = Cam(cam, logger, i)
@@ -103,3 +116,18 @@ class SpinSystem(SpinnakerObject):
             new_interface = Interface(interface, i)
             self.interfaces.append(new_interface)
         del interface
+
+
+    def __enter__(self):
+        if self.system:
+            return self
+        else:
+            raise GenericSpinnakerError("Unable to initialize SpinSystem!")
+
+    def __exit__(self, exc_type, exc_val, tb):
+        logger.debug("Hit context manager exit")
+        self._cleanup()
+        super().__exit__(exc_type, exc_val, tb)
+
+    def __str__(self):
+        return f"Spinnaker System: {self.system}"
