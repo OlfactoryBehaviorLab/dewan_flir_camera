@@ -3,8 +3,10 @@ import pathlib
 import time
 
 import numpy as np
-from PySide6.QtCore import QTimer, Slot, QRunnable, Signal, QObject
+from PySide6.QtCore import QTimer, Slot, QRunnable
 import cv2
+
+logger = logging.getLogger(__name__)
 
 class UpdateTimer(QTimer):
     def __init__(self, gui):
@@ -33,10 +35,9 @@ class VideoStreamer(QTimer):
 
 class VideoStreamWorker(QRunnable):
 
-    def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int, logger):
+    def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int):
         super().__init__()
         self.save_path: pathlib.Path = save_path
-        self.logger = logging.getLogger(__name__)
         self.video_writer = cv2.VideoWriter(
             str(self.save_path), cv2.VideoWriter.fourcc(*"avc1"), FPS, (width, height), False
         )
@@ -53,17 +54,17 @@ class VideoStreamWorker(QRunnable):
 
     @Slot()
     def run(self):
-        self.logger.info("Thread for %s started!", self.save_path)
+        logger.info("Thread for %s started!", self.save_path)
         # Let's just use this
         while not self.exit_thread:
             self.timer_callback()
             time.sleep(0.5)
 
-        self.logger.info("Thread for %s ended!", self.save_path)
+        logger.info("Thread for %s ended!", self.save_path)
 
     @Slot(bool)
     def stop(self, force_stop):
-        self.logger.debug("Thread stop slot hit!")
+        logger.debug("Thread stop slot hit!")
         self.is_done = True
         self.force_stop = force_stop
 
@@ -73,7 +74,7 @@ class VideoStreamWorker(QRunnable):
             self.video_writer.release()
             self.frame_buffer = []
             self.exit_thread = True
-            self.logger.debug("Thread is done!")
+            logger.debug("Thread is done!")
 
             if self.force_stop:
                 new_path = self.save_path.with_stem(self.save_path.stem + "-INCOMPLETE")
@@ -81,7 +82,7 @@ class VideoStreamWorker(QRunnable):
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
-        self.logger.debug(
+        logger.debug(
             f"Flushing buffer! {num_frames} new frames to flush"
         )
         for i in range(num_frames):
@@ -91,4 +92,4 @@ class VideoStreamWorker(QRunnable):
             self.frame_counter += 1
 
         self.frame_buffer = []
-        self.logger.debug(f"Flushing buffer finished! Frames Written: {self.frame_counter}")
+        logger.debug(f"Flushing buffer finished! Frames Written: {self.frame_counter}")
