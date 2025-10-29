@@ -8,7 +8,6 @@ import cv2
 
 logger = logging.getLogger(__name__)
 
-
 class UpdateTimer(QTimer):
     def __init__(self, gui):
         super().__init__()

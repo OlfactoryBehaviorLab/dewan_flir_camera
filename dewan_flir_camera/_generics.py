@@ -20,7 +20,7 @@ class SpinnakerObject:
             self.deinit()
 
         if exc_type is not None:
-            logger.error("SpinnakerObject error!", exc_info=(exc_type, exc_val, exc_tb))
+            logger.error("Unknown SpinnakerObject error!", exc_info=(exc_type, exc_val, exc_tb))
 
     def __repr__(self):
         return f"Class: {self.__class__}"

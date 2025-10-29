@@ -13,6 +13,7 @@ from dewan_flir_camera.threads import VideoStreamer, VideoStreamWorker
 
 logger = logging.getLogger(__name__)
 
+
 class ImageHandler(ImageEventHandler):
     class ImageEventEmitter(QObject):
         image_display_signal = Signal(np.ndarray)

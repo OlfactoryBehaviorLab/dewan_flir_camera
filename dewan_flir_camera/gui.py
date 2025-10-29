@@ -51,6 +51,7 @@ class ControlWindow(QMainWindow):
         self.main_ui.capture_single_frame.clicked.connect(
             self.single_frame_button_callback
         )
+        self.main_ui.preview_button.clicked.connect(self.live_preview_callback)
 
         self.main_ui.acquisition_mode_data.currentTextChanged.connect(
             self.acquisition_mode_changed_callback
@@ -155,7 +156,7 @@ class ControlWindow(QMainWindow):
         self.camera.set_num_burst_frames(num_burst_frames)
 
     def trigger_selection_changed_callback(self):
-        logger.debug("Trigger selection changed callback")
+        logger.debug("Trigger selection changed callback. Not implemented")
 
     def start_button_callback(self):
         current_state = self.camera.acquisition_state
@@ -222,6 +223,9 @@ class ControlWindow(QMainWindow):
     def single_frame_button_callback(self):
         self.camera.capture_single_frame()
 
+    def live_preview_callback(self):
+        pass
+
     def open_action_callback(self):
         pass
 
@@ -251,7 +255,7 @@ class ControlWindow(QMainWindow):
             self.scene.addPixmap(pixmap)
             self.main_ui.viewport.fitInView(pixmap.rect())
         except Exception as e:
-            logger.error(e)
+            logger.error("Error displaying frame", exc_info=e)
 
 
 class ConfigDialog:

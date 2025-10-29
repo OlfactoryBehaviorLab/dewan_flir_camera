@@ -1,4 +1,5 @@
 """Main entry point for dewan_flir_camera module"""
+
 import logging
 from pathlib import Path
 from typing import Optional
@@ -18,8 +19,10 @@ DEFAULT_EXPERIMENT_DIR = "default_experiment"
 DEFAULT_MOUSE_DIR = "default_mouse"
 
 
-def create_dir_if_not_exist(default: str, root_path: Optional[str | Path], addition: Optional[str]) -> Path:
-    """ Creates directory if it doesn't exist
+def create_dir_if_not_exist(
+    default: str, root_path: Optional[str | Path], addition: Optional[str]
+) -> Path:
+    """Creates directory if it doesn't exist
 
     This function will create a directory or directory tree with a user-supplied addition. If the user does not
     supply the path/addition, a user-supplied default will be used.
