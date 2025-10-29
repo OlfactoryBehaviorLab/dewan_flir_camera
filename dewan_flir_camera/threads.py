@@ -43,7 +43,7 @@ class VideoStreamWorker(QRunnable):
             cv2.VideoWriter.fourcc(*"avc1"),
             FPS,
             (width, height),
-            False,
+            False
         )
         self.is_done: bool = False
         self.force_stop: bool = False
@@ -62,7 +62,7 @@ class VideoStreamWorker(QRunnable):
         # Let's just use this
         while not self.exit_thread:
             self.timer_callback()
-            time.sleep(0.5)
+            time.sleep(1)
 
         logger.info("Thread for %s ended!", self.save_path)
 
@@ -86,12 +86,14 @@ class VideoStreamWorker(QRunnable):
 
     def flush_buffer(self):
         num_frames = len(self.frame_buffer)
-        logger.debug(f"Flushing buffer! {num_frames} new frames to flush")
-        for i in range(num_frames):
-            _image = self.frame_buffer[i].astype("uint8")
+        old_frame_counter = self.frame_counter
+        logger.debug(f"Flushing buffer! {num_frames} frames to flush")
+        while num_frames > 0:
+            _image = self.frame_buffer[0].astype("uint8")
             _image_umat = cv2.UMat(cv2.UMat(_image))
             self.video_writer.write(_image_umat)
             self.frame_counter += 1
+            self.frame_buffer.pop(0)
+            num_frames -= 1
 
-        self.frame_buffer = []
-        logger.debug(f"Flushing buffer finished! Frames Written: {self.frame_counter}")
+        logger.debug(f"Flushing buffer finished! Frames Written: {self.frame_counter - old_frame_counter}")
