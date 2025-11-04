@@ -167,11 +167,11 @@ class VideoAcquisition:
         frame_num_target = self.camera.num_burst_frames
         logger.debug(
             "Checking if video acquisition done!  %s\\%s Frames received",
-            len(self.current_worker.frame_buffer),
+            self.current_worker.frame_counter,
             frame_num_target,
         )
-
-        if 0 < self.num_received_frames == self.last_num_received_frames:
+        print(f'Num Frames: {self.num_received_frames} | Last: {self.last_num_received_frames}')
+        if (0 != self.num_received_frames) and self.num_received_frames == self.last_num_received_frames:
             if self.cycles_w_no_frames >= 3:
                 self.no_more_frames = True
             self.cycles_w_no_frames += 1
