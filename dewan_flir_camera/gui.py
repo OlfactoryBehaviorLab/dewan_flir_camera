@@ -142,6 +142,14 @@ class ControlWindow(QMainWindow):
         new_time = self.camera.set_exposure(
             new_value
         )  # Just incase the camera bounds the user's input
+        self.camera.set_num_burst_frames(
+            int(
+                    self.s_to_frames(
+                        self.main_ui.s_per_trial_val.value(),
+                        self.calc_max_fps(new_time),
+                        )
+                )
+            )
         try:
             self.main_ui.exposure_value.setValue(new_time)
             logger.debug("Exposure value set to %s", new_value)
