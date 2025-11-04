@@ -126,6 +126,8 @@ class VideoAcquisition:
         )  # TODO: DYNAMICALLY SET THIS
 
     def start_experiment_video_acquisition(self):
+        self.camera.set_acquisition_mode(PySpin.AcquisitionMode_MultiFrame)
+        self.camera.configure_hardware_trigger(PySpin.TriggerSelector_AcquisitionStart)
         self.init_new_stream_worker()
         self.camera.toggle_acquisition(AcquisitionState.BEGIN)
         self.stream_timer.start(1000)  # start the stream timer
