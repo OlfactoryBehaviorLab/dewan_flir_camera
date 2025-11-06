@@ -119,6 +119,8 @@ class Cam(SpinnakerObject):
 
     def poll(self):
         return {
+            "armed": self.armed,
+            "acquisition_state": self.acquisition_state,
             "exposure_time": self.exposure,
             "fps": self.current_FPS,
         }
