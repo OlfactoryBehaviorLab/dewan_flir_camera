@@ -126,8 +126,9 @@ class VideoAcquisition:
         )  # TODO: DYNAMICALLY SET THIS
 
     def start_experiment_video_acquisition(self):
-        self.camera.set_acquisition_mode(PySpin.AcquisitionMode_MultiFrame)
-        self.camera.configure_hardware_trigger(PySpin.TriggerSelector_AcquisitionStart)
+        self.camera.set_acquisition_mode(AcquisitionMode.MULTI)
+        self.camera.configure_hardware_trigger(TriggerAction.CONTINUOUS)
+        # WHY ISN'T MULTI-FRAME TRIGGER USED WITH MULTI ACQUISITION!!!!!
         self.init_new_stream_worker()
         self.camera.toggle_acquisition(AcquisitionState.ACTIVE)
         self.stream_timer.start(1000)  # start the stream timer
