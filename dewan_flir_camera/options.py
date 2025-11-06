@@ -25,6 +25,12 @@ class TriggerAction(IntEnum):
     MULTI = PySpin.TriggerSelector_FrameBurstStart
 
 
+class TriggerHardwareSource(IntEnum):
+    LINE0 = PySpin.TriggerSource_Line0
+    LINE1 = PySpin.TriggerSource_Line1
+    LINE2 = PySpin.TriggerSource_Line2
+    LINE3 = PySpin.TriggerSource_Line3
+
 class VideoType:
     """'Enum' to select video type to be created and saved"""
 

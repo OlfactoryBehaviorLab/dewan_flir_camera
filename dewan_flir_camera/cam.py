@@ -8,11 +8,13 @@ from dewan_flir_camera.options import (
     AcquisitionMode,
     AcquisitionState,
     TriggerAction,
+    TriggerHardwareSource
 )
 from dewan_flir_camera.gui import ControlWindow
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_TRIGGER_INPUT = TriggerHardwareSource.LINE2
 
 class Cam(SpinnakerObject):
     def __init__(self, cam_ptr, number):
@@ -190,12 +192,18 @@ class Cam(SpinnakerObject):
         except SpinnakerException as se:
             raise GenericSpinnakerError("Error unregistering event handler!") from se
 
-    def configure_hardware_trigger(self, action: TriggerAction):
+    def configure_hardware_trigger(self, action: TriggerAction, line: TriggerHardwareSource = None):
         try:
             logger.info("Enabling Hardware Trigger | Setting Trigger Mode to %s", action)
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             self.TriggerSelector.SetValue(action)
-            self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
+
+            if line is None:
+                self.TriggerSource.SetValue(DEFAULT_TRIGGER_INPUT)
+            else:
+                self.TriggerSource.SetValue(line)
+
+            # Activate on signal going from low -> high
             self.TriggerActivation.SetValue(PySpin.TriggerActivation_RisingEdge)
             self.TriggerMode.SetValue(PySpin.TriggerMode_On)
 
