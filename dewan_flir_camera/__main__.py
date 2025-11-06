@@ -13,9 +13,9 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Some sane defaults
-DEFAULT_FPS = 60
+DEFAULT_FPS = 30
 DEFAULT_TRIAL_TIME_S = 10
-DEFAULT_SAVE_DIR = "/flir_recordings"
+DEFAULT_SAVE_DIR = "D:/flir_recordings"
 DEFAULT_EXPERIMENT_DIR = "default_experiment"
 DEFAULT_MOUSE_DIR = "default_mouse"
 
@@ -143,10 +143,15 @@ def initialize(camera, UI: gui.ControlWindow):
 
 
 def main():
+    # Create QApplication
     app = gui.instantiate_app()
+    # Launch Experiment Configuration Dialog
     config_values = gui.get_config(DEFAULT_SAVE_DIR)
+
+    # Create and get directories
     mouse_dir, file_stem = create_session_dirs(config_values)
     image_dir = create_dir_if_not_exist("images", mouse_dir, "images")
+
     with SpinSystem() as system:
         camera = system.cameras[0]
         camera.init()
