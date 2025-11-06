@@ -1,5 +1,6 @@
 """Main entry point for dewan_flir_camera module"""
 
+import datetime
 import logging
 from pathlib import Path
 from typing import Optional
@@ -95,11 +96,17 @@ def create_session_dirs(config_values: dict) -> tuple[Path, str]:
     mouse_dir = create_dir_if_not_exist(
         DEFAULT_MOUSE_DIR, experiment_dir, config_values["mouse"]
     )
+
+    formatted_date = datetime.datetime.today().strftime("%m-%d-%Y-%H-%M-%S")
+
+    save_dir = create_dir_if_not_exist(
+        formatted_date, mouse_dir, None
+    )
     mouse_stem = mouse_dir.stem
 
     file_stem = f"{mouse_stem}-{experiment_stem}"
-    logger.info("Save Dir: %s", mouse_dir)
-    return mouse_dir, file_stem
+    logger.info("Save Dir: %s", save_dir)
+    return save_dir, file_stem
 
 
 def initialize(camera, UI: gui.ControlWindow):
