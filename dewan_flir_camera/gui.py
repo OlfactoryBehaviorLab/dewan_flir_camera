@@ -67,6 +67,7 @@ class ControlWindow(QMainWindow):
             self.trigger_selection_changed_callback
         )
 
+        # TODO: this needs to be elsewhere
         # Update GUI to reflect default parameters set in __main__
         self.update_trial_time_s(self.main_ui.s_per_trial_val.value())
         self.update_trial_time_frames(
@@ -169,7 +170,7 @@ class ControlWindow(QMainWindow):
     def start_button_callback(self):
         current_state = self.camera.acquisition_state
 
-        if current_state == AcquisitionState.BEGIN:
+        if current_state == AcquisitionState.ACTIVE:
             self.video_acquisition_handler.end_manual_video_acquisition()
             self.main_ui.record_button.setText("START\nRECORDING")
             self.main_ui.record_button.setStyleSheet(
@@ -191,7 +192,7 @@ class ControlWindow(QMainWindow):
                 "color:rgb(255,255,255);\n"
                 "}"
             )
-        if current_state == AcquisitionState.END:
+        if current_state == AcquisitionState.INACTIVE:
             self.video_acquisition_handler.start_manual_video_acquisition()
             self.main_ui.record_button.setText("STOP\nRECORDING")
             self.main_ui.record_button.setStyleSheet(

@@ -9,8 +9,8 @@ class AcquisitionMode(IntEnum):
 
 
 class AcquisitionState(IntEnum):
-    BEGIN = 1
-    END = 0
+    ACTIVE = 1
+    INACTIVE = 0
 
 
 class AutoExposureMode(IntEnum):

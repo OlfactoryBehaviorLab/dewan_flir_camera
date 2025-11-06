@@ -109,7 +109,7 @@ class VideoAcquisition:
         self.camera.set_acquisition_mode(AcquisitionMode.CONTINUOUS)
         self.camera.configure_software_trigger(TriggerAction.CONTINUOUS)
         self.init_new_stream_worker(True)
-        self.camera.toggle_acquisition(AcquisitionState.BEGIN)
+        self.camera.toggle_acquisition(AcquisitionState.ACTIVE)
         logger.debug("Acquisition mode: %s", self.camera.acquisition_mode)
         self.camera.TriggerSoftware.Execute()
 
@@ -118,7 +118,7 @@ class VideoAcquisition:
         self.video_acquisition_emitter.done.emit(False)
         self.reset_acquisition_counters()
 
-        self.camera.toggle_acquisition(AcquisitionState.END)
+        self.camera.toggle_acquisition(AcquisitionState.INACTIVE)
         self.num_manual_videos_saved += 1
         self.current_video_is_manual = False
         self.camera.configure_hardware_trigger(
@@ -129,11 +129,11 @@ class VideoAcquisition:
         self.camera.set_acquisition_mode(PySpin.AcquisitionMode_MultiFrame)
         self.camera.configure_hardware_trigger(PySpin.TriggerSelector_AcquisitionStart)
         self.init_new_stream_worker()
-        self.camera.toggle_acquisition(AcquisitionState.BEGIN)
+        self.camera.toggle_acquisition(AcquisitionState.ACTIVE)
         self.stream_timer.start(1000)  # start the stream timer
 
     def end_experiment_video_acquisition(self):
-        self.camera.toggle_acquisition(AcquisitionState.END)
+        self.camera.toggle_acquisition(AcquisitionState.INACTIVE)
         self.stream_timer.stop()
 
     def init_new_stream_worker(self, manual: bool = False):
