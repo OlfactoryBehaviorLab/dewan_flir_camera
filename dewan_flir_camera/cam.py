@@ -125,10 +125,12 @@ class Cam(SpinnakerObject):
             "fps": self.current_FPS,
         }
 
+    # Set Properties
     def set_exposure(self, new_exposure: int) -> int:
         try:
+            logger.debug("Setting exposure to %d", new_exposure)
             if self.ExposureTime.GetAccessMode() != PySpin.RW:
-                logger.warning("Unable to set exposure time. Aborting...")
+                logger.error("Unable to set exposure time. Aborting...")
                 return self.ExposureTime.GetValue()
             if self.exposure_mode == AutoExposureMode.OFF:
                 max_exposure_time = self.ExposureTime.GetMax()
@@ -149,10 +151,9 @@ class Cam(SpinnakerObject):
 
     def set_exposure_mode(self, exposure_mode: AutoExposureMode) -> None:
         try:
-            # if exposure_mode not in AutoExposureMode:
-            #     raise SpinnakerException(f'{exposure_mode} is not a valid exposure mode!')
+            logger.debug("Setting exposure mode to %s", exposure_mode)
             if self.ExposureAuto.GetAccessMode() != PySpin.RW:
-                logger.warning("Unable to set exposure mode. Aborting...")
+                logger.error("Unable to set exposure mode. Aborting...")
             else:
                 self.ExposureAuto.SetValue(exposure_mode)
         except SpinnakerException as se:
@@ -169,12 +170,12 @@ class Cam(SpinnakerObject):
         try:
             logger.debug("Setting number of burst frames to %s", num_frames)
             self.AcquisitionFrameCount.SetValue(num_frames)
-            logger.debug("New number of burst frames is %s", self.num_burst_frames)
         except SpinnakerException as se:
             raise GenericSpinnakerError("Error setting number of burst frames!") from se
 
     def register_event_handler(self, event_handler):
         try:
+            logger.debug("Registering event handler @ %s", event_handler)
             self.RegisterEventHandler(event_handler)
             self.event_handler_ptr = event_handler
         except SpinnakerException as se:
@@ -182,6 +183,7 @@ class Cam(SpinnakerObject):
 
     def unregister_event_handler(self):
         try:
+            logger.debug("Unregistering event handler @ %s", self.event_handler_ptr)
             if self.event_handler_ptr is not None:
                 self.UnregisterEventHandler(self.event_handler_ptr)
                 self.event_handler_ptr = None
@@ -190,7 +192,7 @@ class Cam(SpinnakerObject):
 
     def configure_hardware_trigger(self, action: TriggerAction):
         try:
-            logger.info("Configuring triggers...")
+            logger.info("Enabling Hardware Trigger | Setting Trigger Mode to %s", action)
             self.TriggerMode.SetValue(PySpin.TriggerMode_Off)
             self.TriggerSelector.SetValue(action)
             self.TriggerSource.SetValue(PySpin.TriggerSource_Line2)
