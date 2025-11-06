@@ -121,12 +121,12 @@ def initialize(camera, UI: gui.ControlWindow):
 
        """
     # === DEFAULT CAMERA CONFIGURATION === #
-    camera.configure_hardware_trigger(TriggerAction.MULTI)  # Configure hardware trigger
+    camera.set_acquisition_mode(AcquisitionMode.MULTI)  # Multiframe/Burst Acquisition
+    camera.configure_hardware_trigger(TriggerAction.CONTINUOUS)  # Configure hardware trigger
     camera.ExposureAuto.SetValue(AutoExposureMode.OFF)  # Manual Exposure Mode
     camera.set_exposure(
         gui.ControlWindow.FPS_to_exposure(DEFAULT_FPS)
     )  # Set exposure to default FPS
-    camera.set_acquisition_mode(AcquisitionMode.MULTI)  # Multiframe/Burst Acquisition
     num_burst_frames = DEFAULT_FPS * DEFAULT_TRIAL_TIME_S
     camera.set_num_burst_frames(num_burst_frames)
 
