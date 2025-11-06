@@ -28,12 +28,14 @@ class UpdateTimer(QTimer):
 
 
 class VideoStreamer(QTimer):
+    """QTimer to periodically check whether our trial acquisition has finished"""
     def __init__(self, video_acquisition_handler):
         super().__init__()
         self.timeout.connect(video_acquisition_handler.check_done)
 
 
 class VideoStreamWorker(QRunnable):
+    """Threaded worker to write video frames to disk without preventing system from starting a new worker"""
     def __init__(self, save_path: pathlib.Path, FPS: int, width: int, height: int):
         super().__init__()
         self.save_path: pathlib.Path = save_path
@@ -57,13 +59,13 @@ class VideoStreamWorker(QRunnable):
 
     @Slot()
     def run(self):
-        logger.info("Thread for %s started!", self.save_path)
+        logger.debug("Thread for %s started!", self.save_path)
         # Let's just use this
         while not self.exit_thread:
             self.timer_callback()
             time.sleep(1)
 
-        logger.info("Thread for %s ended!", self.save_path)
+        logger.debug("Thread for %s ended!", self.save_path)
 
     @Slot(bool)
     def stop(self, force_stop):
