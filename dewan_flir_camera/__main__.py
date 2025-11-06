@@ -149,15 +149,15 @@ def main():
     config_values = gui.get_config(DEFAULT_SAVE_DIR)
 
     # Create and get directories
-    mouse_dir, file_stem = create_session_dirs(config_values)
-    image_dir = create_dir_if_not_exist("images", mouse_dir, "images")
+    save_dir, file_stem = create_session_dirs(config_values)
+    image_dir = create_dir_if_not_exist("images", save_dir, "images")
 
     with SpinSystem() as system:
         camera = system.cameras[0]
         camera.init()
 
         video_acquisition_handler = VideoAcquisition(
-            camera, mouse_dir, file_stem
+            camera, save_dir, file_stem
         )
 
         ui = gui.ControlWindow(camera, video_acquisition_handler)
