@@ -269,8 +269,8 @@ class Cam(SpinnakerObject):
 
     def __getattr__(self, attribute):
         """
-        Override getattr to search if the underlying pointer object has the value; done to avoid subclassing the ptr
-        since the underlying functionality is a bit ambiguous
+        Override getattr to check if the camera pointer has the property/function instead of our class. It is not
+        clear what the ptr exposes.
         """
         try:
             return self.ptr.__getattribute__(
