@@ -68,24 +68,27 @@ class Cam(SpinnakerObject):
                 raise GenericSpinnakerError(f"Error initializing camera {self.number}!") from se
 
     def capture_single_frame(self):
+        ### Set to Single Acquisition Mode -> Set Software Trigger Active -> Trigger and Wait -> Reset to prev. state
         try:
-            prev_trigger_mode = TriggerAction(self.TriggerSelector.GetValue())
             logger.info("Attempting to capture 1 frame!")
+            prev_trigger_mode = TriggerAction(self.TriggerSelector.GetValue())
             current_acquisition_mode = self.acquisition_mode  # Get Current mode
-            if (
-                current_acquisition_mode != AcquisitionMode.SINGLE
-            ):  # If not single, temporarily set it to single
+            if current_acquisition_mode != AcquisitionMode.SINGLE:  # If not single, temporarily set it to single
                 self.set_acquisition_mode(AcquisitionMode.SINGLE)
-            self.configure_software_trigger(TriggerAction.SINGLE)
 
+            if prev_trigger_mode != TriggerAction.SINGLE:
+                self.configure_software_trigger(TriggerAction.SINGLE)
+
+            # If AcquisitionState is successfully set
             if self.toggle_acquisition(AcquisitionState.ACTIVE):
                 self.TriggerSoftware.Execute()
                 exposure_time_s = self.exposure / 1000000
                 time.sleep(exposure_time_s)
+
+            # End Acquisition and make sure it is properly set
             if self.toggle_acquisition(AcquisitionState.INACTIVE):
-                self.set_acquisition_mode(
-                    current_acquisition_mode
-                )  # Reset to initial mode
+                self.set_acquisition_mode(current_acquisition_mode)  # Reset to initial mode
+
             self.configure_hardware_trigger(prev_trigger_mode)  # Enable the hardware trigger again
         except SpinnakerException as se:
             logger.error("Unable to capture single frame!: %s", se)
