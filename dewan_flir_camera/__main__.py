@@ -156,23 +156,28 @@ def main():
         camera = system.cameras[0]
         camera.init()
 
+        # Set up VideoAcquisitionHandler
         video_acquisition_handler = VideoAcquisition(
             camera, save_dir, file_stem
         )
-
-        ui = gui.ControlWindow(camera, video_acquisition_handler)
-        initialize(camera, ui)
-
-        event_handler = ImageHandler(image_dir)
-        video_acquisition_handler.event_handler = event_handler
+        # Give the system access to this so it can gracefully shut down if needed
         system.video_acquisition_handler = video_acquisition_handler
 
-        # Give the system access to this so it can gracefully shut down if needed
-        event_handler.image_event_emitter.image_display_signal.connect(ui.display_image)
+        # Set up ImageHandler and register with camera
+        event_handler = ImageHandler(image_dir)
+        camera.register_event_handler(event_handler)
+
+        # Connect ImageHandler and VideoAcquisitionHandler
+        video_acquisition_handler.event_handler = event_handler
         event_handler.image_event_emitter.image_record_signal.connect(
             video_acquisition_handler.add_new_frame
         )
-        camera.register_event_handler(event_handler)
+
+        # Launch UI
+        ui = gui.ControlWindow(camera, video_acquisition_handler)
+        initialize(camera, ui)
+        # Connect image event handler to GUI
+        event_handler.image_event_emitter.image_display_signal.connect(ui.display_image)
 
         ui.show()
         _ = app.exec()
