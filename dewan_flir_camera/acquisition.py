@@ -173,7 +173,6 @@ class VideoAcquisition:
             self.current_worker.frame_counter,
             frame_num_target,
         )
-        print(f'Num Frames: {self.num_received_frames} | Last: {self.last_num_received_frames}')
         if (0 != self.num_received_frames) and self.num_received_frames == self.last_num_received_frames:
             if self.cycles_w_no_frames >= 3:
                 self.no_more_frames = True
